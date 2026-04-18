@@ -4,6 +4,8 @@ import { isAcceptableFor } from '@/engine/consensus';
 import { buildResultNarrative } from '@/engine/narrative';
 import { ResultExplanation } from './ResultExplanation';
 import { DiscardedOptions } from './DiscardedOptions';
+import { AIBadge } from './AINarrativeBanner';
+import type { LLMEnrichment } from '@/services/llm/types';
 
 const STATUS_LABEL: Record<string, string> = {
   full: 'Consenso total',
@@ -25,6 +27,8 @@ interface ResultSummaryProps {
   options: InvestmentOption[];
   stakeholderNames: Record<string, string>;
   optionNames: Record<string, string>;
+  /** Optional AI enrichment — only used when AI mode is active */
+  enrichment?: LLMEnrichment;
 }
 
 export function ResultSummary({
@@ -33,6 +37,7 @@ export function ResultSummary({
   options,
   stakeholderNames,
   optionNames,
+  enrichment,
 }: ResultSummaryProps) {
   const { finalOption, consensusStatus, rounds, finalScores } = simulation;
   const lastRound = rounds[rounds.length - 1];
@@ -147,6 +152,20 @@ export function ResultSummary({
                     Umbral: <span className="font-mono tabular-nums">{s.acceptabilityThreshold.toFixed(2)}</span>
                   </p>
                 )}
+                {/* AI-enriched stakeholder argument */}
+                {enrichment?.source === 'ai' && (() => {
+                  const arg = enrichment.stakeholderArguments.find(
+                    (a) => a.stakeholderId === s.id,
+                  );
+                  return arg ? (
+                    <div className="mt-3 pt-3 border-t border-slate-200/60">
+                      <p className="text-xs text-slate-600 leading-relaxed italic">
+                        &ldquo;{arg.text}&rdquo;
+                        <AIBadge />
+                      </p>
+                    </div>
+                  ) : null;
+                })()}
               </div>
             );
           })}
@@ -176,6 +195,18 @@ export function ResultSummary({
                   {' hacia '}
                   <span className="font-bold text-slate-900">{optionNames[c.toOptionId] ?? c.toOptionId}</span>
                   <p className="text-xs text-slate-500 mt-1">{c.reason}</p>
+                  {/* AI-enriched concession text */}
+                  {enrichment?.source === 'ai' && (() => {
+                    const ct = enrichment.concessionTexts.find(
+                      (a) => a.stakeholderId === c.stakeholderId,
+                    );
+                    return ct ? (
+                      <p className="text-xs text-slate-600 mt-2 italic leading-relaxed">
+                        &ldquo;{ct.text}&rdquo;
+                        <AIBadge />
+                      </p>
+                    ) : null;
+                  })()}
                 </div>
               </div>
             ))}

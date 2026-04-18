@@ -8,9 +8,13 @@ import type { ScenarioBundle } from '@/data/scenarios';
 import { runSimulation } from '@/engine/simulation';
 import { buildReportData } from '@/engine/report';
 import { ReportView } from '@/components/ReportView';
+import { AINarrativeToggle } from '@/components/AINarrativeToggle';
+import { AIConfigPanel } from '@/components/AIConfigPanel';
+import { useAINarrative } from '@/lib/useAINarrative';
 
 export default function ReportPage() {
   const [activeScenarioId, setActiveScenarioId] = useState(DEFAULT_BUNDLE.id);
+  const ai = useAINarrative();
 
   const bundle: ScenarioBundle = getBundle(activeScenarioId) ?? DEFAULT_BUNDLE;
 
@@ -112,6 +116,34 @@ export default function ReportPage() {
               Exportar / Imprimir
             </button>
           </div>
+
+          {/* AI Controls */}
+          <div className="mt-4 space-y-3">
+            <AIConfigPanel
+              config={ai.config}
+              onConfigChange={(config) => ai.setConfig(config)}
+            />
+            <AINarrativeToggle
+              enabled={ai.aiEnabled}
+              onToggle={(enabled) => {
+                ai.setAiEnabled(enabled);
+                if (enabled && ai.config?.apiKey) {
+                  ai.generate(simulation, bundle.stakeholders, bundle.options);
+                }
+              }}
+              loading={ai.loading}
+              error={ai.error}
+            />
+            {ai.aiEnabled && ai.config?.apiKey && !ai.loading && ai.enrichment.source === 'fallback' && (
+              <button
+                type="button"
+                onClick={() => ai.generate(simulation, bundle.stakeholders, bundle.options)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors"
+              >
+                ✨ Generar narrativa IA
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -119,7 +151,7 @@ export default function ReportPage() {
       <main className={cn(
         'px-6 py-8 print:px-0 print:py-0',
       )}>
-        <ReportView data={reportData} />
+        <ReportView data={reportData} enrichment={ai.enrichment} />
       </main>
 
       {/* Footer — hidden on print */}
