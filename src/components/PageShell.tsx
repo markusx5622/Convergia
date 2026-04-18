@@ -5,21 +5,24 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { ConvergiaLogo } from './ConvergiaLogo';
 
-const FLOW_STEPS = [
-  { href: '/scenario', label: 'Escenario', step: 1 },
-  { href: '/stakeholders', label: 'Stakeholders', step: 2 },
-  { href: '/debate', label: 'Debate', step: 3 },
-  { href: '/result', label: 'Resultado', step: 4 },
-] as const;
+function buildFlowSteps(scenarioId?: string) {
+  const prefix = scenarioId ? `/demo/${scenarioId}` : '';
+  return [
+    { href: `${prefix}/scenario`, label: 'Escenario', step: 1 },
+    { href: `${prefix}/stakeholders`, label: 'Stakeholders', step: 2 },
+    { href: `${prefix}/debate`, label: 'Debate', step: 3 },
+    { href: `${prefix}/result`, label: 'Resultado', step: 4 },
+  ];
+}
 
 const STEP_GUIDANCE: Record<number, { context: string; hint: string }> = {
   1: {
     context: 'Contexto',
-    hint: 'Estás viendo el escenario industrial. Observa la empresa, su presupuesto y las 5 opciones de inversión disponibles. Cada opción impacta de forma diferente en las 6 variables del sistema.',
+    hint: 'Estás viendo el escenario industrial. Observa la empresa, su presupuesto y las opciones de inversión disponibles. Cada opción impacta de forma diferente en las 6 variables del sistema.',
   },
   2: {
     context: 'Actores',
-    hint: 'Conoce a los 4 decisores. Cada uno tiene pesos distintos para las 6 variables, líneas rojas que no negociará y umbrales de concesión diferentes. Estas asimetrías son las que generan el conflicto.',
+    hint: 'Conoce a los decisores. Cada uno tiene pesos distintos para las 6 variables, líneas rojas que no negociará y umbrales de concesión diferentes. Estas asimetrías son las que generan el conflicto.',
   },
   3: {
     context: 'Negociación',
@@ -36,22 +39,25 @@ interface PageShellProps {
   title: string;
   subtitle?: string;
   currentStep?: number;
+  /** When provided, navigation links point to /demo/[scenarioId]/... */
+  scenarioId?: string;
+  /** Display label for the active scenario (e.g. "MetalWorks S.A.") */
+  scenarioLabel?: string;
 }
 
 function getStepFromPath(pathname: string): number {
-  const stepMap: Record<string, number> = {
-    '/scenario': 1,
-    '/stakeholders': 2,
-    '/debate': 3,
-    '/result': 4,
-  };
-  return stepMap[pathname] ?? 0;
+  if (pathname.endsWith('/scenario')) return 1;
+  if (pathname.endsWith('/stakeholders')) return 2;
+  if (pathname.endsWith('/debate')) return 3;
+  if (pathname.endsWith('/result')) return 4;
+  return 0;
 }
 
-export function PageShell({ children, title, subtitle, currentStep }: PageShellProps) {
+export function PageShell({ children, title, subtitle, currentStep, scenarioId, scenarioLabel }: PageShellProps) {
   const pathname = usePathname();
   const activeStep = currentStep ?? getStepFromPath(pathname);
   const guidance = STEP_GUIDANCE[activeStep];
+  const FLOW_STEPS = buildFlowSteps(scenarioId);
 
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
@@ -59,12 +65,28 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
       <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <ConvergiaLogo size="sm" color="dark" />
-              <span className="text-[10px] font-bold text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-2 py-0.5 rounded-md uppercase tracking-wider">
-                Demo
-              </span>
-            </Link>
+            <div className="flex items-center gap-2.5">
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <ConvergiaLogo size="sm" color="dark" />
+                <span className="text-[10px] font-bold text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-2 py-0.5 rounded-md uppercase tracking-wider">
+                  Demo
+                </span>
+              </Link>
+              {scenarioLabel && (
+                <>
+                  <span className="text-[#e1e4eb] text-sm">/</span>
+                  <span className="text-xs font-semibold text-[#111827] truncate max-w-[180px]">
+                    {scenarioLabel}
+                  </span>
+                  <Link
+                    href="/demo"
+                    className="text-[10px] font-medium text-[#0d6e6e] hover:text-[#0f8585] bg-[#f0fafa] hover:bg-[#d0ecec] border border-[#d0ecec] px-2 py-0.5 rounded-md transition-colors"
+                  >
+                    Cambiar
+                  </Link>
+                </>
+              )}
+            </div>
             <div className="flex items-center gap-0.5">
               <Link
                 href="/"
