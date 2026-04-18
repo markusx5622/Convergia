@@ -51,10 +51,10 @@ export default function StudioPage() {
   return (
     <div className="min-h-screen bg-[#f7f8fa] flex flex-col">
       {/* Header */}
-      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight hover:opacity-80 transition-opacity duration-200">
               Convergia
             </Link>
             <span className="text-[10px] font-mono font-bold text-white bg-[#0d6e6e] px-2 py-0.5 rounded-md uppercase tracking-wider">
@@ -64,19 +64,19 @@ export default function StudioPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Inicio
             </Link>
             <Link
               href="/lab"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
-              Lab / Exploración
+              Lab
             </Link>
             <Link
               href="/demo"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Demo guiada
             </Link>
@@ -104,13 +104,13 @@ export default function StudioPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => exportAsJSON(store.state)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-700 rounded-lg text-sm font-semibold border border-slate-200 hover:bg-slate-50 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-700 rounded-lg text-sm font-semibold border border-slate-200 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
               >
                 📤 Exportar JSON
               </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-700 rounded-lg text-sm font-semibold border border-slate-200 hover:bg-slate-50 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-700 rounded-lg text-sm font-semibold border border-slate-200 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
               >
                 📥 Importar JSON
               </button>
@@ -127,7 +127,7 @@ export default function StudioPage() {
                     store.resetAll();
                   }
                 }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-50 text-red-600 rounded-lg text-sm font-semibold border border-red-200 hover:bg-red-100 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-50 text-red-600 rounded-lg text-sm font-semibold border border-red-200 hover:bg-red-100 hover:shadow-sm transition-all duration-200"
               >
                 ↺ Reiniciar
               </button>
@@ -148,11 +148,11 @@ export default function StudioPage() {
                   <button
                     onClick={() => store.setStep(s.id)}
                     className={cn(
-                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all',
+                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200',
                       isActive
-                        ? 'bg-[#111827] text-white shadow-sm'
+                        ? 'bg-[#111827] text-white shadow-md'
                         : isCompleted
-                        ? 'bg-[#f0fafa] text-[#0d6e6e] hover:bg-[#d0ecec]'
+                        ? 'bg-[#f0fafa] text-[#0d6e6e] hover:bg-[#d0ecec] hover:shadow-sm'
                         : 'bg-[#f0f1f5] text-[#5b6578]/50 hover:bg-[#e1e4eb] hover:text-[#5b6578]',
                     )}
                   >
@@ -186,7 +186,7 @@ export default function StudioPage() {
       </div>
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+      <main className="max-w-7xl mx-auto px-6 py-8 flex-1 w-full animate-fade-in">
         {store.step === 'scenario' && (
           <StepScenario
             scenario={store.state.scenario}
@@ -237,7 +237,7 @@ export default function StudioPage() {
             {stepIdx > 0 && (
               <button
                 onClick={goPrev}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-xl text-sm font-bold border border-slate-200 hover:bg-slate-50 transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-700 rounded-xl text-sm font-bold border border-slate-200 hover:bg-slate-50 hover:shadow-sm transition-all duration-200"
               >
                 ← {BUILDER_STEPS[stepIdx - 1].label}
               </button>
@@ -247,7 +247,7 @@ export default function StudioPage() {
             {stepIdx < BUILDER_STEPS.length - 1 && (
               <button
                 onClick={goNext}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               >
                 {BUILDER_STEPS[stepIdx + 1].label} →
               </button>

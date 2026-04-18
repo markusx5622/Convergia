@@ -24,15 +24,14 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
   return (
     <div
       className={cn(
-        'rounded-xl border-2 p-6 transition-all hover:shadow-md shadow-sm',
-        colors.bg,
+        'rounded-xl border-2 p-6 card-interactive bg-white',
         colors.border,
         className,
       )}
     >
       {/* Header */}
       <div className="flex items-start gap-3 mb-4">
-        <span className="text-3xl">{colors.icon}</span>
+        <span className="text-3xl" aria-hidden="true">{colors.icon}</span>
         <div className="flex-1 min-w-0">
           <h3 className={cn('text-lg font-bold', colors.accent)}>{stakeholder.name}</h3>
           <p className="text-sm text-slate-500">{stakeholder.role}</p>
@@ -52,7 +51,7 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
                 <span
                   key={p}
                   className={cn(
-                    'px-2.5 py-1 rounded-full text-xs font-medium',
+                    'px-2.5 py-1 rounded-full text-xs font-medium transition-colors duration-200',
                     colors.bg,
                     colors.accent,
                     'border',
@@ -92,7 +91,10 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
               </h4>
               <ul className="space-y-1">
                 {stakeholder.redLines.map((rl, i) => (
-                  <li key={i} className="text-xs text-red-600 leading-relaxed">{rl.description}</li>
+                  <li key={i} className="text-xs text-red-600 leading-relaxed flex items-start gap-1.5">
+                    <span className="w-1 h-1 rounded-full bg-red-400 mt-1.5 flex-shrink-0" />
+                    {rl.description}
+                  </li>
                 ))}
               </ul>
             </div>

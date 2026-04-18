@@ -74,10 +74,10 @@ function ReportPageContent() {
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
       {/* Header — hidden on print */}
-      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm print:hidden">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm print:hidden">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight hover:opacity-80 transition-opacity duration-200">
               Convergia
             </Link>
             <span className="text-[10px] font-mono font-bold text-[#c87514] bg-[#fef4e5] px-2 py-0.5 rounded-md border border-[#f5dbb3] uppercase tracking-wider">
@@ -87,31 +87,31 @@ function ReportPageContent() {
           <div className="flex items-center gap-2">
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Inicio
             </Link>
             <Link
               href="/demo"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Demo guiada
             </Link>
             <Link
               href="/lab"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-all duration-200"
             >
-              Lab / Exploración
+              Lab
             </Link>
             <Link
               href="/studio"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Studio
             </Link>
             <Link
               href="/debug"
-              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-colors"
+              className="px-2.5 py-1.5 rounded-lg text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-all duration-200"
             >
               /debug
             </Link>
@@ -131,7 +131,7 @@ function ReportPageContent() {
                 id="scenario-select"
                 value={activeScenarioId}
                 onChange={(e) => setActiveScenarioId(e.target.value)}
-                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
+                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0d6e6e] focus:border-transparent transition-all duration-200"
               >
                 {SCENARIO_BUNDLES.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -142,7 +142,7 @@ function ReportPageContent() {
             </div>
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md hover:shadow-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
             >
               <PrintIcon />
               Exportar / Imprimir

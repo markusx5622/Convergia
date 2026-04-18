@@ -62,12 +62,14 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
       {/* Top Navigation */}
-      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
             <div className="flex items-center gap-2.5">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <ConvergiaLogo size="sm" color="dark" />
+                <span className="transition-transform duration-200 group-hover:scale-105">
+                  <ConvergiaLogo size="sm" color="dark" />
+                </span>
                 <span className="text-[10px] font-bold text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-2 py-0.5 rounded-md uppercase tracking-wider">
                   Demo guiada
                 </span>
@@ -80,7 +82,7 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
                   </span>
                   <Link
                     href="/demo"
-                    className="text-[10px] font-medium text-[#0d6e6e] hover:text-[#0f8585] bg-[#f0fafa] hover:bg-[#d0ecec] border border-[#d0ecec] px-2 py-0.5 rounded-md transition-colors"
+                    className="text-[10px] font-medium text-[#0d6e6e] hover:text-[#0f8585] bg-[#f0fafa] hover:bg-[#d0ecec] border border-[#d0ecec] px-2 py-0.5 rounded-md transition-all duration-200"
                   >
                     Cambiar
                   </Link>
@@ -91,9 +93,9 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
               <Link
                 href="/"
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
                   pathname === '/'
-                    ? 'bg-[#111827] text-white'
+                    ? 'bg-[#111827] text-white shadow-sm'
                     : 'text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827]',
                 )}
               >
@@ -104,9 +106,9 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                    'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
                     pathname === item.href
-                      ? 'bg-[#111827] text-white'
+                      ? 'bg-[#111827] text-white shadow-sm'
                       : 'text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827]',
                   )}
                 >
@@ -117,20 +119,20 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
               <Link
                 href="/lab"
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
                   pathname === '/lab'
-                    ? 'bg-[#0d6e6e] text-white'
+                    ? 'bg-[#0d6e6e] text-white shadow-sm'
                     : 'text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585]',
                 )}
               >
-                Lab / Exploración
+                Lab
               </Link>
               <Link
                 href="/studio"
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
                   pathname === '/studio'
-                    ? 'bg-[#0d6e6e] text-white'
+                    ? 'bg-[#0d6e6e] text-white shadow-sm'
                     : 'text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585]',
                 )}
               >
@@ -139,9 +141,9 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
               <Link
                 href="/report"
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200',
                   pathname === '/report'
-                    ? 'bg-[#111827] text-white'
+                    ? 'bg-[#111827] text-white shadow-sm'
                     : 'text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827]',
                 )}
               >
@@ -151,7 +153,7 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
               <Link
                 href="/debug"
                 className={cn(
-                  'px-2.5 py-1.5 rounded-md text-xs font-mono transition-colors',
+                  'px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all duration-200',
                   pathname === '/debug'
                     ? 'bg-[#111827] text-white'
                     : 'text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578]',
@@ -177,16 +179,16 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
                     <Link
                       href={step.href}
                       className={cn(
-                        'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all',
+                        'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200',
                         isActive
-                          ? 'bg-[#111827] text-white shadow-sm'
+                          ? 'bg-[#111827] text-white shadow-md'
                           : isCompleted
                           ? 'bg-[#f0fafa] text-[#0d6e6e] hover:bg-[#d0ecec]'
                           : 'bg-[#f0f1f5] text-[#5b6578]/50 hover:bg-[#e1e4eb] hover:text-[#5b6578]',
                       )}
                     >
                       <span className={cn(
-                        'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold',
+                        'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-200',
                         isActive
                           ? 'bg-white text-[#111827]'
                           : isCompleted
@@ -199,7 +201,7 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
                     </Link>
                     {i < FLOW_STEPS.length - 1 && (
                       <div className={cn(
-                        'flex-1 h-0.5 mx-2 rounded-full',
+                        'flex-1 h-0.5 mx-2 rounded-full transition-colors duration-500',
                         step.step < activeStep ? 'bg-[#0d6e6e]/30' : 'bg-[#e1e4eb]',
                       )} />
                     )}
@@ -215,7 +217,7 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
       <header className="bg-white border-b border-[#f0f1f5]">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {activeStep > 0 && (
-            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.15em] mb-2">
+            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.15em] mb-2 animate-fade-in">
               Paso {activeStep} de {FLOW_STEPS.length}
             </p>
           )}
@@ -228,10 +230,10 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
 
       {/* Demo guidance banner */}
       {guidance && (
-        <div className="bg-gradient-to-r from-[#f0fafa] to-[#eef5fb] border-b border-[#d0ecec]/50">
+        <div className="bg-gradient-to-r from-[#f0fafa] to-[#eef5fb] border-b border-[#d0ecec]/50 animate-fade-in">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-start gap-3">
-              <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#0d6e6e]/10 text-[#0d6e6e] text-xs font-bold mt-0.5">
+              <span className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#0d6e6e]/10 text-[#0d6e6e] text-xs font-bold mt-0.5 ring-2 ring-[#0d6e6e]/5">
                 {activeStep}
               </span>
               <div>
@@ -244,25 +246,26 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
       )}
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 animate-fade-in">
         {children}
       </main>
 
       {/* Footer */}
       <footer className="border-t border-[#e1e4eb] bg-white mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <ConvergiaLogo size="sm" variant="symbol" color="brand" />
-            <p className="text-xs text-[#5b6578]">
-              Motor determinista de negociación multi-stakeholder · 2025
-            </p>
+            <div>
+              <p className="text-xs font-medium text-[#5b6578]">
+                Motor determinista de negociación multi-stakeholder
+              </p>
+              <p className="text-[10px] text-[#5b6578]/40 mt-0.5">
+                Resultado reproducible · Explicabilidad total
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-[#5b6578]/40">
-              Resultado reproducible · Explicabilidad total
-            </span>
-            <span className="text-[#e1e4eb]">·</span>
-            <Link href="/debug" className="text-xs text-[#5b6578]/40 hover:text-[#0d6e6e] font-mono transition-colors">
+            <Link href="/debug" className="text-xs text-[#5b6578]/40 hover:text-[#0d6e6e] font-mono transition-colors duration-200">
               /debug
             </Link>
           </div>

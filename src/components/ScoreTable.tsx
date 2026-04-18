@@ -17,14 +17,15 @@ export function ScoreTable({ round, stakeholders, options }: ScoreTableProps) {
 
   if (activeOptions.length === 0) {
     return (
-      <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 text-center">
-        <p className="text-sm text-slate-400">No hay opciones activas en esta ronda.</p>
+      <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 text-center animate-fade-in">
+        <span className="text-xl block mb-2">📭</span>
+        <p className="text-sm text-slate-500 font-medium">No hay opciones activas en esta ronda.</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+    <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm animate-fade-in">
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-slate-50">
@@ -40,7 +41,7 @@ export function ScoreTable({ round, stakeholders, options }: ScoreTableProps) {
         </thead>
         <tbody className="divide-y divide-slate-100">
           {stakeholders.map((s) => (
-            <tr key={s.id} className="hover:bg-slate-50/50 transition-colors">
+            <tr key={s.id} className="hover:bg-slate-50/50 transition-colors duration-150">
               <td className="px-4 py-3 font-medium text-slate-900 text-sm">{s.name}</td>
               {activeOptions.map((o) => {
                 const score = round.scores[s.id]?.[o.id] ?? 0;
@@ -49,8 +50,8 @@ export function ScoreTable({ round, stakeholders, options }: ScoreTableProps) {
                   <td
                     key={o.id}
                     className={cn(
-                      'px-4 py-3 text-center font-mono text-sm tabular-nums',
-                      isTop ? 'bg-blue-50 font-bold text-blue-700' : 'text-slate-600',
+                      'px-4 py-3 text-center font-mono text-sm tabular-nums transition-colors duration-150',
+                      isTop ? 'bg-[#f0fafa] font-bold text-[#0d6e6e]' : 'text-slate-600',
                     )}
                   >
                     {score.toFixed(3)}
@@ -69,7 +70,7 @@ export function ScoreTable({ round, stakeholders, options }: ScoreTableProps) {
                   key={o.id}
                   className={cn(
                     'px-4 py-3 text-center font-mono tabular-nums',
-                    isWinner ? 'bg-yellow-50 text-yellow-800 font-bold' : 'text-slate-700',
+                    isWinner ? 'bg-amber-50 text-amber-800 font-bold' : 'text-slate-700',
                   )}
                 >
                   {score.toFixed(3)}

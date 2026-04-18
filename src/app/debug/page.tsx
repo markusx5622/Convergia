@@ -88,7 +88,7 @@ function ScoreTable({ round }: { round: RoundResult }) {
         </thead>
         <tbody>
           {stakeholders.map((s) => (
-            <tr key={s.id} className="hover:bg-slate-50">
+            <tr key={s.id} className="hover:bg-slate-50 transition-colors duration-150">
               <td className="border-b border-slate-100 p-2 font-medium text-slate-700">{s.name}</td>
               {activeOptions.map((o) => {
                 const score = round.scores[s.id]?.[o.id] ?? 0;
@@ -237,29 +237,29 @@ export default function DebugPage() {
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
       {/* Minimal header */}
-      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight hover:opacity-80 transition-opacity duration-200">
               Convergia
             </Link>
             <span className="text-[10px] font-mono font-bold text-[#5b6578] bg-[#f0f1f5] px-2 py-0.5 rounded-md uppercase tracking-wider">
               Debug
             </span>
           </div>
-          <Link href="/" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] transition-colors">
-            ← Inicio
-          </Link>
           <div className="flex items-center gap-2">
+            <Link href="/" className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200">
+              ← Inicio
+            </Link>
             <Link
               href="/lab"
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
+              className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-all duration-200"
             >
-              Lab / Exploración
+              Lab
             </Link>
             <Link
               href="/report"
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Informe
             </Link>
@@ -267,7 +267,7 @@ export default function DebugPage() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8 animate-fade-in">
         <header className="mb-8">
           <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-2xl font-extrabold text-[#111827] tracking-tight">Verificación técnica</h1>
@@ -317,8 +317,8 @@ export default function DebugPage() {
 
         {/* ── Round evolution ── */}
         {sim.rounds.map((round) => (
-          <section key={round.round} className="mb-12 border-t border-slate-200 pt-8">
-            <h2 className="text-2xl font-bold mb-6 text-slate-900">
+          <section key={round.round} className="mb-12 border-t border-slate-200 pt-8 animate-fade-in-up">
+            <h2 className="text-2xl font-bold mb-6 text-[#111827]">
               Ronda {round.round}
               <span className={`ml-3 text-sm px-2.5 py-1 rounded-full font-semibold ${
                 round.consensusStatus === 'full' ? 'bg-emerald-100 text-emerald-700' :
@@ -390,12 +390,12 @@ export default function DebugPage() {
         ))}
 
         {/* ── Final result ── */}
-        <section className="mb-10 border-t-2 border-slate-300 pt-8">
-          <h2 className="text-2xl font-bold mb-4 text-slate-900">Resultado final</h2>
+        <section className="mb-10 border-t-2 border-[#0d6e6e]/20 pt-8 animate-scale-in">
+          <h2 className="text-2xl font-bold mb-4 text-[#111827]">Resultado final</h2>
           {sim.finalOption ? (
-            <div className="p-6 rounded-xl border-2 border-yellow-400 bg-yellow-50">
+            <div className="p-6 rounded-xl border-2 border-[#0d6e6e] bg-gradient-to-r from-[#f0fafa] to-white">
               <div className="text-3xl mb-2">🏆</div>
-              <h3 className="text-xl font-bold text-slate-900">{sim.finalOption.name}</h3>
+              <h3 className="text-xl font-bold text-[#111827]">{sim.finalOption.name}</h3>
               <p className="text-slate-600 text-sm mb-3">{sim.finalOption.description}</p>
               <div className="flex flex-wrap gap-4 text-sm">
                 <span className="text-slate-700">

@@ -20,10 +20,10 @@ export function ConsensusIndicator({ round, stakeholders, winnerId }: ConsensusI
   const pct = Math.round(round.consensusScore * 100);
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm animate-fade-in">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <span className={cn('px-3 py-1 rounded-full text-sm font-semibold border', config.bg, config.color, config.border)}>
+          <span className={cn('px-3 py-1.5 rounded-full text-sm font-semibold border', config.bg, config.color, config.border)}>
             {config.label}
           </span>
           <span className="text-sm text-slate-500">
@@ -37,7 +37,7 @@ export function ConsensusIndicator({ round, stakeholders, winnerId }: ConsensusI
       <div className="h-3 bg-slate-100 rounded-full overflow-hidden mb-5">
         <div
           className={cn(
-            'h-full rounded-full transition-all',
+            'h-full rounded-full animate-progress',
             pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-blue-500' : pct >= 25 ? 'bg-yellow-500' : 'bg-red-500',
           )}
           style={{ width: `${pct}%` }}
@@ -50,8 +50,8 @@ export function ConsensusIndicator({ round, stakeholders, winnerId }: ConsensusI
           const ok = isAcceptableFor(s, round.scores[s.id] ?? {}, winnerId);
           return (
             <div key={s.id} className={cn(
-              'flex items-center gap-2 text-sm px-3 py-1.5 rounded-lg border',
-              ok ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200',
+              'flex items-center gap-2 text-sm px-3 py-1.5 rounded-lg border transition-all duration-200',
+              ok ? 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100' : 'bg-red-50 border-red-200 hover:bg-red-100',
             )}>
               <span className={cn(
                 'w-2.5 h-2.5 rounded-full flex-shrink-0',

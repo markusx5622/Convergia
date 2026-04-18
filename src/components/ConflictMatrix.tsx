@@ -17,7 +17,7 @@ export function ConflictMatrix({ round, stakeholders }: ConflictMatrixProps) {
   const sids = stakeholders.map((s) => s.id);
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
         <table className="text-sm w-full">
           <thead>
@@ -32,7 +32,7 @@ export function ConflictMatrix({ round, stakeholders }: ConflictMatrixProps) {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {stakeholders.map((si) => (
-              <tr key={si.id} className="hover:bg-slate-50/50 transition-colors">
+              <tr key={si.id} className="hover:bg-slate-50/50 transition-colors duration-150">
                 <td className="px-4 py-3 font-medium text-slate-900 text-sm">{si.name}</td>
                 {sids.map((sj) => {
                   const val = round.conflictMatrix[si.id]?.[sj] ?? 0;
@@ -40,7 +40,7 @@ export function ConflictMatrix({ round, stakeholders }: ConflictMatrixProps) {
                     <td
                       key={sj}
                       className={cn(
-                        'px-4 py-3 text-center font-mono text-sm tabular-nums',
+                        'px-4 py-3 text-center font-mono text-sm tabular-nums transition-colors duration-150',
                         conflictColor(si.id === sj ? 0 : val),
                       )}
                     >
@@ -55,7 +55,7 @@ export function ConflictMatrix({ round, stakeholders }: ConflictMatrixProps) {
       </div>
       <div className="mt-3 flex items-center gap-5 text-xs text-slate-500">
         <span>
-          Conflicto total: <strong className="font-mono text-slate-700">{round.totalConflict.toFixed(3)}</strong>
+          Conflicto total: <strong className="font-mono text-[#111827]">{round.totalConflict.toFixed(3)}</strong>
         </span>
         <div className="flex items-center gap-3 ml-auto">
           <span className="flex items-center gap-1.5">

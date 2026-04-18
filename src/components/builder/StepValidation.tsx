@@ -29,7 +29,7 @@ export function StepValidation({ errors, state, onValidate }: Props) {
   const validated = hasValidated.current;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Info banner */}
       <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
         <div className="flex items-start gap-3">
@@ -51,14 +51,14 @@ export function StepValidation({ errors, state, onValidate }: Props) {
             hasValidated.current = true;
             onValidate();
           }}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
         >
           🔍 Ejecutar validación
         </button>
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 stagger-children">
         <SectionCard
           title="Escenario"
           icon="📋"
@@ -90,8 +90,8 @@ export function StepValidation({ errors, state, onValidate }: Props) {
 
       {/* Error list */}
       {validated && errors.length === 0 && (
-        <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-6 text-center">
-          <p className="text-2xl mb-2">✅</p>
+        <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-6 text-center animate-scale-in">
+          <p className="text-3xl mb-2">✅</p>
           <p className="text-sm font-bold text-emerald-800">
             Escenario válido — listo para simular
           </p>
@@ -151,7 +151,7 @@ function SectionCard({
   return (
     <div
       className={cn(
-        'rounded-xl border p-5',
+        'rounded-xl border p-5 card-interactive',
         hasErrors
           ? 'bg-red-50/50 border-red-200'
           : 'bg-white border-slate-200',
