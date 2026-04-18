@@ -101,6 +101,17 @@ export default function ResultPage() {
             ✨ Generar narrativa IA
           </button>
         )}
+
+        {ai.aiEnabled && !ai.config?.apiKey && !ai.loading && (
+          <div className="px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
+            <p className="text-xs text-amber-700">
+              <strong>Paso previo:</strong> Abre la sección &ldquo;Configuración IA&rdquo; arriba e introduce tu API key de OpenAI para activar la generación de narrativa.
+            </p>
+            <p className="text-xs text-amber-600 mt-1">
+              Sin API key, Convergia funciona perfectamente con narrativa determinista.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Navigation */}
@@ -119,10 +130,10 @@ export default function ResultPage() {
             📄 Exportar informe
           </Link>
           <Link
-            href="/scenario"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-slate-700 rounded-xl font-semibold border border-slate-200 hover:bg-slate-50 transition-colors text-sm"
+            href="/lab"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-indigo-700 rounded-xl font-semibold border border-indigo-200 hover:bg-indigo-50 transition-colors text-sm"
           >
-            Revisar escenario
+            🔬 Explorar en Lab
           </Link>
           <Link
             href="/"

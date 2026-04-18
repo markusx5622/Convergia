@@ -130,6 +130,12 @@ export default function LabPage() {
             >
               debug
             </Link>
+            <Link
+              href="/report"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+            >
+              📄 Informe
+            </Link>
           </div>
         </div>
       </nav>
@@ -327,7 +333,7 @@ export default function LabPage() {
       <footer className="border-t border-slate-200 bg-white mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <p className="text-xs text-slate-400">
-            Convergia Lab · Explorador de escenarios · Motor determinista
+            Convergia Lab · Explorador de escenarios · Motor determinista · 2025
           </p>
           <div className="flex items-center gap-3">
             <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
