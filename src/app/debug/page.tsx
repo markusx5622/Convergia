@@ -255,7 +255,7 @@ export default function DebugPage() {
               href="/lab"
               className="px-2.5 py-1.5 rounded-md text-xs font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              Lab
+              Lab / Exploración
             </Link>
             <Link
               href="/report"

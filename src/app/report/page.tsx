@@ -101,7 +101,7 @@ function ReportPageContent() {
               href="/lab"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              Lab
+              Lab / Exploración
             </Link>
             <Link
               href="/studio"
