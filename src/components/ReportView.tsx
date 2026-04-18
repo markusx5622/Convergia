@@ -24,6 +24,20 @@ interface ReportViewProps {
 }
 
 export function ReportView({ data }: ReportViewProps) {
+  // Compute section numbers dynamically to handle conditional sections
+  let sectionCounter = 0;
+  const nextSection = () => ++sectionCounter;
+
+  const sExecutive = nextSection();           // 1
+  const sWinner = nextSection();              // 2
+  const sMetrics = nextSection();             // 3
+  const sReasons = data.narrative.whyWon ? nextSection() : 0;
+  const sBreakdown = nextSection();
+  const sConcessions = nextSection();
+  const sConsensus = nextSection();
+  const sDiscarded = data.narrative.discardedOptions.length > 0 ? nextSection() : 0;
+  const sComparison = data.comparison ? nextSection() : 0;
+
   return (
     <div className="report-container max-w-[800px] mx-auto bg-white print:shadow-none print:max-w-none">
       {/* ── Header ── */}
@@ -53,7 +67,7 @@ export function ReportView({ data }: ReportViewProps) {
 
       {/* ── 1. Executive summary ── */}
       <section className="mb-8">
-        <SectionHeading number={1} title="Resumen ejecutivo" />
+        <SectionHeading number={sExecutive} title="Resumen ejecutivo" />
         <p className="text-slate-700 leading-relaxed mb-4">
           {data.scenarioDescription}
         </p>
@@ -64,7 +78,7 @@ export function ReportView({ data }: ReportViewProps) {
 
       {/* ── 2. Winner ── */}
       <section className="mb-8">
-        <SectionHeading number={2} title="Opción ganadora" />
+        <SectionHeading number={sWinner} title="Opción ganadora" />
         {data.winnerName ? (
           <div className="border-2 border-slate-900 rounded-lg p-5">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -92,7 +106,7 @@ export function ReportView({ data }: ReportViewProps) {
 
       {/* ── 3. Key metrics ── */}
       <section className="mb-8">
-        <SectionHeading number={3} title="Métricas clave" />
+        <SectionHeading number={sMetrics} title="Métricas clave" />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <MetricCard
             label="Consenso"
@@ -118,7 +132,7 @@ export function ReportView({ data }: ReportViewProps) {
       {/* ── 4. Why this option won ── */}
       {data.narrative.whyWon && (
         <section className="mb-8">
-          <SectionHeading number={4} title="Razones del resultado" />
+          <SectionHeading number={sReasons} title="Razones del resultado" />
           <p className="text-slate-700 leading-relaxed mb-4">
             {data.narrative.whyWon}
           </p>
@@ -141,7 +155,7 @@ export function ReportView({ data }: ReportViewProps) {
 
       {/* ── 5. Stakeholder breakdown ── */}
       <section className="mb-8">
-        <SectionHeading number={5} title="Desglose por stakeholder" />
+        <SectionHeading number={sBreakdown} title="Desglose por stakeholder" />
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -186,7 +200,7 @@ export function ReportView({ data }: ReportViewProps) {
 
       {/* ── 6. Concessions ── */}
       <section className="mb-8">
-        <SectionHeading number={6} title="Concesiones" />
+        <SectionHeading number={sConcessions} title="Concesiones" />
         {data.concessions.length === 0 ? (
           <p className="text-slate-500 text-sm">
             No hubo concesiones — todos los stakeholders mantuvieron sus posiciones originales.
@@ -232,7 +246,7 @@ export function ReportView({ data }: ReportViewProps) {
 
       {/* ── 7. Consensus analysis ── */}
       <section className="mb-8">
-        <SectionHeading number={7} title="Análisis de consenso" />
+        <SectionHeading number={sConsensus} title="Análisis de consenso" />
         <p className="text-slate-700 leading-relaxed mb-2">
           {data.narrative.consensusSummary}
         </p>
@@ -244,7 +258,7 @@ export function ReportView({ data }: ReportViewProps) {
       {/* ── 8. Discarded options ── */}
       {data.narrative.discardedOptions.length > 0 && (
         <section className="mb-8">
-          <SectionHeading number={8} title="Opciones descartadas" />
+          <SectionHeading number={sDiscarded} title="Opciones descartadas" />
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -274,7 +288,7 @@ export function ReportView({ data }: ReportViewProps) {
       {data.comparison && (
         <section className="mb-8 break-before-page">
           <SectionHeading
-            number={data.narrative.discardedOptions.length > 0 ? 9 : 8}
+            number={sComparison}
             title="Comparación base vs ajustado"
           />
           <div className="grid grid-cols-2 gap-4 mb-4">
