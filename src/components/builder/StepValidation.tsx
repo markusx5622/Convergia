@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import type { ValidationError } from '@/lib/builder-types';
 import type { BuilderState } from '@/lib/builder-types';
+import { sectionHasErrors } from '@/lib/builder-validation';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -11,10 +13,20 @@ interface Props {
 }
 
 export function StepValidation({ errors, state, onValidate }: Props) {
+  const hasValidated = useRef(false);
+
+  // Auto-validate on mount (entering the step)
+  useEffect(() => {
+    if (!hasValidated.current) {
+      hasValidated.current = true;
+      onValidate();
+    }
+  }, [onValidate]);
+
   const scenarioErrors = errors.filter((e) => e.path.startsWith('scenario'));
   const stakeholderErrors = errors.filter((e) => e.path.startsWith('stakeholders'));
   const optionErrors = errors.filter((e) => e.path.startsWith('options'));
-  const validationExecuted = errors.length > 0 || (scenarioErrors.length === 0 && stakeholderErrors.length === 0 && optionErrors.length === 0);
+  const validated = hasValidated.current;
 
   return (
     <div className="space-y-6">
@@ -26,7 +38,7 @@ export function StepValidation({ errors, state, onValidate }: Props) {
             <p className="text-sm font-bold text-[#111827] mb-1">Validación del escenario</p>
             <p className="text-xs text-[#5b6578] leading-relaxed">
               Verifica que todos los datos estén completos y sean coherentes antes de simular.
-              Pulsa el botón para ejecutar las validaciones.
+              La validación se ejecuta automáticamente. Pulsa el botón para re-ejecutarla tras hacer cambios.
             </p>
           </div>
         </div>
@@ -35,7 +47,10 @@ export function StepValidation({ errors, state, onValidate }: Props) {
       {/* Validate button */}
       <div className="flex justify-center">
         <button
-          onClick={onValidate}
+          onClick={() => {
+            hasValidated.current = true;
+            onValidate();
+          }}
           className="inline-flex items-center gap-2 px-6 py-3 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
         >
           🔍 Ejecutar validación
@@ -48,6 +63,8 @@ export function StepValidation({ errors, state, onValidate }: Props) {
           title="Escenario"
           icon="📋"
           count={scenarioErrors.length}
+          hasErrors={sectionHasErrors(errors, 'scenario')}
+          validated={validated}
           summary={state.scenario.name || '(sin nombre)'}
           detail={`Presupuesto: ${parseFloat(state.scenario.budget) > 0 ? `${parseFloat(state.scenario.budget).toLocaleString('es-ES')}€` : 'no definido'}`}
         />
@@ -55,6 +72,8 @@ export function StepValidation({ errors, state, onValidate }: Props) {
           title="Stakeholders"
           icon="👥"
           count={stakeholderErrors.length}
+          hasErrors={sectionHasErrors(errors, 'stakeholders')}
+          validated={validated}
           summary={`${state.stakeholders.length} definidos`}
           detail={state.stakeholders.map((s) => s.name || '?').join(', ')}
         />
@@ -62,13 +81,15 @@ export function StepValidation({ errors, state, onValidate }: Props) {
           title="Opciones"
           icon="💡"
           count={optionErrors.length}
+          hasErrors={sectionHasErrors(errors, 'options')}
+          validated={validated}
           summary={`${state.options.length} definidas`}
           detail={state.options.map((o) => o.name || '?').join(', ')}
         />
       </div>
 
       {/* Error list */}
-      {validationExecuted && errors.length === 0 && (
+      {validated && errors.length === 0 && (
         <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-6 text-center">
           <p className="text-2xl mb-2">✅</p>
           <p className="text-sm font-bold text-emerald-800">
@@ -113,23 +134,27 @@ function SectionCard({
   title,
   icon,
   count,
+  hasErrors,
+  validated,
   summary,
   detail,
 }: {
   title: string;
   icon: string;
   count: number;
+  hasErrors: boolean;
+  validated: boolean;
   summary: string;
   detail: string;
 }) {
-  const isOk = count === 0;
+  const isOk = validated && !hasErrors;
   return (
     <div
       className={cn(
         'rounded-xl border p-5',
-        isOk
-          ? 'bg-white border-slate-200'
-          : 'bg-red-50/50 border-red-200',
+        hasErrors
+          ? 'bg-red-50/50 border-red-200'
+          : 'bg-white border-slate-200',
       )}
     >
       <div className="flex items-center gap-2 mb-2">
@@ -140,7 +165,7 @@ function SectionCard({
             {count}
           </span>
         )}
-        {count === 0 && (
+        {isOk && (
           <span className="ml-auto text-xs text-emerald-600">✓</span>
         )}
       </div>

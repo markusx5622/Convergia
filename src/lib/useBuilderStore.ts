@@ -107,12 +107,17 @@ export function useBuilderStore() {
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const initialized = useRef(false);
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount (sanitised data)
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
-    const saved = loadFromLocalStorage();
-    if (saved) setState(saved);
+    try {
+      const saved = loadFromLocalStorage();
+      if (saved) setState(saved);
+    } catch {
+      // Corrupt data — start fresh
+      clearLocalStorage();
+    }
   }, []);
 
   // Auto-save on every change
