@@ -110,6 +110,9 @@ export interface RoundResult {
   consensusScore: number;
   consensusStatus: ConsensusStatus;
   arguments: Argument[];
+  conflictMatrix: Record<string, Record<string, number>>;
+  totalConflict: number;
+  eliminatedOptionIds: string[];
 }
 
 export interface SimulationResult {
