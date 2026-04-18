@@ -230,6 +230,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Report callout */}
+      <section className="py-14 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-gradient-to-r from-emerald-900 to-emerald-800 rounded-2xl p-8 text-white shadow-xl">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono font-medium text-emerald-300 bg-emerald-800 px-2 py-0.5 rounded-md">NUEVO</span>
+            </div>
+            <h2 className="text-xl font-extrabold mb-3 tracking-tight">📄 Informe exportable</h2>
+            <p className="text-emerald-200 text-sm leading-relaxed mb-5">
+              Genera un <strong className="text-white">informe profesional y exportable</strong> a partir de cualquier simulación. Incluye resumen ejecutivo, métricas, desglose por stakeholder, concesiones y análisis de consenso. Exporta a PDF directamente desde el navegador.
+            </p>
+            <Link
+              href="/report"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-900 rounded-xl text-sm font-bold hover:bg-emerald-50 transition-colors shadow-md"
+            >
+              Ver informe →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-slate-200 bg-white mt-auto">
         <div className="max-w-3xl mx-auto px-6 py-6 text-center">
@@ -246,6 +267,13 @@ export default function Home() {
               className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors"
             >
               /debug
+            </Link>
+            <span className="text-slate-200">·</span>
+            <Link
+              href="/report"
+              className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors"
+            >
+              /report
             </Link>
             <span className="text-slate-200">·</span>
             <span className="text-xs text-slate-400">

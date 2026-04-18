@@ -311,6 +311,14 @@ export default function LabPage() {
               stakeholders={adjustedStakeholders}
               isModified={isModified}
             />
+            <div className="flex justify-end pt-2">
+              <Link
+                href="/report"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700 transition-all shadow-md"
+              >
+                📄 Exportar informe
+              </Link>
+            </div>
           </div>
         )}
       </main>

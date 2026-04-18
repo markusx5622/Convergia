@@ -43,3 +43,48 @@ html {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ── Print styles for report export ── */
+@media print {
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .report-container {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Avoid breaking inside sections */
+  section {
+    break-inside: avoid;
+  }
+
+  /* Page break before comparison section */
+  .break-before-page {
+    break-before: page;
+  }
+
+  /* Ensure tables don't get clipped */
+  table {
+    break-inside: auto;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+
+  /* Clean header/footer on printed pages */
+  @page {
+    margin: 1.5cm 2cm;
+    size: A4;
+  }
+}

@@ -104,6 +104,17 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
               >
                 🔬 Lab
               </Link>
+              <Link
+                href="/report"
+                className={cn(
+                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  pathname === '/report'
+                    ? 'bg-emerald-600 text-white'
+                    : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700',
+                )}
+              >
+                📄 Informe
+              </Link>
               <span className="mx-2 h-4 w-px bg-slate-200" />
               <Link
                 href="/debug"

@@ -55,6 +55,12 @@ export default function ResultPage() {
         </Link>
         <div className="flex items-center gap-3">
           <Link
+            href="/report"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-all shadow-md text-sm"
+          >
+            📄 Exportar informe
+          </Link>
+          <Link
             href="/scenario"
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-slate-700 rounded-xl font-semibold border border-slate-200 hover:bg-slate-50 transition-colors text-sm"
           >
