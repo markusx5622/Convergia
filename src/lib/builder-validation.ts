@@ -73,7 +73,7 @@ export function validateStakeholder(s: DraftStakeholder, idx: number): Validatio
       weightSum += w;
     }
   }
-  if (Math.abs(weightSum - 1.0) > 0.011) {
+  if (Math.abs(weightSum - 1.0) > 0.01) {
     errors.push({
       path: `${prefix}.weights`,
       message: `Stakeholder "${s.name || idx + 1}": los pesos suman ${weightSum.toFixed(3)} — deben sumar 1.00.`,

@@ -53,7 +53,7 @@ export function StepStakeholders({
             (acc, v) => acc + (parseFloat(sh.weights[v]) || 0),
             0,
           );
-          const weightOk = Math.abs(weightSum - 1.0) <= 0.011;
+          const weightOk = Math.abs(weightSum - 1.0) <= 0.01;
 
           return (
             <div

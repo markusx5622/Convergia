@@ -14,7 +14,7 @@ export function StepValidation({ errors, state, onValidate }: Props) {
   const scenarioErrors = errors.filter((e) => e.path.startsWith('scenario'));
   const stakeholderErrors = errors.filter((e) => e.path.startsWith('stakeholders'));
   const optionErrors = errors.filter((e) => e.path.startsWith('options'));
-  const hasRun = errors.length > 0 || (scenarioErrors.length === 0 && stakeholderErrors.length === 0 && optionErrors.length === 0);
+  const validationExecuted = errors.length > 0 || (scenarioErrors.length === 0 && stakeholderErrors.length === 0 && optionErrors.length === 0);
 
   return (
     <div className="space-y-6">
@@ -68,7 +68,7 @@ export function StepValidation({ errors, state, onValidate }: Props) {
       </div>
 
       {/* Error list */}
-      {hasRun && errors.length === 0 && (
+      {validationExecuted && errors.length === 0 && (
         <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-6 text-center">
           <p className="text-2xl mb-2">✅</p>
           <p className="text-sm font-bold text-emerald-800">
