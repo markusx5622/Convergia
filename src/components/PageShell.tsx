@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { ConvergiaLogo } from './ConvergiaLogo';
 
 const FLOW_STEPS = [
-  { href: '/scenario', label: 'Escenario', step: 1, icon: '🏗️' },
-  { href: '/stakeholders', label: 'Stakeholders', step: 2, icon: '👥' },
-  { href: '/debate', label: 'Debate', step: 3, icon: '⚡' },
-  { href: '/result', label: 'Resultado', step: 4, icon: '🏆' },
+  { href: '/scenario', label: 'Escenario', step: 1 },
+  { href: '/stakeholders', label: 'Stakeholders', step: 2 },
+  { href: '/debate', label: 'Debate', step: 3 },
+  { href: '/result', label: 'Resultado', step: 4 },
 ] as const;
 
 const STEP_GUIDANCE: Record<number, { context: string; hint: string }> = {
@@ -53,17 +54,15 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
   const guidance = STEP_GUIDANCE[activeStep];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-[#f7f8fa]">
       {/* Top Navigation */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-lg font-extrabold text-slate-900 tracking-tight">
-                Convergia
-              </span>
-              <span className="text-[10px] font-medium text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-md">
-                DEMO
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <ConvergiaLogo size="sm" color="dark" />
+              <span className="text-[10px] font-bold text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-2 py-0.5 rounded-md uppercase tracking-wider">
+                Demo
               </span>
             </Link>
             <div className="flex items-center gap-0.5">
@@ -72,8 +71,8 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
                 className={cn(
                   'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
                   pathname === '/'
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900',
+                    ? 'bg-[#111827] text-white'
+                    : 'text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827]',
                 )}
               >
                 Inicio
@@ -85,47 +84,47 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
                   className={cn(
                     'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
                     pathname === item.href
-                      ? 'bg-slate-900 text-white'
-                      : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900',
+                      ? 'bg-[#111827] text-white'
+                      : 'text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827]',
                   )}
                 >
                   {item.label}
                 </Link>
               ))}
-              <span className="mx-2 h-4 w-px bg-slate-200" />
+              <span className="mx-2 h-4 w-px bg-[#e1e4eb]" />
               <Link
                 href="/lab"
                 className={cn(
                   'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
                   pathname === '/lab'
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700',
+                    ? 'bg-[#0d6e6e] text-white'
+                    : 'text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585]',
                 )}
               >
-                🔬 Lab
+                Lab
               </Link>
               <Link
                 href="/report"
                 className={cn(
                   'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
                   pathname === '/report'
-                    ? 'bg-emerald-600 text-white'
-                    : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700',
+                    ? 'bg-[#111827] text-white'
+                    : 'text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827]',
                 )}
               >
-                📄 Informe
+                Informe
               </Link>
-              <span className="mx-2 h-4 w-px bg-slate-200" />
+              <span className="mx-2 h-4 w-px bg-[#e1e4eb]" />
               <Link
                 href="/debug"
                 className={cn(
                   'px-2.5 py-1.5 rounded-md text-xs font-mono transition-colors',
                   pathname === '/debug'
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600',
+                    ? 'bg-[#111827] text-white'
+                    : 'text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578]',
                 )}
               >
-                debug
+                /debug
               </Link>
             </div>
           </div>
@@ -134,7 +133,7 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
 
       {/* Step Progress Bar */}
       {activeStep > 0 && (
-        <div className="bg-white border-b border-slate-100">
+        <div className="bg-white border-b border-[#f0f1f5]">
           <div className="max-w-7xl mx-auto px-6 py-3">
             <div className="flex items-center gap-1">
               {FLOW_STEPS.map((step, i) => {
@@ -147,19 +146,19 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
                       className={cn(
                         'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all',
                         isActive
-                          ? 'bg-slate-900 text-white shadow-sm'
+                          ? 'bg-[#111827] text-white shadow-sm'
                           : isCompleted
-                          ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                          : 'bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-600',
+                          ? 'bg-[#f0fafa] text-[#0d6e6e] hover:bg-[#d0ecec]'
+                          : 'bg-[#f0f1f5] text-[#5b6578]/50 hover:bg-[#e1e4eb] hover:text-[#5b6578]',
                       )}
                     >
                       <span className={cn(
                         'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold',
                         isActive
-                          ? 'bg-white text-slate-900'
+                          ? 'bg-white text-[#111827]'
                           : isCompleted
-                          ? 'bg-emerald-500 text-white'
-                          : 'bg-slate-200 text-slate-500',
+                          ? 'bg-[#0d6e6e] text-white'
+                          : 'bg-[#e1e4eb] text-[#5b6578]',
                       )}>
                         {isCompleted ? '✓' : step.step}
                       </span>
@@ -168,7 +167,7 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
                     {i < FLOW_STEPS.length - 1 && (
                       <div className={cn(
                         'flex-1 h-0.5 mx-2 rounded-full',
-                        step.step < activeStep ? 'bg-emerald-300' : 'bg-slate-200',
+                        step.step < activeStep ? 'bg-[#0d6e6e]/30' : 'bg-[#e1e4eb]',
                       )} />
                     )}
                   </div>
@@ -180,31 +179,31 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
       )}
 
       {/* Page header */}
-      <header className="bg-white border-b border-slate-100">
+      <header className="bg-white border-b border-[#f0f1f5]">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {activeStep > 0 && (
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.15em] mb-2">
               Paso {activeStep} de {FLOW_STEPS.length}
             </p>
           )}
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{title}</h1>
+          <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">{title}</h1>
           {subtitle && (
-            <p className="mt-2 text-slate-500 text-base leading-relaxed max-w-2xl">{subtitle}</p>
+            <p className="mt-2 text-[#5b6578] text-base leading-relaxed max-w-2xl">{subtitle}</p>
           )}
         </div>
       </header>
 
       {/* Demo guidance banner */}
       {guidance && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+        <div className="bg-gradient-to-r from-[#f0fafa] to-[#eef5fb] border-b border-[#d0ecec]/50">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-start gap-3">
-              <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs font-bold mt-0.5">
+              <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#0d6e6e]/10 text-[#0d6e6e] text-xs font-bold mt-0.5">
                 {activeStep}
               </span>
               <div>
-                <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-0.5">{guidance.context}</p>
-                <p className="text-sm text-blue-900/70 leading-relaxed">{guidance.hint}</p>
+                <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-wider mb-0.5">{guidance.context}</p>
+                <p className="text-sm text-[#111827]/60 leading-relaxed">{guidance.hint}</p>
               </div>
             </div>
           </div>
@@ -217,17 +216,20 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white mt-auto">
+      <footer className="border-t border-[#e1e4eb] bg-white mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <p className="text-xs text-slate-400">
-            Convergia · Motor determinista de negociación multi-stakeholder · 2025
-          </p>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-300">
+            <ConvergiaLogo size="sm" variant="symbol" color="brand" />
+            <p className="text-xs text-[#5b6578]">
+              Motor determinista de negociación multi-stakeholder · 2025
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-[#5b6578]/40">
               Resultado reproducible · Explicabilidad total
             </span>
-            <span className="text-slate-200">·</span>
-            <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
+            <span className="text-[#e1e4eb]">·</span>
+            <Link href="/debug" className="text-xs text-[#5b6578]/40 hover:text-[#0d6e6e] font-mono transition-colors">
               /debug
             </Link>
           </div>

@@ -1,16 +1,38 @@
 @import "tailwindcss";
 
+/* ══════════════════════════════════════════════════════
+   CONVERGIA — Brand Design System
+   ══════════════════════════════════════════════════════
+   Personality: Intelligence · Industry · Decision · Convergence
+   Tone: Sophisticated, rigorous, modern, premium
+   ══════════════════════════════════════════════════════ */
+
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --primary: #1e293b;
-  --primary-light: #334155;
-  --accent: #2563eb;
-  --accent-light: #3b82f6;
+  /* Core neutrals */
+  --background: #f7f8fa;
+  --foreground: #0c111d;
+  --primary: #111827;
+  --primary-light: #1f2937;
   --surface: #ffffff;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
+  --muted: #5b6578;
+  --border: #e1e4eb;
+  --border-light: #f0f1f5;
+
+  /* Brand accent — deep teal-blue: intelligence + convergence */
+  --accent: #0d6e6e;
+  --accent-light: #0f8585;
+  --accent-muted: #d0ecec;
+  --accent-bg: #f0fafa;
+
+  /* Secondary accent — warm amber: decision, confidence */
+  --warm: #c87514;
+  --warm-light: #d4922a;
+  --warm-muted: #fef4e5;
+
+  /* Brand gradients */
+  --gradient-brand: linear-gradient(135deg, #0d6e6e 0%, #145a8a 50%, #1e3a5f 100%);
+  --gradient-hero: linear-gradient(160deg, #0c111d 0%, #132032 40%, #0d3d3d 100%);
+  --gradient-surface: linear-gradient(180deg, #f7f8fa 0%, #f0f1f5 100%);
 }
 
 @theme inline {
@@ -20,6 +42,11 @@
   --color-primary-light: var(--primary-light);
   --color-accent: var(--accent);
   --color-accent-light: var(--accent-light);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-bg: var(--accent-bg);
+  --color-warm: var(--warm);
+  --color-warm-light: var(--warm-light);
+  --color-warm-muted: var(--warm-muted);
   --color-surface: var(--surface);
   --color-muted: var(--muted);
   --color-border: var(--border);
@@ -29,7 +56,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Smooth scrolling */
@@ -42,6 +69,25 @@ html {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Brand keyframes */
+@keyframes convergence-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-convergence {
+  animation: convergence-pulse 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float-subtle 4s ease-in-out infinite;
 }
 
 /* ── Print styles for report export ── */

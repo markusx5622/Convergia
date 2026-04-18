@@ -45,19 +45,19 @@ export function ReportView({ data, enrichment }: ReportViewProps) {
   return (
     <div className="report-container max-w-[800px] mx-auto bg-white print:shadow-none print:max-w-none">
       {/* ── Header ── */}
-      <header className="border-b-2 border-slate-900 pb-6 mb-8">
+      <header className="border-b-2 border-[#111827] pb-6 mb-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">
               Informe de Simulación
             </h1>
-            <p className="text-lg text-slate-600 mt-1">
+            <p className="text-lg text-[#5b6578] mt-1">
               {data.companyName} — {data.scenarioName}
             </p>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="text-xs font-bold text-slate-900 tracking-wider uppercase">Convergia</p>
-            <p className="text-xs text-slate-400 mt-0.5">Motor determinista</p>
+            <p className="text-xs font-bold text-[#0d6e6e] tracking-wider uppercase">Convergia</p>
+            <p className="text-xs text-[#5b6578] mt-0.5">Motor determinista</p>
             <p className="text-xs text-slate-400 mt-1 font-mono">
               {new Date(data.generatedAt).toLocaleDateString('es-ES', {
                 year: 'numeric',
@@ -361,10 +361,10 @@ export function ReportView({ data, enrichment }: ReportViewProps) {
       )}
 
       {/* ── Footer ── */}
-      <footer className="border-t-2 border-slate-900 pt-4 mt-12">
-        <div className="flex items-center justify-between text-xs text-slate-400">
+      <footer className="border-t-2 border-[#111827] pt-4 mt-12">
+        <div className="flex items-center justify-between text-xs text-[#5b6578]">
           <div>
-            <p className="font-bold text-slate-600">Convergia</p>
+            <p className="font-bold text-[#0d6e6e]">Convergia</p>
             <p>Motor determinista de negociación multi-stakeholder</p>
             {enrichment?.source === 'ai' && (
               <p className="text-violet-500 mt-1">
@@ -388,8 +388,8 @@ export function ReportView({ data, enrichment }: ReportViewProps) {
 
 function SectionHeading({ number, title }: { number: number; title: string }) {
   return (
-    <h2 className="flex items-center gap-3 text-lg font-extrabold text-slate-900 tracking-tight mb-4 pb-2 border-b border-slate-200">
-      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">
+    <h2 className="flex items-center gap-3 text-lg font-extrabold text-[#111827] tracking-tight mb-4 pb-2 border-b border-[#e1e4eb]">
+      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#0d6e6e] text-white flex items-center justify-center text-xs font-bold">
         {number}
       </span>
       {title}
