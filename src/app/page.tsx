@@ -120,7 +120,7 @@ export default function Home() {
           {/* Hero content */}
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8">
-              <span className="w-2 h-2 rounded-full bg-[#0d6e6e] animate-convergence" />
+              <span className="w-2 h-2 rounded-full bg-[#0d6e6e] animate-convergence" aria-hidden="true" />
               <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
                 Motor determinista de negociación
               </span>
