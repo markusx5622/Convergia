@@ -128,7 +128,7 @@ export default function Home() {
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.05]">
               Decisiones complejas,{' '}
-              <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(135deg, #5eead4, #0d9488)' }}>
+              <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'var(--gradient-text-accent)' }}>
                 lógica transparente
               </span>
             </h1>

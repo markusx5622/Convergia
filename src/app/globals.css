@@ -33,6 +33,7 @@
   --gradient-brand: linear-gradient(135deg, #0d6e6e 0%, #145a8a 50%, #1e3a5f 100%);
   --gradient-hero: linear-gradient(160deg, #0c111d 0%, #132032 40%, #0d3d3d 100%);
   --gradient-surface: linear-gradient(180deg, #f7f8fa 0%, #f0f1f5 100%);
+  --gradient-text-accent: linear-gradient(135deg, #5eead4, #0d9488);
 }
 
 @theme inline {
@@ -56,7 +57,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-inter), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Smooth scrolling */
