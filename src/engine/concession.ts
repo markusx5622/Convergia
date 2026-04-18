@@ -1,5 +1,8 @@
 import { Stakeholder, Concession, VARIABLE_IDS, VariableId } from './types';
 
+/** Multiplier applied when majority pressure exists (≥ 3 stakeholders share the same top option). */
+const MAJORITY_PRESSURE_FACTOR = 1.5;
+
 /**
  * Gap between a stakeholder's score for their preferred option and the global winner.
  * Returns 0 when preferred === global winner.
@@ -44,7 +47,7 @@ export function shouldConcede(
   majorityPressure: boolean,
 ): boolean {
   const effectiveThreshold = majorityPressure
-    ? concessionThreshold / 1.5
+    ? concessionThreshold / MAJORITY_PRESSURE_FACTOR
     : concessionThreshold;
   return gap > effectiveThreshold;
 }
@@ -104,7 +107,7 @@ export function processConcessions(
       preferredId !== globalWinnerId &&
       shouldConcede(gap, s.concessionThreshold, pressure)
     ) {
-      const effectiveRate = Math.min(pressure ? s.concessionRate * 1.5 : s.concessionRate, 1);
+      const effectiveRate = Math.min(pressure ? s.concessionRate * MAJORITY_PRESSURE_FACTOR : s.concessionRate, 1);
       const newWeights = adjustWeights(s, stakeholders, effectiveRate);
 
       concessions.push({
@@ -113,7 +116,7 @@ export function processConcessions(
         toOptionId: globalWinnerId,
         gap: Math.round(gap * 1000) / 1000,
         reason: pressure
-          ? `Gap ${gap.toFixed(3)} > umbral ajustado ${(s.concessionThreshold / 1.5).toFixed(3)} (presión de mayoría ×1.5)`
+          ? `Gap ${gap.toFixed(3)} > umbral ajustado ${(s.concessionThreshold / MAJORITY_PRESSURE_FACTOR).toFixed(3)} (presión de mayoría ×${MAJORITY_PRESSURE_FACTOR})`
           : `Gap ${gap.toFixed(3)} > umbral ${s.concessionThreshold}`,
       });
 

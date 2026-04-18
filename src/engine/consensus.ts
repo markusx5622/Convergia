@@ -57,9 +57,11 @@ export function calculateConsensusScore(
   let sum = 0;
   for (const sid of sids) {
     const ranking = rankings[sid];
-    const rank = ranking.indexOf(globalWinnerId);
+    const rawRank = ranking.indexOf(globalWinnerId);
+    // If the winner is absent from this ranking (shouldn't happen), treat as last place
+    const rank = rawRank === -1 ? ranking.length - 1 : rawRank;
     const maxRank = ranking.length - 1;
-    sum += maxRank > 0 ? (maxRank - (rank === -1 ? maxRank : rank)) / maxRank : 1;
+    sum += maxRank > 0 ? (maxRank - rank) / maxRank : 1;
   }
   return Math.round((sum / sids.length) * 1000) / 1000;
 }

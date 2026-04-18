@@ -21,6 +21,7 @@ export function pairwiseConflict(rankingA: string[], rankingB: string[]): number
 
   let sum = 0;
   for (const id of rankingA) {
+    // If an option is absent from rankingB, treat it as ranked last (n − 1)
     sum += Math.abs(posA[id] - (posB[id] ?? n - 1));
   }
 
