@@ -31,7 +31,7 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
     >
       {/* Header */}
       <div className="flex items-start gap-3 mb-4">
-        <span className="text-3xl" role="img" aria-label={stakeholder.name}>{colors.icon}</span>
+        <span className="text-3xl" aria-hidden="true">{colors.icon}</span>
         <div className="flex-1 min-w-0">
           <h3 className={cn('text-lg font-bold', colors.accent)}>{stakeholder.name}</h3>
           <p className="text-sm text-slate-500">{stakeholder.role}</p>
