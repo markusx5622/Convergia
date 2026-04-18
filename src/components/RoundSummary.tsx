@@ -1,4 +1,6 @@
 import type { RoundResult, Stakeholder, InvestmentOption } from '@/engine/types';
+import { buildRoundNarrative } from '@/engine/narrative';
+import { RoundNarrativeCard } from './RoundNarrative';
 import { ScoreTable } from './ScoreTable';
 import { RankingGrid } from './RankingList';
 import { ConflictMatrix } from './ConflictMatrix';
@@ -7,6 +9,7 @@ import { ConcessionList } from './ConcessionList';
 
 interface RoundSummaryProps {
   round: RoundResult;
+  allRounds: RoundResult[];
   stakeholders: Stakeholder[];
   options: InvestmentOption[];
   optionNames: Record<string, string>;
@@ -27,6 +30,7 @@ function SectionTitle({ icon, title, description }: { icon: string; title: strin
 
 export function RoundSummary({
   round,
+  allRounds,
   stakeholders,
   options,
   optionNames,
@@ -36,8 +40,26 @@ export function RoundSummary({
     ([, a], [, b]) => b - a,
   )[0]?.[0] ?? '';
 
+  const roundIndex = allRounds.findIndex((r) => r.round === round.round);
+
+  const narrative = buildRoundNarrative(
+    round,
+    roundIndex >= 0 ? roundIndex : 0,
+    allRounds,
+    stakeholders,
+    optionNames,
+    stakeholderNames,
+  );
+
   return (
     <div className="space-y-8">
+      {/* Round narrative */}
+      <RoundNarrativeCard
+        narrative={narrative}
+        optionNames={optionNames}
+        stakeholderNames={stakeholderNames}
+      />
+
       {/* Scores */}
       <section>
         <SectionTitle icon="📊" title="Puntuaciones" description="Score ponderado de cada stakeholder por opción" />

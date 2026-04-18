@@ -1,6 +1,9 @@
 import { cn } from '@/lib/utils';
 import type { SimulationResult, Stakeholder, InvestmentOption } from '@/engine/types';
 import { isAcceptableFor } from '@/engine/consensus';
+import { buildResultNarrative } from '@/engine/narrative';
+import { ResultExplanation } from './ResultExplanation';
+import { DiscardedOptions } from './DiscardedOptions';
 
 const STATUS_LABEL: Record<string, string> = {
   full: 'Consenso total',
@@ -39,10 +42,6 @@ export function ResultSummary({
     r.concessions.map((c) => ({ ...c, round: r.round })),
   );
 
-  // Eliminated options
-  const eliminatedIds = rounds[0]?.eliminatedOptionIds ?? [];
-  const eliminatedOptions = options.filter((o) => eliminatedIds.includes(o.id));
-
   // Vetoes from round 1
   const vetoes = rounds[0]?.vetoes ?? [];
 
@@ -50,6 +49,15 @@ export function ResultSummary({
   const acceptCount = finalOption
     ? stakeholders.filter((s) => isAcceptableFor(s, finalScores[s.id] ?? {}, finalOption.id)).length
     : 0;
+
+  // Build deterministic narrative
+  const narrative = buildResultNarrative(
+    simulation,
+    stakeholders,
+    options,
+    optionNames,
+    stakeholderNames,
+  );
 
   return (
     <div className="space-y-6">
@@ -87,14 +95,15 @@ export function ResultSummary({
         </div>
       )}
 
-      {/* Explanation */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-base">💡</span>
-          <h3 className="font-bold text-slate-900">Explicación del resultado</h3>
-        </div>
-        <p className="text-slate-700 leading-relaxed">{simulation.explanation}</p>
-      </div>
+      {/* Rich explanatory narrative */}
+      <ResultExplanation
+        narrative={narrative}
+        stakeholderNames={stakeholderNames}
+        optionNames={optionNames}
+      />
+
+      {/* Discarded options with reasons */}
+      <DiscardedOptions discardedOptions={narrative.discardedOptions} />
 
       {/* Final breakdown per stakeholder */}
       <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
@@ -203,12 +212,6 @@ export function ResultSummary({
               </li>
             ))}
           </ul>
-          {eliminatedOptions.length > 0 && (
-            <div className="mt-3 p-4 rounded-xl bg-red-100 text-red-800 text-sm font-bold flex items-center gap-2">
-              <span>❌</span>
-              Opciones eliminadas: {eliminatedOptions.map((o) => o.name).join(', ')}
-            </div>
-          )}
         </div>
       )}
     </div>

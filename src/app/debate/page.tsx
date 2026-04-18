@@ -138,6 +138,7 @@ export default function DebatePage() {
             </div>
             <RoundSummary
               round={currentRound}
+              allRounds={sim.rounds}
               stakeholders={stakeholders}
               options={investmentOptions.filter(
                 (o) => !currentRound.eliminatedOptionIds.includes(o.id),
