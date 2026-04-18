@@ -13,7 +13,7 @@ interface Props {
 
 export function StepScenario({ scenario, onUpdate, onAddKPI, onUpdateKPI, onRemoveKPI }: Props) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Info banner */}
       <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
         <div className="flex items-start gap-3">
@@ -78,16 +78,22 @@ export function StepScenario({ scenario, onUpdate, onAddKPI, onUpdateKPI, onRemo
           </div>
           <button
             onClick={onAddKPI}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0d6e6e] text-white rounded-lg text-xs font-semibold hover:bg-[#0f8585] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0d6e6e] text-white rounded-lg text-xs font-semibold hover:bg-[#0f8585] transition-all duration-200 hover:shadow-sm"
           >
             + Añadir KPI
           </button>
         </div>
 
         {scenario.kpis.length === 0 ? (
-          <p className="text-xs text-slate-400 italic py-4 text-center">
-            Ningún KPI definido. Puedes añadir indicadores como OEE, tasa de defectos, etc.
-          </p>
+          <div className="py-6 text-center animate-fade-in">
+            <span className="text-2xl block mb-2">📊</span>
+            <p className="text-xs text-slate-500 font-medium">
+              Ningún KPI definido.
+            </p>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Puedes añadir indicadores como OEE, tasa de defectos, etc.
+            </p>
+          </div>
         ) : (
           <div className="space-y-3">
             {scenario.kpis.map((kpi, i) => (

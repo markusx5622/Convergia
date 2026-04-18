@@ -63,7 +63,7 @@ export function StepPreview({ state }: Props) {
   const engineOptions = buildOptions(state);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Info banner */}
       <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
         <div className="flex items-start gap-3">
@@ -80,8 +80,8 @@ export function StepPreview({ state }: Props) {
       </div>
 
       {/* Scenario summary */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-slate-900 mb-1">{state.scenario.name}</h2>
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm card-interactive">
+        <h2 className="text-lg font-bold text-[#111827] mb-1">{state.scenario.name}</h2>
         <p className="text-sm text-slate-500 mb-3">{state.scenario.company}</p>
         <div className="flex items-center gap-4 text-xs text-slate-500">
           <span>
@@ -104,7 +104,7 @@ export function StepPreview({ state }: Props) {
 
       {/* Winner */}
       {winner ? (
-        <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-6">
+        <div className="bg-gradient-to-r from-emerald-50 to-[#f0fafa] rounded-xl border border-emerald-200 p-6 animate-scale-in">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">🏆</span>
             <div>
@@ -179,7 +179,7 @@ export function StepPreview({ state }: Props) {
                   <div className="w-40 bg-slate-200 rounded-full h-2 overflow-hidden">
                     <div
                       className={cn(
-                        'h-full rounded-full transition-all',
+                        'h-full rounded-full animate-progress',
                         isWinner ? 'bg-emerald-500' : 'bg-slate-400',
                       )}
                       style={{ width: `${(score / maxScore) * 100}%` }}
@@ -214,7 +214,7 @@ export function StepPreview({ state }: Props) {
             </thead>
             <tbody>
               {engineOptions.map((o) => (
-                <tr key={o.id} className="border-b border-slate-100 last:border-0">
+                <tr key={o.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors duration-150">
                   <td className="py-2 px-2 font-medium text-slate-900">{o.name}</td>
                   {engineStakeholders.map((s) => (
                     <td key={s.id} className="py-2 px-2 text-right font-mono text-slate-600">
@@ -280,7 +280,7 @@ export function StepPreview({ state }: Props) {
       {/* Rounds detail */}
       <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
         <h3 className="text-sm font-bold text-slate-900 mb-4">Evolución por rondas</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 stagger-children">
           {result.rounds.map((round) => {
             const roundWinnerId = Object.entries(round.globalScores).sort(
               ([, a], [, b]) => b - a,
@@ -289,7 +289,7 @@ export function StepPreview({ state }: Props) {
             return (
               <div
                 key={round.round}
-                className="bg-slate-50 rounded-lg border border-slate-200 p-4"
+                className="bg-slate-50 rounded-lg border border-slate-200 p-4 card-interactive"
               >
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Ronda {round.round}
@@ -309,7 +309,7 @@ export function StepPreview({ state }: Props) {
       </div>
 
       {/* Explanation */}
-      <div className="bg-slate-900 rounded-xl p-6 shadow-lg">
+      <div className="bg-gradient-to-r from-[#111827] to-[#0d3d3d] rounded-xl p-6 shadow-lg animate-fade-in-up">
         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
           Explicación final
         </p>

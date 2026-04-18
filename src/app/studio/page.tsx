@@ -148,11 +148,11 @@ export default function StudioPage() {
                   <button
                     onClick={() => store.setStep(s.id)}
                     className={cn(
-                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all',
+                      'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200',
                       isActive
-                        ? 'bg-[#111827] text-white shadow-sm'
+                        ? 'bg-[#111827] text-white shadow-md'
                         : isCompleted
-                        ? 'bg-[#f0fafa] text-[#0d6e6e] hover:bg-[#d0ecec]'
+                        ? 'bg-[#f0fafa] text-[#0d6e6e] hover:bg-[#d0ecec] hover:shadow-sm'
                         : 'bg-[#f0f1f5] text-[#5b6578]/50 hover:bg-[#e1e4eb] hover:text-[#5b6578]',
                     )}
                   >

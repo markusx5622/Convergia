@@ -30,7 +30,7 @@ export function StepStakeholders({
   const [expandedIdx, setExpandedIdx] = useState<number | null>(0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Info banner */}
       <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
         <div className="flex items-start gap-3">
@@ -63,7 +63,7 @@ export function StepStakeholders({
               {/* Header */}
               <button
                 onClick={() => setExpandedIdx(isExpanded ? null : i)}
-                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-colors text-left"
+                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-all duration-200 text-left"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
@@ -93,7 +93,7 @@ export function StepStakeholders({
 
               {/* Expanded content */}
               {isExpanded && (
-                <div className="border-t border-slate-100 px-5 py-5 space-y-5">
+                <div className="border-t border-slate-100 px-5 py-5 space-y-5 animate-fade-in">
                   {/* Name + Role */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -305,7 +305,7 @@ export function StepStakeholders({
       {/* Add button */}
       <button
         onClick={onAdd}
-        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all"
+        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all duration-200"
       >
         + Añadir stakeholder
       </button>
@@ -338,7 +338,7 @@ function NumericField({
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-right font-mono text-slate-900 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
       />
-      {hint && <p className="text-[10px] text-slate-400 mt-0.5">{hint}</p>}
+      {hint && <p className="text-[10px] text-slate-400 mt-1">{hint}</p>}
     </div>
   );
 }
