@@ -367,7 +367,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {/* Demo guiada */}
-          <div className="rounded-2xl p-7 border border-[#e1e4eb] bg-white shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-2xl p-7 border border-slate-200 bg-slate-50/30 shadow-sm hover:shadow-md transition-shadow">
             <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#111827] bg-slate-100 border border-slate-200 px-3 py-1 rounded-md mb-5">
               🎯 DEMO GUIADA
             </span>
