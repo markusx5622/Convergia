@@ -11,7 +11,7 @@ interface ScenarioSelectorProps {
 
 export function ScenarioSelector({ bundles, activeId, onSelect }: ScenarioSelectorProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 stagger-children">
       {bundles.map((b) => {
         const isActive = b.id === activeId;
         return (
@@ -19,10 +19,10 @@ export function ScenarioSelector({ bundles, activeId, onSelect }: ScenarioSelect
             key={b.id}
             onClick={() => onSelect(b.id)}
             className={cn(
-              'text-left rounded-xl border-2 p-5 transition-all',
+              'text-left rounded-xl border-2 p-5 transition-all duration-200',
               isActive
                 ? 'border-[#0d6e6e] bg-[#111827] text-white shadow-lg scale-[1.02]'
-                : 'border-[#e1e4eb] bg-white text-[#5b6578] hover:border-[#0d6e6e]/40 hover:shadow-md',
+                : 'border-[#e1e4eb] bg-white text-[#5b6578] hover:border-[#0d6e6e]/40 hover:shadow-md hover:-translate-y-0.5',
             )}
           >
             <div className="flex items-center gap-3 mb-2">
@@ -42,19 +42,19 @@ export function ScenarioSelector({ bundles, activeId, onSelect }: ScenarioSelect
             </p>
             <div className="mt-3 flex items-center gap-2">
               <span className={cn(
-                'text-xs font-mono px-2 py-0.5 rounded-md',
+                'text-xs font-mono px-2 py-0.5 rounded-md transition-colors duration-200',
                 isActive ? 'bg-white/15 text-white' : 'bg-slate-100 text-slate-500',
               )}>
                 {(b.scenario.budget / 1000).toFixed(0)}k€
               </span>
               <span className={cn(
-                'text-xs font-mono px-2 py-0.5 rounded-md',
+                'text-xs font-mono px-2 py-0.5 rounded-md transition-colors duration-200',
                 isActive ? 'bg-white/15 text-white' : 'bg-slate-100 text-slate-500',
               )}>
                 {b.options.length} opciones
               </span>
               <span className={cn(
-                'text-xs font-mono px-2 py-0.5 rounded-md',
+                'text-xs font-mono px-2 py-0.5 rounded-md transition-colors duration-200',
                 isActive ? 'bg-white/15 text-white' : 'bg-slate-100 text-slate-500',
               )}>
                 {b.stakeholders.length} stakeholders
