@@ -1,10 +1,5 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function DebatePage() {
-  const router = useRouter();
-  useEffect(() => { router.replace('/demo'); }, [router]);
-  return null;
+  redirect('/demo');
 }
