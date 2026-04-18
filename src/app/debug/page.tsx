@@ -269,25 +269,44 @@ export default function DebugPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         <header className="mb-8">
-          <h1 className="text-2xl font-extrabold text-[#111827] tracking-tight">Verificación técnica</h1>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-2xl font-extrabold text-[#111827] tracking-tight">Verificación técnica</h1>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#0d6e6e] text-white">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+              Modo técnico canónico
+            </span>
+          </div>
           <p className="text-[#5b6578] text-sm mt-1">
-            Escenario: {sim.scenario.name} · {sim.rounds.length} rondas · Motor determinista · Resultado reproducible
+            Caso de referencia: {sim.scenario.name} · {sim.rounds.length} rondas · Motor determinista · Resultado reproducible
           </p>
         </header>
 
-        {/* Verification callout */}
+        {/* Canonical baseline callout */}
         <div className="rounded-xl p-5 mb-10 text-white" style={{ background: 'var(--gradient-hero)' }}>
           <div className="flex items-start gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#0d6e6e] flex items-center justify-center text-sm font-bold">✓</span>
             <div>
-              <p className="text-sm font-bold mb-1">Resultado reproducible</p>
+              <p className="text-sm font-bold mb-1">Baseline técnico del motor — Caso de referencia MetalWorks S.A.</p>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Esta página expone los datos internos completos del motor determinista. Mismos datos de entrada producen siempre el mismo resultado.
-                Los scores, rankings, vetos, concesiones y métricas de consenso que ves aquí son exactamente los que alimentan las narrativas y visualizaciones de la demo.
+                Esta vista está anclada al escenario canónico de referencia <strong className="text-white">MetalWorks S.A.</strong> y no
+                sigue el escenario activo de Demo, Lab o Studio. Su función es validar la reproducibilidad y corrección del motor
+                determinista: mismos datos de entrada producen siempre el mismo resultado. Los scores, rankings, vetos, concesiones y
+                métricas de consenso que ves aquí son exactamente los que alimentan las narrativas y visualizaciones del producto.
                 No hay aleatoriedad ni llamadas externas — todo es calculado localmente en el navegador.
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Technical reference notice */}
+        <div className="flex items-center gap-2 mb-8 px-4 py-2.5 rounded-lg border border-[#d0ecec] bg-[#f0fafa]">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#0d6e6e] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+          </svg>
+          <p className="text-xs text-[#0d6e6e] leading-snug">
+            <strong>Vista canónica fija.</strong> Los datos de esta página no cambian al seleccionar otros escenarios en el producto.
+            Sirve como baseline de verificación y defensa técnica del motor.
+          </p>
         </div>
 
         {/* ── Vetoes ── */}
