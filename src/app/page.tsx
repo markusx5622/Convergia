@@ -103,6 +103,12 @@ export default function Home() {
                 Lab
               </Link>
               <Link
+                href="/studio"
+                className="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors"
+              >
+                Studio
+              </Link>
+              <Link
                 href="/report"
                 className="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors"
               >
@@ -153,6 +159,12 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-6 py-4 border border-white/15 text-white/70 rounded-xl text-base font-medium hover:border-white/30 hover:text-white transition-all"
               >
                 Abrir laboratorio
+              </Link>
+              <Link
+                href="/studio"
+                className="inline-flex items-center gap-2 px-6 py-4 border border-[#0d6e6e]/40 text-[#0d6e6e] bg-[#0d6e6e]/10 rounded-xl text-base font-medium hover:border-[#0d6e6e]/60 hover:bg-[#0d6e6e]/20 hover:text-white transition-all"
+              >
+                🛠 Crear escenario
               </Link>
             </div>
           </div>
