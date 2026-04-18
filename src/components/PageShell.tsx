@@ -4,55 +4,82 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
-const NAV_ITEMS = [
-  { href: '/', label: 'Inicio' },
-  { href: '/scenario', label: 'Escenario' },
-  { href: '/stakeholders', label: 'Stakeholders' },
-  { href: '/debate', label: 'Debate' },
-  { href: '/result', label: 'Resultado' },
+const FLOW_STEPS = [
+  { href: '/scenario', label: 'Escenario', step: 1, icon: '🏗️' },
+  { href: '/stakeholders', label: 'Stakeholders', step: 2, icon: '👥' },
+  { href: '/debate', label: 'Debate', step: 3, icon: '⚡' },
+  { href: '/result', label: 'Resultado', step: 4, icon: '🏆' },
 ] as const;
 
 interface PageShellProps {
   children: React.ReactNode;
   title: string;
   subtitle?: string;
+  currentStep?: number;
 }
 
-export function PageShell({ children, title, subtitle }: PageShellProps) {
+function getStepFromPath(pathname: string): number {
+  const stepMap: Record<string, number> = {
+    '/scenario': 1,
+    '/stakeholders': 2,
+    '/debate': 3,
+    '/result': 4,
+  };
+  return stepMap[pathname] ?? 0;
+}
+
+export function PageShell({ children, title, subtitle, currentStep }: PageShellProps) {
   const pathname = usePathname();
+  const activeStep = currentStep ?? getStepFromPath(pathname);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f8fafc]">
+      {/* Top Navigation */}
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="text-xl font-bold text-gray-900 tracking-tight">
-              Convergia
+          <div className="flex items-center justify-between h-14">
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="text-lg font-extrabold text-slate-900 tracking-tight">
+                Convergia
+              </span>
+              <span className="text-[10px] font-medium text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-md">
+                DEMO
+              </span>
             </Link>
-            <div className="flex items-center gap-1">
-              {NAV_ITEMS.map((item) => (
+            <div className="flex items-center gap-0.5">
+              <Link
+                href="/"
+                className={cn(
+                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  pathname === '/'
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900',
+                )}
+              >
+                Inicio
+              </Link>
+              {FLOW_STEPS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                    'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
                     pathname === item.href
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
+                      ? 'bg-slate-900 text-white'
+                      : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900',
                   )}
                 >
                   {item.label}
                 </Link>
               ))}
-              <span className="mx-2 h-5 w-px bg-gray-200" />
+              <span className="mx-2 h-4 w-px bg-slate-200" />
               <Link
                 href="/debug"
                 className={cn(
-                  'px-3 py-2 rounded-md text-xs font-mono transition-colors',
+                  'px-2.5 py-1.5 rounded-md text-xs font-mono transition-colors',
                   pathname === '/debug'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600',
                 )}
               >
                 debug
@@ -62,12 +89,64 @@ export function PageShell({ children, title, subtitle }: PageShellProps) {
         </div>
       </nav>
 
+      {/* Step Progress Bar */}
+      {activeStep > 0 && (
+        <div className="bg-white border-b border-slate-100">
+          <div className="max-w-7xl mx-auto px-6 py-3">
+            <div className="flex items-center gap-1">
+              {FLOW_STEPS.map((step, i) => {
+                const isActive = step.step === activeStep;
+                const isCompleted = step.step < activeStep;
+                return (
+                  <div key={step.step} className="flex items-center flex-1">
+                    <Link
+                      href={step.href}
+                      className={cn(
+                        'flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all',
+                        isActive
+                          ? 'bg-slate-900 text-white shadow-sm'
+                          : isCompleted
+                          ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                          : 'bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-600',
+                      )}
+                    >
+                      <span className={cn(
+                        'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold',
+                        isActive
+                          ? 'bg-white text-slate-900'
+                          : isCompleted
+                          ? 'bg-emerald-500 text-white'
+                          : 'bg-slate-200 text-slate-500',
+                      )}>
+                        {isCompleted ? '✓' : step.step}
+                      </span>
+                      <span className="hidden sm:inline">{step.label}</span>
+                    </Link>
+                    {i < FLOW_STEPS.length - 1 && (
+                      <div className={cn(
+                        'flex-1 h-0.5 mx-2 rounded-full',
+                        step.step < activeStep ? 'bg-emerald-300' : 'bg-slate-200',
+                      )} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Page header */}
-      <header className="bg-white border-b border-gray-100">
+      <header className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
+          {activeStep > 0 && (
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+              Paso {activeStep} de {FLOW_STEPS.length}
+            </p>
+          )}
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">{title}</h1>
           {subtitle && (
-            <p className="mt-2 text-gray-500 text-lg">{subtitle}</p>
+            <p className="mt-2 text-slate-500 text-base leading-relaxed max-w-2xl">{subtitle}</p>
           )}
         </div>
       </header>
@@ -76,6 +155,18 @@ export function PageShell({ children, title, subtitle }: PageShellProps) {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {children}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-white mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <p className="text-xs text-slate-400">
+            Convergia · Motor determinista de negociación multi-stakeholder
+          </p>
+          <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
+            debug →
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }

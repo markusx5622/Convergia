@@ -10,7 +10,7 @@ const STAKEHOLDER_COLORS: Record<string, { bg: string; border: string; accent: s
   sustainability: { bg: 'bg-green-50', border: 'border-green-200', accent: 'text-green-700', icon: '🌱' },
 };
 
-const DEFAULT_COLOR = { bg: 'bg-gray-50', border: 'border-gray-200', accent: 'text-gray-700', icon: '👤' };
+const DEFAULT_COLOR = { bg: 'bg-slate-50', border: 'border-slate-200', accent: 'text-slate-700', icon: '👤' };
 
 interface StakeholderCardProps {
   stakeholder: Stakeholder;
@@ -24,7 +24,7 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
   return (
     <div
       className={cn(
-        'rounded-xl border-2 p-6 transition-shadow hover:shadow-md',
+        'rounded-xl border-2 p-6 transition-all hover:shadow-md shadow-sm',
         colors.bg,
         colors.border,
         className,
@@ -33,20 +33,20 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
       {/* Header */}
       <div className="flex items-start gap-3 mb-4">
         <span className="text-3xl">{colors.icon}</span>
-        <div>
+        <div className="flex-1 min-w-0">
           <h3 className={cn('text-lg font-bold', colors.accent)}>{stakeholder.name}</h3>
-          <p className="text-sm text-gray-500">{stakeholder.role}</p>
+          <p className="text-sm text-slate-500">{stakeholder.role}</p>
         </div>
       </div>
 
       {/* Mission */}
-      <p className="text-sm text-gray-700 mb-4 leading-relaxed">{stakeholder.mission}</p>
+      <p className="text-sm text-slate-700 mb-4 leading-relaxed">{stakeholder.mission}</p>
 
       {!compact && (
         <>
           {/* Priorities */}
           <div className="mb-4">
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Prioridades</h4>
+            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Prioridades</h4>
             <div className="flex flex-wrap gap-1.5">
               {stakeholder.priorities.map((p) => (
                 <span
@@ -67,13 +67,13 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
 
           {/* Style */}
           <div className="mb-4">
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Estilo</h4>
-            <p className="text-xs text-gray-600 italic">&ldquo;{stakeholder.style.argumentative}&rdquo;</p>
+            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Estilo de negociación</h4>
+            <p className="text-xs text-slate-600 italic leading-relaxed">&ldquo;{stakeholder.style.argumentative}&rdquo;</p>
           </div>
 
           {/* Weights */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Pesos</h4>
+            <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Pesos por variable</h4>
             <div className="space-y-1.5">
               {(Object.entries(stakeholder.weights) as [VariableId, number][]).map(([v, w]) => (
                 <WeightsBar key={v} label={VARIABLE_LABELS[v]} value={w} />
@@ -83,11 +83,16 @@ export function StakeholderCard({ stakeholder, compact = false, className }: Sta
 
           {/* Red lines */}
           {stakeholder.redLines.length > 0 && (
-            <div className="mt-4 pt-3 border-t border-gray-200">
-              <h4 className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2">🚫 Líneas rojas</h4>
+            <div className="mt-4 pt-3 border-t border-slate-200/60">
+              <h4 className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+                🚫 Líneas rojas
+                <span className="ml-1 px-1.5 py-0.5 bg-red-100 text-red-600 rounded-full text-[10px] font-bold">
+                  {stakeholder.redLines.length}
+                </span>
+              </h4>
               <ul className="space-y-1">
                 {stakeholder.redLines.map((rl, i) => (
-                  <li key={i} className="text-xs text-red-600">{rl.description}</li>
+                  <li key={i} className="text-xs text-red-600 leading-relaxed">{rl.description}</li>
                 ))}
               </ul>
             </div>
