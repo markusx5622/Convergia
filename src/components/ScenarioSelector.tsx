@@ -21,8 +21,8 @@ export function ScenarioSelector({ bundles, activeId, onSelect }: ScenarioSelect
             className={cn(
               'text-left rounded-xl border-2 p-5 transition-all',
               isActive
-                ? 'border-slate-900 bg-slate-900 text-white shadow-lg scale-[1.02]'
-                : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400 hover:shadow-md',
+                ? 'border-[#0d6e6e] bg-[#111827] text-white shadow-lg scale-[1.02]'
+                : 'border-[#e1e4eb] bg-white text-[#5b6578] hover:border-[#0d6e6e]/40 hover:shadow-md',
             )}
           >
             <div className="flex items-center gap-3 mb-2">

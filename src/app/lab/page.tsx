@@ -99,59 +99,59 @@ export default function LabPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-[#f7f8fa]">
       {/* Header */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-slate-900 tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
               Convergia
             </Link>
-            <span className="text-[10px] font-mono font-medium text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded-md border border-indigo-200">
-              LAB
+            <span className="text-[10px] font-mono font-bold text-[#0d6e6e] bg-[#f0fafa] px-2 py-0.5 rounded-md border border-[#d0ecec] uppercase tracking-wider">
+              Lab
             </span>
           </div>
           <div className="flex items-center gap-2">
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
               Inicio
             </Link>
             <Link
               href="/scenario"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
               Demo
             </Link>
             <Link
               href="/debug"
-              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-colors"
             >
-              debug
+              /debug
             </Link>
             <Link
               href="/report"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
-              📄 Informe
+              Informe
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Page header */}
-      <header className="bg-white border-b border-slate-100">
+      <header className="bg-white border-b border-[#f0f1f5]">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <p className="text-xs font-semibold text-indigo-500 uppercase tracking-widest mb-2">
+              <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.15em] mb-2">
                 Laboratorio de análisis
               </p>
-              <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">
                 Explorador de escenarios
               </h1>
-              <p className="mt-2 text-slate-500 text-base leading-relaxed max-w-2xl">
+              <p className="mt-2 text-[#5b6578] text-base leading-relaxed max-w-2xl">
                 Selecciona un escenario, ajusta los pesos de los stakeholders y explora cómo cambia
                 la decisión final. Todo sigue siendo determinista — cada configuración produce
                 exactamente un resultado.
@@ -178,7 +178,7 @@ export default function LabPage() {
       </header>
 
       {/* Active scenario indicator */}
-      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-indigo-100">
+      <div className="bg-gradient-to-r from-[#f0fafa] to-[#eef5fb] border-b border-[#d0ecec]/50">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-4 flex-wrap">
           <span className="text-xl">{bundle.icon}</span>
           <div className="flex-1">
@@ -274,12 +274,12 @@ export default function LabPage() {
         {/* Weights tab */}
         {activeTab === 'weights' && (
           <div className="space-y-6">
-            <div className="bg-indigo-50 rounded-xl border border-indigo-200 p-5">
+            <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
               <div className="flex items-start gap-3">
                 <span className="text-xl">⚖️</span>
                 <div>
-                  <p className="text-sm font-bold text-indigo-900 mb-1">Ajuste de pesos por stakeholder</p>
-                  <p className="text-xs text-indigo-700 leading-relaxed">
+                  <p className="text-sm font-bold text-[#111827] mb-1">Ajuste de pesos por stakeholder</p>
+                  <p className="text-xs text-[#5b6578] leading-relaxed">
                     Mueve los sliders para explorar cómo cambia el resultado al dar más peso a un stakeholder u otro.
                     Los pesos siempre suman 100% — al mover uno, los demás se reajustan proporcionalmente.
                     El resultado se recalcula de forma determinista en cada cambio.
@@ -298,12 +298,12 @@ export default function LabPage() {
         {/* Results tab */}
         {activeTab === 'results' && (
           <div className="space-y-6">
-            <div className="bg-indigo-50 rounded-xl border border-indigo-200 p-5">
+            <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
               <div className="flex items-start gap-3">
                 <span className="text-xl">📊</span>
                 <div>
-                  <p className="text-sm font-bold text-indigo-900 mb-1">Comparación base vs ajustado</p>
-                  <p className="text-xs text-indigo-700 leading-relaxed">
+                  <p className="text-sm font-bold text-[#111827] mb-1">Comparación base vs ajustado</p>
+                  <p className="text-xs text-[#5b6578] leading-relaxed">
                     El resultado &quot;base&quot; usa los pesos canónicos del escenario. El resultado &quot;ajustado&quot; usa
                     los pesos que has configurado en la pestaña anterior. Ambos son deterministas.
                   </p>
@@ -320,9 +320,9 @@ export default function LabPage() {
             <div className="flex justify-end pt-2">
               <Link
                 href="/report"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700 transition-all shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
               >
-                📄 Exportar informe
+                Exportar informe →
               </Link>
             </div>
           </div>
@@ -330,13 +330,13 @@ export default function LabPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white mt-auto">
+      <footer className="border-t border-[#e1e4eb] bg-white mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#5b6578]">
             Convergia Lab · Explorador de escenarios · Motor determinista · 2025
           </p>
           <div className="flex items-center gap-3">
-            <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
+            <Link href="/debug" className="text-xs text-[#5b6578]/50 hover:text-[#0d6e6e] font-mono transition-colors">
               /debug
             </Link>
           </div>
