@@ -28,7 +28,7 @@ import {
 function tryParseJsonArray<T>(raw: string): T[] {
   try {
     // Try to extract JSON array from response (LLMs sometimes wrap in markdown)
-    const match = raw.match(/\[[\s\S]*\]/);
+    const match = raw.match(/\[[\s\S]*?\]/);
     if (!match) return [];
     const parsed: unknown = JSON.parse(match[0]);
     if (Array.isArray(parsed)) return parsed as T[];

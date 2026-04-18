@@ -81,8 +81,9 @@ export function useAINarrative(): UseAINarrativeReturn {
             setLoading(false);
           }
         })
-        .catch(() => {
+        .catch((err: unknown) => {
           if (!controller.signal.aborted) {
+            console.error('[Convergia AI] Enrichment failed:', err);
             setEnrichment(emptyEnrichment());
             setError('Error inesperado al generar narrativa IA.');
             setLoading(false);

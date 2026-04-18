@@ -20,7 +20,7 @@ export interface LLMConfig {
   apiKey: string;
   /** Model identifier (e.g. gpt-4o-mini) */
   model: string;
-  /** Max tokens for each completion */
+  /** Max tokens for each completion (mapped to max_tokens in the API request) */
   maxTokens: number;
   /** Temperature (0 = deterministic-ish, 1 = creative) */
   temperature: number;
