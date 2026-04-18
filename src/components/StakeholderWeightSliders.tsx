@@ -114,15 +114,21 @@ export function StakeholderWeightSliders({
                 const changed = Math.abs(value - canonicalValue) > 0.005;
                 return (
                   <div key={v} className="flex items-center gap-3">
-                    <span className="text-xs text-slate-600 w-36 truncate" title={VARIABLE_LABELS[v]}>
+                    <label
+                      htmlFor={`weight-${s.id}-${v}`}
+                      className="text-xs text-slate-600 w-36 truncate"
+                      title={VARIABLE_LABELS[v]}
+                    >
                       {VARIABLE_LABELS[v]}
-                    </span>
+                    </label>
                     <input
+                      id={`weight-${s.id}-${v}`}
                       type="range"
                       min={0}
                       max={0.8}
                       step={0.01}
                       value={value}
+                      aria-label={`${VARIABLE_LABELS[v]} peso para ${s.name}`}
                       onChange={(e) => handleChange(sIdx, v, parseFloat(e.target.value))}
                       className={cn(
                         'flex-1 h-2 rounded-full cursor-pointer appearance-none bg-slate-200',

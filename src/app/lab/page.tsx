@@ -274,7 +274,7 @@ export default function LabPage() {
                 <div>
                   <p className="text-sm font-bold text-indigo-900 mb-1">Ajuste de pesos por stakeholder</p>
                   <p className="text-xs text-indigo-700 leading-relaxed">
-                    Mueve los sliders para explorar &quot;¿qué pasa si Finanzas pesa más?&quot; o &quot;¿y si Calidad domina?&quot;.
+                    Mueve los sliders para explorar cómo cambia el resultado al dar más peso a un stakeholder u otro.
                     Los pesos siempre suman 100% — al mover uno, los demás se reajustan proporcionalmente.
                     El resultado se recalcula de forma determinista en cada cambio.
                   </p>
