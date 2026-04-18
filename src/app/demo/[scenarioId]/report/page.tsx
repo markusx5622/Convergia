@@ -167,7 +167,7 @@ export default function DemoReportPage({
       <main className={cn(
         'px-6 py-8 print:px-0 print:py-0',
       )}>
-        <ReportView data={reportData} enrichment={ai.enrichment} />
+        <ReportView data={reportData} enrichment={ai.enrichment} origin="demo" stateType="base" />
       </main>
 
       {/* Footer — hidden on print */}

@@ -98,6 +98,11 @@ export default function LabPage() {
     { id: 'results', label: 'Comparación', icon: '📊' },
   ];
 
+  // Build report URL with Lab context
+  const reportBaseUrl = `/report?origin=lab&scenario=${activeScenarioId}`;
+  const reportAdjustedUrl = `${reportBaseUrl}&state=adjusted`;
+  const reportComparisonUrl = `${reportBaseUrl}&state=comparison`;
+
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
       {/* Header */}
@@ -108,7 +113,7 @@ export default function LabPage() {
               Convergia
             </Link>
             <span className="text-[10px] font-mono font-bold text-[#0d6e6e] bg-[#f0fafa] px-2 py-0.5 rounded-md border border-[#d0ecec] uppercase tracking-wider">
-              Lab
+              Lab / Exploración
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -122,19 +127,19 @@ export default function LabPage() {
               href="/demo"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
-              Demo
+              Demo guiada
+            </Link>
+            <Link
+              href="/studio"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+            >
+              Studio
             </Link>
             <Link
               href="/debug"
               className="px-2.5 py-1.5 rounded-md text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-colors"
             >
               /debug
-            </Link>
-            <Link
-              href="/report"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
-            >
-              Informe
             </Link>
           </div>
         </div>
@@ -146,16 +151,27 @@ export default function LabPage() {
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
               <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.15em] mb-2">
-                Laboratorio de análisis
+                🔬 Sandbox analítico
               </p>
               <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">
-                Explorador de escenarios
+                Lab / Exploración de escenarios
               </h1>
               <p className="mt-2 text-[#5b6578] text-base leading-relaxed max-w-2xl">
-                Selecciona un escenario, ajusta los pesos de los stakeholders y explora cómo cambia
-                la decisión final. Todo sigue siendo determinista — cada configuración produce
-                exactamente un resultado.
+                Entorno libre de exploración: selecciona un escenario, ajusta los pesos de los
+                stakeholders y observa cómo cambia la decisión. No hay orden fijo — explora a tu
+                ritmo. Todo sigue siendo determinista.
               </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-[#0d6e6e] bg-[#f0fafa] rounded-md border border-[#d0ecec]">
+                  No lineal
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-[#0d6e6e] bg-[#f0fafa] rounded-md border border-[#d0ecec]">
+                  Sandbox
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-[#0d6e6e] bg-[#f0fafa] rounded-md border border-[#d0ecec]">
+                  Determinista
+                </span>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               {isModified && (
@@ -317,13 +333,39 @@ export default function LabPage() {
               stakeholders={adjustedStakeholders}
               isModified={isModified}
             />
-            <div className="flex justify-end pt-2">
-              <Link
-                href="/report"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
-              >
-                Exportar informe →
-              </Link>
+            {/* Precise report CTAs */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm mt-6">
+              <h4 className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                📄 Generar informe desde Lab
+              </h4>
+              <p className="text-xs text-slate-500 mb-4">
+                Elige qué tipo de informe quieres generar a partir de tu exploración actual.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {isModified ? (
+                  <>
+                    <Link
+                      href={reportAdjustedUrl}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
+                    >
+                      📄 Informe del estado ajustado
+                    </Link>
+                    <Link
+                      href={reportComparisonUrl}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 text-white rounded-xl text-sm font-bold hover:bg-amber-700 transition-all shadow-md"
+                    >
+                      📊 Informe comparativo base vs ajustado
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    href={`${reportBaseUrl}&state=base`}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
+                  >
+                    📄 Informe del estado base
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -333,7 +375,7 @@ export default function LabPage() {
       <footer className="border-t border-[#e1e4eb] bg-white mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <p className="text-xs text-[#5b6578]">
-            Convergia Lab · Explorador de escenarios · Motor determinista · 2025
+            Convergia Lab · Sandbox analítico · Exploración no lineal · Motor determinista · 2025
           </p>
           <div className="flex items-center gap-3">
             <Link href="/debug" className="text-xs text-[#5b6578]/50 hover:text-[#0d6e6e] font-mono transition-colors">

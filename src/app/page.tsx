@@ -100,7 +100,7 @@ export default function Home() {
                 href="/lab"
                 className="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors"
               >
-                Lab
+                Lab / Exploración
               </Link>
               <Link
                 href="/studio"
@@ -151,20 +151,20 @@ export default function Home() {
                 href="/demo"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#111827] rounded-xl text-base font-bold hover:bg-white/90 transition-all shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-0.5"
               >
-                Explorar la demo
+                🎯 Demo guiada
                 <span className="text-lg">→</span>
               </Link>
               <Link
                 href="/lab"
                 className="inline-flex items-center gap-2 px-6 py-4 border border-white/15 text-white/70 rounded-xl text-base font-medium hover:border-white/30 hover:text-white transition-all"
               >
-                Abrir laboratorio
+                🔬 Lab / Exploración
               </Link>
               <Link
                 href="/studio"
                 className="inline-flex items-center gap-2 px-6 py-4 border border-[#0d6e6e]/40 text-[#0d6e6e] bg-[#0d6e6e]/10 rounded-xl text-base font-medium hover:border-[#0d6e6e]/60 hover:bg-[#0d6e6e]/20 hover:text-white transition-all"
               >
-                🛠 Crear escenario
+                🛠 Studio / Crear escenario
               </Link>
             </div>
           </div>
@@ -264,7 +264,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-xs font-bold text-[#5b6578] uppercase tracking-[0.15em] mb-3">
-              Flujo de la demo · 4 pasos · ~3 minutos
+              🎯 Demo guiada · 4 pasos · ~3 minutos
             </p>
           </div>
 
@@ -300,7 +300,7 @@ export default function Home() {
               href="/demo"
               className="inline-flex items-center gap-3 px-10 py-4 bg-[#111827] text-white rounded-xl text-lg font-bold hover:bg-[#1f2937] transition-all shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5"
             >
-              Comenzar demo
+              Comenzar demo guiada
               <span className="text-xl">→</span>
             </Link>
           </div>
@@ -356,17 +356,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ LAB + REPORT ══════════════ */}
+      {/* ══════════════ THREE MODES ══════════════ */}
       <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {/* Lab */}
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-3">Tres modos de uso</p>
+            <h2 className="text-2xl font-extrabold text-[#111827] tracking-tight">
+              Elige cómo quieres interactuar con Convergia
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {/* Demo guiada */}
           <div className="rounded-2xl p-7 border border-[#e1e4eb] bg-white shadow-sm hover:shadow-md transition-shadow">
-            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-3 py-1 rounded-md mb-5">
-              EXPLORACIÓN
+            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#111827] bg-slate-100 border border-slate-200 px-3 py-1 rounded-md mb-5">
+              🎯 DEMO GUIADA
             </span>
-            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Laboratorio de escenarios</h3>
+            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Recorrido lineal</h3>
             <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
-              Explora <strong className="text-[#111827]">3 escenarios industriales curados</strong>, ajusta pesos con sliders y compara resultados.
+              Sigue el flujo paso a paso: escenario → stakeholders → debate → resultado → informe. Ideal para <strong className="text-[#111827]">entender cómo funciona</strong> Convergia.
+            </p>
+            <Link
+              href="/demo"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-lg text-sm font-bold hover:bg-[#1f2937] transition-colors shadow-sm"
+            >
+              Iniciar demo →
+            </Link>
+          </div>
+
+          {/* Lab */}
+          <div className="rounded-2xl p-7 border border-[#d0ecec] bg-[#f0fafa]/30 shadow-sm hover:shadow-md transition-shadow">
+            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-3 py-1 rounded-md mb-5">
+              🔬 LAB / EXPLORACIÓN
+            </span>
+            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Sandbox analítico</h3>
+            <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
+              Explora libremente: elige escenarios, ajusta pesos, compara resultados. <strong className="text-[#111827]">Sin orden fijo</strong> — experimenta a tu ritmo.
             </p>
             <Link
               href="/lab"
@@ -376,21 +400,22 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Report */}
-          <div className="rounded-2xl p-7 border border-[#e1e4eb] bg-white shadow-sm hover:shadow-md transition-shadow">
-            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#c87514] bg-[#fef4e5] border border-[#f5dbb3] px-3 py-1 rounded-md mb-5">
-              EXPORTACIÓN
+          {/* Studio */}
+          <div className="rounded-2xl p-7 border border-violet-200 bg-violet-50/30 shadow-sm hover:shadow-md transition-shadow">
+            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-violet-700 bg-violet-50 border border-violet-200 px-3 py-1 rounded-md mb-5">
+              🛠 STUDIO
             </span>
-            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Informe exportable</h3>
+            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Escenario personalizado</h3>
             <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
-              Genera un <strong className="text-[#111827]">informe profesional</strong> con resumen ejecutivo, métricas, desglose y análisis. Exporta a PDF.
+              Crea tu propio escenario con empresa, stakeholders y opciones. <strong className="text-[#111827]">Total libertad</strong> de configuración y simulación.
             </p>
             <Link
-              href="/report"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-lg text-sm font-bold hover:bg-[#1f2937] transition-colors shadow-sm"
+              href="/studio"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 text-white rounded-lg text-sm font-bold hover:bg-violet-700 transition-colors shadow-sm"
             >
-              Ver informe →
+              Crear escenario →
             </Link>
+          </div>
           </div>
         </div>
       </section>
@@ -406,7 +431,9 @@ export default function Home() {
               </span>
             </div>
             <div className="flex items-center gap-5">
+              <Link href="/demo" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/demo</Link>
               <Link href="/lab" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/lab</Link>
+              <Link href="/studio" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/studio</Link>
               <Link href="/report" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/report</Link>
               <Link href="/debug" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/debug</Link>
             </div>
