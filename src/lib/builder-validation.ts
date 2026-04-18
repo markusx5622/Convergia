@@ -17,7 +17,8 @@ import type { VariableId } from '@/engine/types';
 
 /* ── Constants ── */
 
-/** Tolerance for weight sum check (weights must sum to 1.0 ± this) */
+/** Tolerance for weight sum check (weights must sum to 1.0 ± this).
+ *  Set to 0.02 to accommodate rounding when users enter values with limited decimal places. */
 export const WEIGHT_SUM_TOLERANCE = 0.02;
 
 /** Maximum allowed stakeholders */

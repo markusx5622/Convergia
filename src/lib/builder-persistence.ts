@@ -16,6 +16,15 @@ const LS_KEY = 'convergia:builder-state';
 /** Current schema version — bump when BuilderState shape changes. */
 const SCHEMA_VERSION = 1;
 
+/** Maximum file size for JSON import (1 MB — prevents browser slowdown from large files). */
+const MAX_IMPORT_FILE_SIZE = 1_048_576;
+
+/* ── Auto-incrementing UID for sanitized entries (not security-sensitive). ── */
+let _sanitizeCounter = 0;
+function nextSanitizeUid(prefix: string): string {
+  return `${prefix}-${Date.now()}-${++_sanitizeCounter}`;
+}
+
 /* ── Serialisable wrapper (adds version) ── */
 
 interface PersistedState {
@@ -65,7 +74,7 @@ function ensureImpacts(imp: unknown): Record<VariableId, string> {
 function sanitizeStakeholder(raw: unknown): DraftStakeholder | null {
   if (!isObject(raw)) return null;
   return {
-    uid: isString(raw.uid) ? raw.uid : `imported-${Date.now()}-${Math.random()}`,
+    uid: isString(raw.uid) ? raw.uid : nextSanitizeUid('imported'),
     name: ensureString(raw.name),
     role: ensureString(raw.role),
     weights: ensureWeights(raw.weights),
@@ -74,7 +83,7 @@ function sanitizeStakeholder(raw: unknown): DraftStakeholder | null {
           .filter(isObject)
           .filter((rl) => VARIABLE_IDS.includes(rl.variable as VariableId))
           .map((rl) => ({
-            uid: isString(rl.uid) ? rl.uid : `rl-${Date.now()}-${Math.random()}`,
+            uid: isString(rl.uid) ? rl.uid : nextSanitizeUid('rl'),
             variable: rl.variable as VariableId,
             operator: rl.operator === 'gt' ? 'gt' as const : 'lt' as const,
             threshold: ensureString(rl.threshold, '0.10'),
@@ -90,7 +99,7 @@ function sanitizeStakeholder(raw: unknown): DraftStakeholder | null {
 function sanitizeOption(raw: unknown): DraftOption | null {
   if (!isObject(raw)) return null;
   return {
-    uid: isString(raw.uid) ? raw.uid : `imported-${Date.now()}-${Math.random()}`,
+    uid: isString(raw.uid) ? raw.uid : nextSanitizeUid('imported'),
     name: ensureString(raw.name),
     cost: ensureString(raw.cost),
     description: ensureString(raw.description),
@@ -116,7 +125,7 @@ export function sanitizeBuilderState(raw: unknown): BuilderState | null {
     budget: ensureString(sc.budget),
     kpis: Array.isArray(sc.kpis)
       ? sc.kpis.filter(isObject).map((k) => ({
-          uid: isString(k.uid) ? k.uid : `kpi-${Date.now()}-${Math.random()}`,
+          uid: isString(k.uid) ? k.uid : nextSanitizeUid('kpi'),
           name: ensureString(k.name),
           current: ensureString(k.current),
           unit: ensureString(k.unit),
@@ -218,7 +227,7 @@ export function importFromJSON(file: File): Promise<ImportResult> {
     }
 
     // Reject files larger than 1 MB
-    if (file.size > 1_048_576) {
+    if (file.size > MAX_IMPORT_FILE_SIZE) {
       reject(new Error('El archivo es demasiado grande (máximo 1 MB).'));
       return;
     }

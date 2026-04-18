@@ -4,7 +4,7 @@
  * Covers: scenario, stakeholder, and option conversion from Draft → Engine types.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   buildScenario,
   buildStakeholders,
@@ -325,9 +325,8 @@ describe('determinism', () => {
   it('produces identical output for identical input', () => {
     const state = makeState();
 
-    // We need to mock Date.now for scenario ID
-    const originalNow = Date.now;
-    Date.now = () => 1700000000000;
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T00:00:00Z'));
 
     const result1 = {
       scenario: buildScenario(state),
@@ -341,7 +340,7 @@ describe('determinism', () => {
       options: buildOptions(state),
     };
 
-    Date.now = originalNow;
+    vi.useRealTimers();
 
     expect(result1).toEqual(result2);
   });

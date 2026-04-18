@@ -29,6 +29,9 @@ function generateId(prefix: string, idx: number): string {
   return `${prefix}-${idx}`;
 }
 
+/** Rounding factor for 4 decimal places of precision in weights. */
+const WEIGHT_PRECISION = 10000;
+
 /**
  * Normalise weights so they sum to exactly 1.0.
  * If all weights are zero, distributes equally.
@@ -42,11 +45,11 @@ function normalizeWeights(raw: Record<VariableId, number>): Record<VariableId, n
   if (sum === 0) {
     const equal = 1 / VARIABLE_IDS.length;
     for (const v of VARIABLE_IDS) {
-      result[v] = Math.round(equal * 10000) / 10000;
+      result[v] = Math.round(equal * WEIGHT_PRECISION) / WEIGHT_PRECISION;
     }
   } else {
     for (const v of VARIABLE_IDS) {
-      result[v] = Math.round((raw[v] / sum) * 10000) / 10000;
+      result[v] = Math.round((raw[v] / sum) * WEIGHT_PRECISION) / WEIGHT_PRECISION;
     }
   }
   return result;
