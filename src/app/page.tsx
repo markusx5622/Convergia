@@ -55,6 +55,11 @@ const HIGHLIGHTS = [
     title: 'Explicable',
     text: 'Narrativas generadas a partir de datos calculados. La capa de presentación no inventa — traduce.',
   },
+  {
+    icon: '🔬',
+    title: 'Explorable',
+    text: 'Múltiples escenarios curados, ajuste de pesos y comparación base vs ajustado — sin perder rigor.',
+  },
 ] as const;
 
 export default function Home() {
@@ -108,7 +113,7 @@ export default function Home() {
               Un motor transparente y verificable
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {HIGHLIGHTS.map((h) => (
               <div key={h.title} className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
                 <span className="text-3xl mb-4 block">{h.icon}</span>
@@ -200,6 +205,27 @@ export default function Home() {
               </Link>
               <span className="text-xs text-slate-500">Acceso completo a los datos internos del motor</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Lab callout */}
+      <section className="py-14 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-2xl p-8 text-white shadow-xl">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono font-medium text-indigo-300 bg-indigo-800 px-2 py-0.5 rounded-md">NUEVO</span>
+            </div>
+            <h2 className="text-xl font-extrabold mb-3 tracking-tight">🔬 Laboratorio de escenarios</h2>
+            <p className="text-indigo-200 text-sm leading-relaxed mb-5">
+              Explora <strong className="text-white">3 escenarios industriales curados</strong>, ajusta los pesos de los stakeholders con sliders interactivos y compara resultados base vs ajustados. Todo determinista, todo verificable.
+            </p>
+            <Link
+              href="/lab"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-indigo-900 rounded-xl text-sm font-bold hover:bg-indigo-50 transition-colors shadow-md"
+            >
+              Abrir Lab →
+            </Link>
           </div>
         </div>
       </section>
