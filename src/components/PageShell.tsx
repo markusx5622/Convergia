@@ -94,6 +94,18 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
               ))}
               <span className="mx-2 h-4 w-px bg-slate-200" />
               <Link
+                href="/lab"
+                className={cn(
+                  'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                  pathname === '/lab'
+                    ? 'bg-indigo-600 text-white'
+                    : 'text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700',
+                )}
+              >
+                🔬 Lab
+              </Link>
+              <span className="mx-2 h-4 w-px bg-slate-200" />
+              <Link
                 href="/debug"
                 className={cn(
                   'px-2.5 py-1.5 rounded-md text-xs font-mono transition-colors',
