@@ -214,7 +214,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-2xl p-8 text-white shadow-xl">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-xs font-mono font-medium text-indigo-300 bg-indigo-800 px-2 py-0.5 rounded-md">NUEVO</span>
+              <span className="text-xs font-mono font-medium text-indigo-300 bg-indigo-800 px-2 py-0.5 rounded-md">EXPLORACIÓN</span>
             </div>
             <h2 className="text-xl font-extrabold mb-3 tracking-tight">🔬 Laboratorio de escenarios</h2>
             <p className="text-indigo-200 text-sm leading-relaxed mb-5">
@@ -235,7 +235,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="bg-gradient-to-r from-emerald-900 to-emerald-800 rounded-2xl p-8 text-white shadow-xl">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-xs font-mono font-medium text-emerald-300 bg-emerald-800 px-2 py-0.5 rounded-md">NUEVO</span>
+              <span className="text-xs font-mono font-medium text-emerald-300 bg-emerald-800 px-2 py-0.5 rounded-md">EXPORTACIÓN</span>
             </div>
             <h2 className="text-xl font-extrabold mb-3 tracking-tight">📄 Informe exportable</h2>
             <p className="text-emerald-200 text-sm leading-relaxed mb-5">
@@ -259,14 +259,14 @@ export default function Home() {
             Motor determinista de negociación multi-stakeholder
           </p>
           <p className="text-xs text-slate-400">
-            Proyecto académico · Ingeniería en Organización Industrial
+            Proyecto académico · Ingeniería en Organización Industrial · 2025
           </p>
           <div className="flex items-center justify-center gap-4 mt-4">
             <Link
-              href="/debug"
+              href="/lab"
               className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors"
             >
-              /debug
+              /lab
             </Link>
             <span className="text-slate-200">·</span>
             <Link
@@ -276,9 +276,12 @@ export default function Home() {
               /report
             </Link>
             <span className="text-slate-200">·</span>
-            <span className="text-xs text-slate-400">
-              Next.js 16 · TypeScript · Tailwind v4
-            </span>
+            <Link
+              href="/debug"
+              className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors"
+            >
+              /debug
+            </Link>
           </div>
         </div>
       </footer>

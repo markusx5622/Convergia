@@ -83,6 +83,12 @@ export default function ReportPage() {
             >
               🔬 Lab
             </Link>
+            <Link
+              href="/debug"
+              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+            >
+              debug
+            </Link>
           </div>
         </div>
       </nav>
@@ -143,6 +149,16 @@ export default function ReportPage() {
                 ✨ Generar narrativa IA
               </button>
             )}
+            {ai.aiEnabled && !ai.config?.apiKey && !ai.loading && (
+              <div className="px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
+                <p className="text-xs text-amber-700">
+                  <strong>Paso previo:</strong> Abre &ldquo;Configuración IA&rdquo; e introduce tu API key de OpenAI.
+                </p>
+                <p className="text-xs text-amber-600 mt-1">
+                  Sin API key, el informe se genera con narrativa determinista.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -158,7 +174,7 @@ export default function ReportPage() {
       <footer className="border-t border-slate-200 bg-white mt-auto print:hidden">
         <div className="max-w-[800px] mx-auto px-6 py-4 flex items-center justify-between">
           <p className="text-xs text-slate-400">
-            Convergia · Informe exportable · Motor determinista
+            Convergia · Informe exportable · Motor determinista · 2025
           </p>
           <div className="flex items-center gap-3">
             <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">

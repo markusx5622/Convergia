@@ -220,7 +220,7 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
       <footer className="border-t border-slate-200 bg-white mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <p className="text-xs text-slate-400">
-            Convergia · Motor determinista de negociación multi-stakeholder
+            Convergia · Motor determinista de negociación multi-stakeholder · 2025
           </p>
           <div className="flex items-center gap-3">
             <span className="text-xs text-slate-300">

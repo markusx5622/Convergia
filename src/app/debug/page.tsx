@@ -36,10 +36,10 @@ function Badge({ ok }: { ok: boolean }) {
 function VetoesSection({ vetoes, eliminated }: { vetoes: SimulationResult['rounds'][0]['vetoes']; eliminated: string[] }) {
   return (
     <section className="mb-10">
-      <h2 className="text-xl font-bold mb-4 text-slate-900">Vetos y red lines</h2>
+      <h2 className="text-xl font-bold mb-4 text-slate-900">Vetos y líneas rojas</h2>
       {vetoes.length === 0 ? (
         <div className="bg-slate-50 rounded-lg border border-slate-200 p-4">
-          <p className="text-slate-500 text-sm">Ninguna red line activada en el escenario actual.</p>
+          <p className="text-slate-500 text-sm">Ninguna línea roja activada en el escenario actual.</p>
         </div>
       ) : (
         <ul className="space-y-2">
@@ -248,16 +248,30 @@ export default function DebugPage() {
             </span>
           </div>
           <Link href="/" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
-            ← Volver al inicio
+            ← Inicio
           </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/lab"
+              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+            >
+              🔬 Lab
+            </Link>
+            <Link
+              href="/report"
+              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+            >
+              📄 Informe
+            </Link>
+          </div>
         </div>
       </nav>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         <header className="mb-8">
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Motor de Verificación</h1>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Verificación técnica</h1>
           <p className="text-slate-500 text-sm mt-1">
-            Debug v1.1 · Escenario: {sim.scenario.name} · {sim.rounds.length} rondas · Motor determinista
+            Escenario: {sim.scenario.name} · {sim.rounds.length} rondas · Motor determinista · Resultado reproducible
           </p>
         </header>
 
@@ -268,9 +282,9 @@ export default function DebugPage() {
             <div>
               <p className="text-sm font-bold mb-1">Resultado reproducible</p>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Esta página muestra los datos internos completos del motor determinista. Mismos datos de entrada producen siempre el mismo resultado.
+                Esta página expone los datos internos completos del motor determinista. Mismos datos de entrada producen siempre el mismo resultado.
                 Los scores, rankings, vetos, concesiones y métricas de consenso que ves aquí son exactamente los que alimentan las narrativas y visualizaciones de la demo.
-                No hay aleatoriedad ni llamadas externas — todo es calculado localmente.
+                No hay aleatoriedad ni llamadas externas — todo es calculado localmente en el navegador.
               </p>
             </div>
           </div>
