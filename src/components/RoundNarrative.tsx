@@ -58,11 +58,15 @@ export function RoundNarrativeCard({
             🤝 {narrative.positionChanges.length} concesión{narrative.positionChanges.length > 1 ? 'es' : ''}
           </span>
         )}
-        {narrative.topConflictPair && (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 rounded-lg border border-red-100 text-xs font-medium text-red-700">
-            ⚔️ {stakeholderNames[narrative.topConflictPair.a] ?? narrative.topConflictPair.a} vs {stakeholderNames[narrative.topConflictPair.b] ?? narrative.topConflictPair.b} ({narrative.topConflictPair.value.toFixed(3)})
-          </span>
-        )}
+        {narrative.topConflictPair && (() => {
+          const nameA = stakeholderNames[narrative.topConflictPair.a] ?? narrative.topConflictPair.a;
+          const nameB = stakeholderNames[narrative.topConflictPair.b] ?? narrative.topConflictPair.b;
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 rounded-lg border border-red-100 text-xs font-medium text-red-700">
+              ⚔️ {nameA} vs {nameB} ({narrative.topConflictPair.value.toFixed(3)})
+            </span>
+          );
+        })()}
       </div>
     </div>
   );
