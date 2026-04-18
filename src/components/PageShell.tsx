@@ -11,6 +11,25 @@ const FLOW_STEPS = [
   { href: '/result', label: 'Resultado', step: 4, icon: '🏆' },
 ] as const;
 
+const STEP_GUIDANCE: Record<number, { context: string; hint: string }> = {
+  1: {
+    context: 'Contexto',
+    hint: 'Estás viendo el escenario industrial. Observa la empresa, su presupuesto y las 5 opciones de inversión disponibles. Cada opción impacta de forma diferente en las 6 variables del sistema.',
+  },
+  2: {
+    context: 'Actores',
+    hint: 'Conoce a los 4 decisores. Cada uno tiene pesos distintos para las 6 variables, líneas rojas que no negociará y umbrales de concesión diferentes. Estas asimetrías son las que generan el conflicto.',
+  },
+  3: {
+    context: 'Negociación',
+    hint: 'Aquí el motor ejecuta las rondas de negociación. Observa cómo cambian los scores, quién cede, cómo evoluciona el conflicto y si el consenso mejora o empeora con cada ronda.',
+  },
+  4: {
+    context: 'Decisión',
+    hint: 'Este es el resultado final del proceso. La narrativa explica por qué ganó esta opción, quién la apoya, quién cedió y qué variables fueron determinantes. Todo es derivado de los datos calculados.',
+  },
+};
+
 interface PageShellProps {
   children: React.ReactNode;
   title: string;
@@ -31,6 +50,7 @@ function getStepFromPath(pathname: string): number {
 export function PageShell({ children, title, subtitle, currentStep }: PageShellProps) {
   const pathname = usePathname();
   const activeStep = currentStep ?? getStepFromPath(pathname);
+  const guidance = STEP_GUIDANCE[activeStep];
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -151,6 +171,23 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
         </div>
       </header>
 
+      {/* Demo guidance banner */}
+      {guidance && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+          <div className="max-w-7xl mx-auto px-6 py-4">
+            <div className="flex items-start gap-3">
+              <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs font-bold mt-0.5">
+                {activeStep}
+              </span>
+              <div>
+                <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-0.5">{guidance.context}</p>
+                <p className="text-sm text-blue-900/70 leading-relaxed">{guidance.hint}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         {children}
@@ -162,9 +199,15 @@ export function PageShell({ children, title, subtitle, currentStep }: PageShellP
           <p className="text-xs text-slate-400">
             Convergia · Motor determinista de negociación multi-stakeholder
           </p>
-          <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
-            debug →
-          </Link>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-slate-300">
+              Resultado reproducible · Explicabilidad total
+            </span>
+            <span className="text-slate-200">·</span>
+            <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
+              /debug
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

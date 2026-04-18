@@ -31,6 +31,20 @@ export default function ResultPage() {
         optionNames={optionNames}
       />
 
+      {/* Deterministic engine callout */}
+      <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 mt-8">
+        <div className="flex items-start gap-3">
+          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">⚙️</span>
+          <div>
+            <p className="text-sm font-bold text-slate-900 mb-1">Motor determinista</p>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Todo lo que ves en esta página fue calculado por el motor determinista de Convergia. Las narrativas, scores y desgloses son derivados de datos — no generados por IA.
+              Puedes verificar cada número en la <a href="/debug" className="text-blue-600 hover:text-blue-800 font-medium underline decoration-blue-200">página de verificación técnica</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Navigation */}
       <div className="flex items-center justify-between pt-8 border-t border-slate-200 mt-8">
         <Link

@@ -261,6 +261,21 @@ export default function DebugPage() {
           </p>
         </header>
 
+        {/* Verification callout */}
+        <div className="bg-slate-900 rounded-xl p-5 mb-10 text-white">
+          <div className="flex items-start gap-3">
+            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-sm font-bold">✓</span>
+            <div>
+              <p className="text-sm font-bold mb-1">Resultado reproducible</p>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Esta página muestra los datos internos completos del motor determinista. Mismos datos de entrada producen siempre el mismo resultado.
+                Los scores, rankings, vetos, concesiones y métricas de consenso que ves aquí son exactamente los que alimentan las narrativas y visualizaciones de la demo.
+                No hay aleatoriedad ni llamadas externas — todo es calculado localmente.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* ── Vetoes ── */}
         <VetoesSection
           vetoes={sim.rounds[0]?.vetoes ?? []}

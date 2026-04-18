@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Convergia — Simulador de decisiones multi-stakeholder",
-  description: "Motor determinista de negociación para decisiones industriales con múltiples stakeholders, conflictos y concesiones.",
+  title: "Convergia — Simulador determinista de decisiones multi-stakeholder",
+  description: "Motor determinista de negociación para decisiones industriales con múltiples stakeholders. Scoring ponderado, vetos, conflictos, concesiones y narrativa explicativa — sin IA, sin azar, solo lógica verificable.",
+  keywords: ["simulador", "decisiones", "multi-stakeholder", "determinista", "negociación", "ingeniería industrial"],
+  authors: [{ name: "Convergia" }],
 };
 
 export default function RootLayout({
