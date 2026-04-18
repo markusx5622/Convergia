@@ -52,42 +52,42 @@ export default function ReportPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-[#f7f8fa]">
       {/* Header — hidden on print */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm print:hidden">
+      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm print:hidden">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-slate-900 tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
               Convergia
             </Link>
-            <span className="text-[10px] font-mono font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200">
-              INFORME
+            <span className="text-[10px] font-mono font-bold text-[#c87514] bg-[#fef4e5] px-2 py-0.5 rounded-md border border-[#f5dbb3] uppercase tracking-wider">
+              Informe
             </span>
           </div>
           <div className="flex items-center gap-2">
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
               Inicio
             </Link>
             <Link
               href="/result"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
               Resultado
             </Link>
             <Link
               href="/lab"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              🔬 Lab
+              Lab
             </Link>
             <Link
               href="/debug"
-              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-colors"
             >
-              debug
+              /debug
             </Link>
           </div>
         </div>
@@ -116,7 +116,7 @@ export default function ReportPage() {
             </div>
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-md hover:shadow-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md hover:shadow-lg"
             >
               <PrintIcon />
               Exportar / Imprimir
@@ -171,13 +171,13 @@ export default function ReportPage() {
       </main>
 
       {/* Footer — hidden on print */}
-      <footer className="border-t border-slate-200 bg-white mt-auto print:hidden">
+      <footer className="border-t border-[#e1e4eb] bg-white mt-auto print:hidden">
         <div className="max-w-[800px] mx-auto px-6 py-4 flex items-center justify-between">
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#5b6578]">
             Convergia · Informe exportable · Motor determinista · 2025
           </p>
           <div className="flex items-center gap-3">
-            <Link href="/debug" className="text-xs text-slate-400 hover:text-slate-600 font-mono transition-colors">
+            <Link href="/debug" className="text-xs text-[#5b6578]/50 hover:text-[#0d6e6e] font-mono transition-colors">
               /debug
             </Link>
           </div>

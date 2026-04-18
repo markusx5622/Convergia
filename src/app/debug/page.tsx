@@ -235,33 +235,33 @@ function ConcessionsSection({ concessions }: { concessions: RoundResult['concess
 
 export default function DebugPage() {
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-[#f7f8fa]">
       {/* Minimal header */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-slate-900 tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
               Convergia
             </Link>
-            <span className="text-[10px] font-mono font-medium text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-md">
-              DEBUG
+            <span className="text-[10px] font-mono font-bold text-[#5b6578] bg-[#f0f1f5] px-2 py-0.5 rounded-md uppercase tracking-wider">
+              Debug
             </span>
           </div>
-          <Link href="/" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
+          <Link href="/" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] transition-colors">
             ← Inicio
           </Link>
           <div className="flex items-center gap-2">
             <Link
               href="/lab"
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-indigo-500 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              🔬 Lab
+              Lab
             </Link>
             <Link
               href="/report"
-              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+              className="px-2.5 py-1.5 rounded-md text-xs font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
-              📄 Informe
+              Informe
             </Link>
           </div>
         </div>
@@ -269,16 +269,16 @@ export default function DebugPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         <header className="mb-8">
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Verificación técnica</h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <h1 className="text-2xl font-extrabold text-[#111827] tracking-tight">Verificación técnica</h1>
+          <p className="text-[#5b6578] text-sm mt-1">
             Escenario: {sim.scenario.name} · {sim.rounds.length} rondas · Motor determinista · Resultado reproducible
           </p>
         </header>
 
         {/* Verification callout */}
-        <div className="bg-slate-900 rounded-xl p-5 mb-10 text-white">
+        <div className="rounded-xl p-5 mb-10 text-white" style={{ background: 'var(--gradient-hero)' }}>
           <div className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-sm font-bold">✓</span>
+            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#0d6e6e] flex items-center justify-center text-sm font-bold">✓</span>
             <div>
               <p className="text-sm font-bold mb-1">Resultado reproducible</p>
               <p className="text-xs text-slate-300 leading-relaxed">

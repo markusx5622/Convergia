@@ -17,12 +17,12 @@ export function ResultExplanation({
   return (
     <div className="space-y-6">
       {/* Headline */}
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl border border-slate-200 p-6 shadow-sm">
+      <div className="bg-gradient-to-r from-[#f0fafa] to-[#f7f8fa] rounded-xl border border-[#d0ecec] p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-base">📋</span>
-          <h3 className="font-bold text-slate-900">Resumen de la decisión</h3>
+          <span className="w-2 h-2 rounded-full bg-[#0d6e6e]" />
+          <h3 className="font-bold text-[#111827]">Resumen de la decisión</h3>
         </div>
-        <p className="text-slate-800 font-medium text-lg leading-relaxed">
+        <p className="text-[#111827] font-medium text-lg leading-relaxed">
           {narrative.headline}
         </p>
       </div>
@@ -51,7 +51,7 @@ export function ResultExplanation({
                 key={kv.variable}
                 className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border border-slate-100"
               >
-                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm font-bold">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#0d6e6e] text-white flex items-center justify-center text-sm font-bold">
                   {i + 1}
                 </span>
                 <div className="flex-1 min-w-0">
