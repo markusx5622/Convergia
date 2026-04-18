@@ -18,6 +18,25 @@ const CONSENSUS_LABEL: Record<ConsensusStatus, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Report origin types
+// ---------------------------------------------------------------------------
+
+export type ReportOrigin = 'demo' | 'lab' | 'studio';
+export type ReportStateType = 'base' | 'adjusted' | 'comparison';
+
+const ORIGIN_LABELS: Record<ReportOrigin, { label: string; icon: string; color: string; bg: string; border: string }> = {
+  demo: { label: 'Demo guiada', icon: '🎯', color: 'text-[#111827]', bg: 'bg-slate-50', border: 'border-slate-200' },
+  lab: { label: 'Lab / Exploración', icon: '🔬', color: 'text-[#0d6e6e]', bg: 'bg-[#f0fafa]', border: 'border-[#d0ecec]' },
+  studio: { label: 'Studio', icon: '🛠', color: 'text-violet-700', bg: 'bg-violet-50', border: 'border-violet-200' },
+};
+
+const STATE_LABELS: Record<ReportStateType, { label: string; description: string }> = {
+  base: { label: 'Estado base', description: 'Pesos canónicos del escenario sin modificar' },
+  adjusted: { label: 'Estado ajustado', description: 'Pesos modificados por el usuario en Lab' },
+  comparison: { label: 'Comparación base vs ajustado', description: 'Análisis comparativo entre estado base y estado con pesos modificados' },
+};
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
@@ -25,9 +44,13 @@ interface ReportViewProps {
   data: ReportData;
   /** Optional AI enrichment for the executive summary */
   enrichment?: LLMEnrichment;
+  /** Origin mode that generated this report */
+  origin?: ReportOrigin;
+  /** Type of state this report represents */
+  stateType?: ReportStateType;
 }
 
-export function ReportView({ data, enrichment }: ReportViewProps) {
+export function ReportView({ data, enrichment, origin, stateType }: ReportViewProps) {
   // Compute section numbers dynamically to handle conditional sections
   let sectionCounter = 0;
   const nextSection = () => ++sectionCounter;
@@ -42,8 +65,51 @@ export function ReportView({ data, enrichment }: ReportViewProps) {
   const sDiscarded = data.narrative.discardedOptions.length > 0 ? nextSection() : 0;
   const sComparison = data.comparison ? nextSection() : 0;
 
+  const originInfo = origin ? ORIGIN_LABELS[origin] : null;
+  const stateInfo = stateType ? STATE_LABELS[stateType] : null;
+
   return (
     <div className="report-container max-w-[800px] mx-auto bg-white print:shadow-none print:max-w-none">
+      {/* ── Report context banner ── */}
+      {(originInfo || stateInfo) && (
+        <div className={cn(
+          'rounded-lg border p-4 mb-6 print:mb-4',
+          originInfo?.bg ?? 'bg-slate-50',
+          originInfo?.border ?? 'border-slate-200',
+        )}>
+          <div className="flex items-center gap-4 flex-wrap">
+            {originInfo && (
+              <div className="flex items-center gap-2">
+                <span className="text-base">{originInfo.icon}</span>
+                <div>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Origen</p>
+                  <p className={cn('text-sm font-bold', originInfo.color)}>{originInfo.label}</p>
+                </div>
+              </div>
+            )}
+            {originInfo && stateInfo && (
+              <span className="h-8 w-px bg-slate-200" />
+            )}
+            <div className="flex items-center gap-2">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Escenario</p>
+                <p className="text-sm font-bold text-[#111827]">{data.companyName} — {data.scenarioName}</p>
+              </div>
+            </div>
+            {stateInfo && (
+              <>
+                <span className="h-8 w-px bg-slate-200" />
+                <div>
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Estado</p>
+                  <p className="text-sm font-bold text-[#111827]">{stateInfo.label}</p>
+                  <p className="text-xs text-slate-500">{stateInfo.description}</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ── Header ── */}
       <header className="border-b-2 border-[#111827] pb-6 mb-8">
         <div className="flex items-start justify-between gap-4">

@@ -36,7 +36,7 @@ export default function DemoSelectionPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <ConvergiaLogo size="sm" color="dark" />
             <span className="text-[10px] font-bold text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-2 py-0.5 rounded-md uppercase tracking-wider">
-              Demo
+              Demo guiada
             </span>
           </Link>
           <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export default function DemoSelectionPage() {
               href="/lab"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              Lab
+              Lab / Exploración
             </Link>
             <Link
               href="/studio"
@@ -67,14 +67,14 @@ export default function DemoSelectionPage() {
       <header className="bg-white border-b border-[#f0f1f5]">
         <div className="max-w-5xl mx-auto px-6 py-12 text-center">
           <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-4">
-            Escenarios curados
+            🎯 Demo guiada · Escenarios curados
           </p>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-[#111827] tracking-tight mb-4">
             Elige un escenario para explorar
           </h1>
           <p className="text-lg text-[#5b6578] max-w-2xl mx-auto leading-relaxed">
-            Cada demo simula una negociación real entre múltiples stakeholders con intereses contrapuestos.
-            Selecciona el caso que más te interese.
+            Cada demo te guía paso a paso por una negociación completa entre múltiples stakeholders.
+            Sigue el flujo lineal: escenario → stakeholders → debate → resultado.
           </p>
         </div>
       </header>
@@ -155,7 +155,7 @@ export default function DemoSelectionPage() {
                     href={`/demo/${bundle.id}/scenario`}
                     className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-[#111827] text-white rounded-xl text-base font-bold hover:bg-[#1f2937] transition-all shadow-md hover:shadow-lg"
                   >
-                    Iniciar demo
+                    Iniciar demo guiada
                     <span className="text-lg">→</span>
                   </Link>
                 </div>

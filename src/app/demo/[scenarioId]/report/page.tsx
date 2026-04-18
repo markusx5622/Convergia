@@ -93,7 +93,7 @@ export default function DemoReportPage({
               href="/lab"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              Lab
+              Lab / Exploración
             </Link>
             <Link
               href="/debug"
@@ -167,7 +167,7 @@ export default function DemoReportPage({
       <main className={cn(
         'px-6 py-8 print:px-0 print:py-0',
       )}>
-        <ReportView data={reportData} enrichment={ai.enrichment} />
+        <ReportView data={reportData} enrichment={ai.enrichment} origin="demo" stateType="base" />
       </main>
 
       {/* Footer — hidden on print */}

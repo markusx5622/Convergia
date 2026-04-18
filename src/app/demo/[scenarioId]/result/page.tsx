@@ -144,7 +144,7 @@ export default function DemoResultPage({
             href={`/demo/${scenarioId}/report`}
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-all shadow-md text-sm"
           >
-            📄 Exportar informe
+            📄 Exportar informe de la demo
           </Link>
           <Link
             href="/lab"

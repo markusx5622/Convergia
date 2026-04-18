@@ -72,13 +72,13 @@ export default function StudioPage() {
               href="/lab"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
-              Lab
+              Lab / Exploración
             </Link>
             <Link
               href="/demo"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
-              Demo
+              Demo guiada
             </Link>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function StudioPage() {
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
               <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.15em] mb-2">
-                Scenario Studio
+                🛠 Studio · Escenario personalizado
               </p>
               <h1 className="text-3xl font-extrabold text-[#111827] tracking-tight">
                 Constructor de escenarios

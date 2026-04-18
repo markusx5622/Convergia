@@ -69,7 +69,7 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
               <Link href="/" className="flex items-center gap-2.5 group">
                 <ConvergiaLogo size="sm" color="dark" />
                 <span className="text-[10px] font-bold text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-2 py-0.5 rounded-md uppercase tracking-wider">
-                  Demo
+                  Demo guiada
                 </span>
               </Link>
               {scenarioLabel && (
@@ -123,7 +123,7 @@ export function PageShell({ children, title, subtitle, currentStep, scenarioId, 
                     : 'text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585]',
                 )}
               >
-                Lab
+                Lab / Exploración
               </Link>
               <Link
                 href="/studio"

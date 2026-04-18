@@ -1,19 +1,39 @@
 'use client';
 
-import { useMemo, useCallback, useState } from 'react';
+import { Suspense, useMemo, useCallback, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { SCENARIO_BUNDLES, DEFAULT_BUNDLE, getBundle } from '@/data/scenarios';
 import type { ScenarioBundle } from '@/data/scenarios';
 import { runSimulation } from '@/engine/simulation';
 import { buildReportData } from '@/engine/report';
 import { ReportView } from '@/components/ReportView';
+import type { ReportOrigin, ReportStateType } from '@/components/ReportView';
 import { AINarrativeToggle } from '@/components/AINarrativeToggle';
 import { AIConfigPanel } from '@/components/AIConfigPanel';
 import { useAINarrative } from '@/lib/useAINarrative';
 
 export default function ReportPage() {
-  const [activeScenarioId, setActiveScenarioId] = useState(DEFAULT_BUNDLE.id);
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center"><p className="text-slate-500">Cargando informe…</p></div>}>
+      <ReportPageContent />
+    </Suspense>
+  );
+}
+
+function ReportPageContent() {
+  const searchParams = useSearchParams();
+
+  // Parse origin & state from URL params (set by Lab CTAs)
+  const originParam = searchParams.get('origin') as ReportOrigin | null;
+  const stateParam = searchParams.get('state') as ReportStateType | null;
+  const scenarioParam = searchParams.get('scenario');
+
+  const origin: ReportOrigin = originParam && ['demo', 'lab', 'studio'].includes(originParam) ? originParam : 'lab';
+  const stateType: ReportStateType = stateParam && ['base', 'adjusted', 'comparison'].includes(stateParam) ? stateParam : 'base';
+
+  const [activeScenarioId, setActiveScenarioId] = useState(scenarioParam ?? DEFAULT_BUNDLE.id);
   const ai = useAINarrative();
 
   const bundle: ScenarioBundle = getBundle(activeScenarioId) ?? DEFAULT_BUNDLE;
@@ -72,16 +92,22 @@ export default function ReportPage() {
               Inicio
             </Link>
             <Link
-              href="/result"
+              href="/demo"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
-              Resultado
+              Demo guiada
             </Link>
             <Link
               href="/lab"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#0d6e6e] hover:bg-[#f0fafa] hover:text-[#0f8585] transition-colors"
             >
-              Lab
+              Lab / Exploración
+            </Link>
+            <Link
+              href="/studio"
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+            >
+              Studio
             </Link>
             <Link
               href="/debug"
@@ -167,7 +193,12 @@ export default function ReportPage() {
       <main className={cn(
         'px-6 py-8 print:px-0 print:py-0',
       )}>
-        <ReportView data={reportData} enrichment={ai.enrichment} />
+        <ReportView
+          data={reportData}
+          enrichment={ai.enrichment}
+          origin={origin}
+          stateType={stateType}
+        />
       </main>
 
       {/* Footer — hidden on print */}
