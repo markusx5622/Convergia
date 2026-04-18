@@ -1,7 +1,12 @@
 'use client';
 
+import { useCallback } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { ResultSummary } from '@/components/ResultSummary';
+import { AINarrativeToggle } from '@/components/AINarrativeToggle';
+import { AINarrativeBanner } from '@/components/AINarrativeBanner';
+import { AIConfigPanel } from '@/components/AIConfigPanel';
+import { useAINarrative } from '@/lib/useAINarrative';
 import { runSimulation } from '@/engine/simulation';
 import { baseScenario } from '@/data/scenario';
 import { stakeholders } from '@/data/stakeholders';
@@ -17,6 +22,25 @@ const stakeholderNames: Record<string, string> = {};
 for (const s of stakeholders) stakeholderNames[s.id] = s.name;
 
 export default function ResultPage() {
+  const ai = useAINarrative();
+
+  const handleToggle = useCallback(
+    (enabled: boolean) => {
+      ai.setAiEnabled(enabled);
+      if (enabled && ai.config?.apiKey) {
+        ai.generate(sim, stakeholders, investmentOptions);
+      }
+    },
+    [ai],
+  );
+
+  const handleConfigChange = useCallback(
+    (config: Parameters<typeof ai.setConfig>[0]) => {
+      ai.setConfig(config);
+    },
+    [ai],
+  );
+
   return (
     <PageShell
       title="Resultado final"
@@ -29,6 +53,7 @@ export default function ResultPage() {
         options={investmentOptions}
         stakeholderNames={stakeholderNames}
         optionNames={optionNames}
+        enrichment={ai.enrichment}
       />
 
       {/* Deterministic engine callout */}
@@ -43,6 +68,39 @@ export default function ResultPage() {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* AI Narrative section */}
+      <div className="mt-8 space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-base">✨</span>
+          <h3 className="font-bold text-slate-900">Capa narrativa IA</h3>
+          <span className="text-xs text-slate-400">(opcional)</span>
+        </div>
+
+        <AIConfigPanel
+          config={ai.config}
+          onConfigChange={handleConfigChange}
+        />
+
+        <AINarrativeToggle
+          enabled={ai.aiEnabled}
+          onToggle={handleToggle}
+          loading={ai.loading}
+          error={ai.error}
+        />
+
+        <AINarrativeBanner source={ai.enrichment.source} />
+
+        {ai.aiEnabled && ai.config?.apiKey && !ai.loading && ai.enrichment.source === 'fallback' && (
+          <button
+            type="button"
+            onClick={() => ai.generate(sim, stakeholders, investmentOptions)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 text-white rounded-xl text-sm font-bold hover:bg-violet-700 transition-all shadow-md"
+          >
+            ✨ Generar narrativa IA
+          </button>
+        )}
       </div>
 
       {/* Navigation */}

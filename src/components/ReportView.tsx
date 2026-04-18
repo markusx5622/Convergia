@@ -3,6 +3,8 @@
 import { cn } from '@/lib/utils';
 import type { ReportData } from '@/engine/report';
 import type { ConsensusStatus } from '@/engine/types';
+import type { LLMEnrichment } from '@/services/llm/types';
+import { AIBadge } from './AINarrativeBanner';
 
 // ---------------------------------------------------------------------------
 // Labels
@@ -21,9 +23,11 @@ const CONSENSUS_LABEL: Record<ConsensusStatus, string> = {
 
 interface ReportViewProps {
   data: ReportData;
+  /** Optional AI enrichment for the executive summary */
+  enrichment?: LLMEnrichment;
 }
 
-export function ReportView({ data }: ReportViewProps) {
+export function ReportView({ data, enrichment }: ReportViewProps) {
   // Compute section numbers dynamically to handle conditional sections
   let sectionCounter = 0;
   const nextSection = () => ++sectionCounter;
@@ -74,6 +78,15 @@ export function ReportView({ data }: ReportViewProps) {
         <p className="text-slate-700 leading-relaxed font-medium">
           {data.narrative.headline}
         </p>
+        {/* AI-enriched executive summary */}
+        {enrichment?.source === 'ai' && enrichment.executiveSummary && (
+          <div className="mt-4 p-4 bg-violet-50 border border-violet-200 rounded-lg">
+            <p className="text-slate-700 leading-relaxed text-sm">
+              {enrichment.executiveSummary}
+              <AIBadge />
+            </p>
+          </div>
+        )}
       </section>
 
       {/* ── 2. Winner ── */}
@@ -353,6 +366,11 @@ export function ReportView({ data }: ReportViewProps) {
           <div>
             <p className="font-bold text-slate-600">Convergia</p>
             <p>Motor determinista de negociación multi-stakeholder</p>
+            {enrichment?.source === 'ai' && (
+              <p className="text-violet-500 mt-1">
+                ✨ Narrativa enriquecida con IA (redacción solamente — resultados deterministas)
+              </p>
+            )}
           </div>
           <div className="text-right">
             <p>Generado: {new Date(data.generatedAt).toLocaleString('es-ES')}</p>
