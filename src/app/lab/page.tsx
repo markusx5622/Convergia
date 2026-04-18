@@ -106,10 +106,10 @@ export default function LabPage() {
   return (
     <div className="min-h-screen bg-[#f7f8fa]">
       {/* Header */}
-      <nav className="bg-white border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight">
+            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight hover:opacity-80 transition-opacity duration-200">
               Convergia
             </Link>
             <span className="text-[10px] font-mono font-bold text-[#0d6e6e] bg-[#f0fafa] px-2 py-0.5 rounded-md border border-[#d0ecec] uppercase tracking-wider">
@@ -119,25 +119,25 @@ export default function LabPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Inicio
             </Link>
             <Link
               href="/demo"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Demo guiada
             </Link>
             <Link
               href="/studio"
-              className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
+              className="px-3 py-1.5 rounded-lg text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-all duration-200"
             >
               Studio
             </Link>
             <Link
               href="/debug"
-              className="px-2.5 py-1.5 rounded-md text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-colors"
+              className="px-2.5 py-1.5 rounded-lg text-xs font-mono text-[#5b6578]/50 hover:bg-[#f0f1f5] hover:text-[#5b6578] transition-all duration-200"
             >
               /debug
             </Link>
@@ -177,14 +177,14 @@ export default function LabPage() {
               {isModified && (
                 <button
                   onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-50 text-amber-700 rounded-lg text-sm font-semibold border border-amber-200 hover:bg-amber-100 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-50 text-amber-700 rounded-lg text-sm font-semibold border border-amber-200 hover:bg-amber-100 transition-all duration-200 hover:shadow-sm"
                 >
                   ↺ Reset pesos
                 </button>
               )}
               <button
                 onClick={handleFullReset}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-semibold border border-slate-200 hover:bg-slate-200 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-semibold border border-slate-200 hover:bg-slate-200 transition-all duration-200 hover:shadow-sm"
               >
                 ↺ Reset todo
               </button>
@@ -221,9 +221,9 @@ export default function LabPage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5',
+                  'px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-1.5',
                   activeTab === tab.id
-                    ? 'bg-slate-900 text-white shadow-sm'
+                    ? 'bg-[#111827] text-white shadow-md'
                     : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700',
                 )}
               >
@@ -236,7 +236,7 @@ export default function LabPage() {
       </div>
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-8 animate-fade-in">
         {/* Scenario tab */}
         {activeTab === 'scenario' && (
           <div className="space-y-8">
@@ -249,13 +249,13 @@ export default function LabPage() {
               />
             </section>
 
-            <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-              <h2 className="text-lg font-bold text-slate-900 mb-3">{bundle.scenario.company}</h2>
+            <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm card-interactive">
+              <h2 className="text-lg font-bold text-[#111827] mb-3">{bundle.scenario.company}</h2>
               <p className="text-slate-600 leading-relaxed mb-4">{bundle.scenario.description}</p>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                 {bundle.scenario.kpis.map((kpi) => (
-                  <div key={kpi.name} className="bg-slate-50 rounded-lg border border-slate-200 p-3 text-center">
-                    <p className="text-lg font-extrabold text-slate-900">
+                  <div key={kpi.name} className="bg-slate-50 rounded-lg border border-slate-200 p-3 text-center transition-all duration-200 hover:bg-[#f0fafa] hover:border-[#d0ecec]">
+                    <p className="text-lg font-extrabold text-[#111827]">
                       {kpi.current}
                       <span className="text-xs font-medium text-slate-400 ml-0.5">{kpi.unit}</span>
                     </p>
@@ -266,18 +266,18 @@ export default function LabPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-bold text-slate-900 mb-3">
+              <h2 className="text-lg font-bold text-[#111827] mb-3">
                 Opciones de inversión
-                <span className="ml-2 text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                <span className="ml-2 text-xs font-medium text-[#0d6e6e] bg-[#f0fafa] px-2 py-0.5 rounded-full border border-[#d0ecec]">
                   {bundle.options.length}
                 </span>
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
                 {bundle.options.map((opt) => (
-                  <div key={opt.id} className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 className="font-bold text-slate-900 mb-1">{opt.name}</h3>
+                  <div key={opt.id} className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-interactive">
+                    <h3 className="font-bold text-[#111827] mb-1">{opt.name}</h3>
                     <p className="text-xs text-slate-500 mb-2">{opt.description}</p>
-                    <span className="text-sm font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded-md">
+                    <span className="text-sm font-bold text-[#111827] bg-slate-100 px-2 py-0.5 rounded-md">
                       {(opt.cost / 1000).toFixed(0)}k€
                     </span>
                   </div>
@@ -335,7 +335,7 @@ export default function LabPage() {
             />
             {/* Precise report CTAs */}
             <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm mt-6">
-              <h4 className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <h4 className="font-bold text-[#111827] mb-1 flex items-center gap-2">
                 📄 Generar informe desde Lab
               </h4>
               <p className="text-xs text-slate-500 mb-4">
@@ -346,13 +346,13 @@ export default function LabPage() {
                   <>
                     <Link
                       href={reportAdjustedUrl}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
                     >
                       📄 Informe del estado ajustado
                     </Link>
                     <Link
                       href={reportComparisonUrl}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 text-white rounded-xl text-sm font-bold hover:bg-amber-700 transition-all shadow-md"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0d6e6e] text-white rounded-xl text-sm font-bold hover:bg-[#0f8585] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
                     >
                       📊 Informe comparativo base vs ajustado
                     </Link>
@@ -360,7 +360,7 @@ export default function LabPage() {
                 ) : (
                   <Link
                     href={`${reportBaseUrl}&state=base`}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all shadow-md"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-xl text-sm font-bold hover:bg-[#1f2937] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
                   >
                     📄 Informe del estado base
                   </Link>

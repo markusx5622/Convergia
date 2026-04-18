@@ -18,12 +18,14 @@ interface RoundSummaryProps {
 
 function SectionTitle({ icon, title, description }: { icon: string; title: string; description?: string }) {
   return (
-    <div className="flex items-center gap-2 mb-4">
-      <span className="text-base">{icon}</span>
-      <h3 className="text-base font-bold text-slate-900">{title}</h3>
-      {description && (
-        <span className="text-xs text-slate-400 ml-1">{description}</span>
-      )}
+    <div className="flex items-center gap-2.5 mb-4">
+      <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-base">{icon}</span>
+      <div>
+        <h3 className="text-base font-bold text-[#111827]">{title}</h3>
+        {description && (
+          <p className="text-xs text-slate-400 mt-0.5">{description}</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -52,7 +54,7 @@ export function RoundSummary({
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       {/* Round narrative */}
       <RoundNarrativeCard
         narrative={narrative}

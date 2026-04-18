@@ -76,21 +76,26 @@ export function ComparisonPanel({
 
   if (!isModified) {
     return (
-      <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 text-center">
-        <span className="text-3xl block mb-3">🔬</span>
-        <p className="text-slate-600 font-medium">Resultado canónico</p>
-        <p className="text-sm text-slate-400 mt-1">
-          Ajusta los pesos de los stakeholders o cambia de escenario para ver comparación base vs ajustado.
+      <div className="bg-white rounded-xl border border-slate-200 p-8 text-center animate-fade-in">
+        <span className="text-4xl block mb-3">🔬</span>
+        <p className="text-[#111827] font-bold text-lg">Resultado canónico</p>
+        <p className="text-sm text-slate-500 mt-2 max-w-md mx-auto leading-relaxed">
+          Ajusta los pesos de los stakeholders en la pestaña <strong className="text-[#0d6e6e]">Pesos</strong> para ver la comparación base vs ajustado.
         </p>
+        <div className="mt-4 flex justify-center">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#f0fafa] text-[#0d6e6e] text-xs font-semibold rounded-full border border-[#d0ecec]">
+            Determinista · Sin modificaciones
+          </span>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Winner comparison */}
       <div className={cn(
-        'rounded-xl border-2 p-6',
+        'rounded-xl border-2 p-6 animate-scale-in',
         winnerChanged
           ? 'border-amber-400 bg-gradient-to-r from-amber-50 to-yellow-50'
           : 'border-emerald-300 bg-gradient-to-r from-emerald-50 to-green-50',
@@ -129,9 +134,9 @@ export function ComparisonPanel({
       </div>
 
       {/* Metrics comparison */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 stagger-children">
         {/* Consensus status */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-interactive">
           <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Consenso</p>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -153,7 +158,7 @@ export function ComparisonPanel({
         </div>
 
         {/* Consensus score */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-interactive">
           <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Score de consenso</p>
           <div className="flex items-baseline gap-3">
             <span className="text-2xl font-bold text-slate-900 font-mono tabular-nums">
@@ -170,7 +175,7 @@ export function ComparisonPanel({
         </div>
 
         {/* Conflict */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm card-interactive">
           <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Conflicto total</p>
           <div className="flex items-baseline gap-3">
             <span className="text-2xl font-bold text-slate-900 font-mono tabular-nums">
@@ -213,7 +218,7 @@ export function ComparisonPanel({
                   const isBaseWinner = o.id === baseWinner;
                   const isAdjWinner = o.id === adjWinner;
                   return (
-                    <tr key={o.id} className="border-b border-slate-100 hover:bg-slate-50">
+                    <tr key={o.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors duration-150">
                       <td className="py-2 px-3">
                         <span className="font-medium text-slate-900">{o.name}</span>
                         {isAdjWinner && <span className="ml-1.5 text-yellow-500">🏆</span>}
@@ -247,7 +252,7 @@ export function ComparisonPanel({
         <h4 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
           <span>👥</span> Preferencias por stakeholder
         </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 stagger-children">
           {stakeholders.map((s) => {
             const baseTop = baseLastRound?.rankings[s.id]?.[0] ?? '';
             const adjTop = adjLastRound?.rankings[s.id]?.[0] ?? '';
@@ -256,7 +261,7 @@ export function ComparisonPanel({
               <div
                 key={s.id}
                 className={cn(
-                  'p-3 rounded-lg border',
+                  'p-3 rounded-lg border transition-all duration-200 hover:shadow-sm',
                   changed ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200',
                 )}
               >

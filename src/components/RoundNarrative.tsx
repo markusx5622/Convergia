@@ -13,18 +13,18 @@ export function RoundNarrativeCard({
   stakeholderNames,
 }: RoundNarrativeCardProps) {
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-5 mb-6">
+    <div className="bg-gradient-to-r from-[#f0fafa] to-[#eef5fb] rounded-xl border border-[#d0ecec] p-5 mb-6 animate-fade-in">
       <div className="flex items-center gap-2 mb-3">
         <span className="text-sm">📝</span>
-        <h4 className="text-sm font-bold text-blue-900">Resumen de la ronda</h4>
+        <h4 className="text-sm font-bold text-[#0d6e6e]">Resumen de la ronda</h4>
         {narrative.leaderChanged && (
-          <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold border border-amber-200">
+          <span className="ml-auto inline-flex items-center gap-1 px-2.5 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold border border-amber-200 animate-scale-in">
             ↻ Cambio de líder
           </span>
         )}
         <span
           className={cn(
-            'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border',
+            'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border',
             narrative.consensusTrend === 'improving'
               ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
               : narrative.consensusTrend === 'declining'
@@ -47,14 +47,14 @@ export function RoundNarrativeCard({
 
       {/* Key metrics row */}
       <div className="flex flex-wrap gap-2">
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/80 rounded-lg border border-blue-100 text-xs font-medium text-slate-700">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/80 rounded-lg border border-[#d0ecec]/50 text-xs font-medium text-slate-700 transition-all duration-200 hover:bg-white hover:shadow-sm">
           🏆 Líder: <strong>{optionNames[narrative.leader] ?? narrative.leader}</strong>
         </span>
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/80 rounded-lg border border-blue-100 text-xs font-medium text-slate-700">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/80 rounded-lg border border-[#d0ecec]/50 text-xs font-medium text-slate-700 transition-all duration-200 hover:bg-white hover:shadow-sm">
           📊 Score: <strong className="font-mono tabular-nums">{narrative.leaderScore.toFixed(3)}</strong>
         </span>
         {narrative.positionChanges.length > 0 && (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 rounded-lg border border-amber-200 text-xs font-medium text-amber-700">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 rounded-lg border border-amber-200 text-xs font-medium text-amber-700 transition-all duration-200 hover:bg-amber-100 hover:shadow-sm">
             🤝 {narrative.positionChanges.length} concesión{narrative.positionChanges.length > 1 ? 'es' : ''}
           </span>
         )}
@@ -62,7 +62,7 @@ export function RoundNarrativeCard({
           const nameA = stakeholderNames[narrative.topConflictPair.a] ?? narrative.topConflictPair.a;
           const nameB = stakeholderNames[narrative.topConflictPair.b] ?? narrative.topConflictPair.b;
           return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 rounded-lg border border-red-100 text-xs font-medium text-red-700">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 rounded-lg border border-red-100 text-xs font-medium text-red-700 transition-all duration-200 hover:bg-red-100 hover:shadow-sm">
               ⚔️ {nameA} vs {nameB} ({narrative.topConflictPair.value.toFixed(3)})
             </span>
           );

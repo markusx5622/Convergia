@@ -9,22 +9,24 @@ export function DiscardedOptions({ discardedOptions }: DiscardedOptionsProps) {
   if (discardedOptions.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-base">📊</span>
-        <h3 className="font-bold text-slate-900">Opciones descartadas</h3>
-        <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
-          {discardedOptions.length}
-        </span>
+    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm animate-fade-in">
+      <div className="flex items-center gap-2.5 mb-4">
+        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-base">📊</span>
+        <div>
+          <h3 className="font-bold text-[#111827]">Opciones descartadas</h3>
+          <span className="text-xs text-slate-400">
+            {discardedOptions.length} opción{discardedOptions.length > 1 ? 'es' : ''} no seleccionada{discardedOptions.length > 1 ? 's' : ''}
+          </span>
+        </div>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-3 stagger-children">
         {discardedOptions.map((d) => {
           const isEliminated = d.reason.startsWith('Eliminada');
           return (
             <div
               key={d.optionId}
               className={cn(
-                'p-4 rounded-xl border',
+                'p-4 rounded-xl border transition-all duration-200 hover:shadow-sm',
                 isEliminated
                   ? 'bg-red-50/50 border-red-200'
                   : 'bg-slate-50 border-slate-200',
