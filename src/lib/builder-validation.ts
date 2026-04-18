@@ -12,8 +12,20 @@ import type {
   DraftOption,
   ValidationError,
 } from './builder-types';
-import { VARIABLE_IDS } from '@/engine/types';
+import { VARIABLE_IDS, VARIABLE_LABELS } from '@/engine/types';
 import type { VariableId } from '@/engine/types';
+
+/* ── Constants ── */
+
+/** Tolerance for weight sum check (weights must sum to 1.0 ± this).
+ *  Set to 0.02 to accommodate rounding when users enter values with limited decimal places. */
+export const WEIGHT_SUM_TOLERANCE = 0.02;
+
+/** Maximum allowed stakeholders */
+export const MAX_STAKEHOLDERS = 20;
+
+/** Maximum allowed options */
+export const MAX_OPTIONS = 20;
 
 /* ── Helpers ── */
 
@@ -22,8 +34,13 @@ function num(v: string): number {
 }
 
 function isValidNum(v: string): boolean {
+  if (typeof v !== 'string' || v.trim() === '') return false;
   const n = parseFloat(v);
   return !isNaN(n) && isFinite(n);
+}
+
+function variableLabel(v: VariableId): string {
+  return VARIABLE_LABELS[v] ?? v;
 }
 
 /* ── Scenario validation ── */
@@ -40,7 +57,9 @@ export function validateScenario(s: DraftScenario): ValidationError[] {
   if (!s.description.trim()) {
     errors.push({ path: 'scenario.description', message: 'La descripción es obligatoria.' });
   }
-  if (!isValidNum(s.budget) || num(s.budget) <= 0) {
+  if (!isValidNum(s.budget)) {
+    errors.push({ path: 'scenario.budget', message: 'El presupuesto debe ser un número válido.' });
+  } else if (num(s.budget) <= 0) {
     errors.push({ path: 'scenario.budget', message: 'El presupuesto debe ser un número positivo.' });
   }
 
@@ -51,63 +70,103 @@ export function validateScenario(s: DraftScenario): ValidationError[] {
 
 export function validateStakeholder(s: DraftStakeholder, idx: number): ValidationError[] {
   const prefix = `stakeholders[${idx}]`;
+  const label = s.name?.trim() || `Stakeholder ${idx + 1}`;
   const errors: ValidationError[] = [];
 
-  if (!s.name.trim()) {
+  if (!s.name?.trim()) {
     errors.push({ path: `${prefix}.name`, message: `Stakeholder ${idx + 1}: el nombre es obligatorio.` });
   }
-  if (!s.role.trim()) {
-    errors.push({ path: `${prefix}.role`, message: `Stakeholder ${idx + 1}: el rol es obligatorio.` });
+  if (!s.role?.trim()) {
+    errors.push({ path: `${prefix}.role`, message: `${label}: el rol es obligatorio.` });
   }
 
-  // Weights must sum to 1.0 (±0.01 tolerance)
+  // Weights must sum to 1.0 (±tolerance)
   let weightSum = 0;
+  let hasWeightErrors = false;
   for (const v of VARIABLE_IDS) {
-    const w = num(s.weights[v]);
-    if (!isValidNum(s.weights[v]) || w < 0 || w > 1) {
+    const raw = s.weights?.[v];
+    if (raw === undefined || raw === null || !isValidNum(String(raw))) {
       errors.push({
         path: `${prefix}.weights.${v}`,
-        message: `Stakeholder "${s.name || idx + 1}": el peso de ${v} debe estar entre 0 y 1.`,
+        message: `${label}: el peso de "${variableLabel(v)}" debe ser un número válido.`,
       });
+      hasWeightErrors = true;
     } else {
-      weightSum += w;
+      const w = num(String(raw));
+      if (w < 0 || w > 1) {
+        errors.push({
+          path: `${prefix}.weights.${v}`,
+          message: `${label}: el peso de "${variableLabel(v)}" debe estar entre 0 y 1 (actual: ${w}).`,
+        });
+        hasWeightErrors = true;
+      } else {
+        weightSum += w;
+      }
     }
   }
-  if (Math.abs(weightSum - 1.0) > 0.01) {
+  if (!hasWeightErrors && Math.abs(weightSum - 1.0) > WEIGHT_SUM_TOLERANCE) {
     errors.push({
       path: `${prefix}.weights`,
-      message: `Stakeholder "${s.name || idx + 1}": los pesos suman ${weightSum.toFixed(3)} — deben sumar 1.00.`,
+      message: `${label}: los pesos suman ${weightSum.toFixed(3)} — deben sumar 1.00 (±${WEIGHT_SUM_TOLERANCE}).`,
     });
   }
 
   // Red lines
-  for (let ri = 0; ri < s.redLines.length; ri++) {
+  for (let ri = 0; ri < (s.redLines?.length ?? 0); ri++) {
     const rl = s.redLines[ri];
-    if (!isValidNum(rl.threshold) || num(rl.threshold) < 0 || num(rl.threshold) > 1) {
+    if (!isValidNum(String(rl.threshold))) {
       errors.push({
         path: `${prefix}.redLines[${ri}].threshold`,
-        message: `Stakeholder "${s.name || idx + 1}", línea roja ${ri + 1}: umbral debe estar entre 0 y 1.`,
+        message: `${label}, línea roja ${ri + 1}: el umbral debe ser un número válido.`,
+      });
+    } else if (num(String(rl.threshold)) < 0 || num(String(rl.threshold)) > 1) {
+      errors.push({
+        path: `${prefix}.redLines[${ri}].threshold`,
+        message: `${label}, línea roja ${ri + 1}: el umbral debe estar entre 0 y 1.`,
+      });
+    }
+    if (!VARIABLE_IDS.includes(rl.variable)) {
+      errors.push({
+        path: `${prefix}.redLines[${ri}].variable`,
+        message: `${label}, línea roja ${ri + 1}: la variable "${rl.variable}" no es válida.`,
       });
     }
   }
 
   // Concession params
-  if (!isValidNum(s.concessionThreshold) || num(s.concessionThreshold) < 0 || num(s.concessionThreshold) > 1) {
+  if (!isValidNum(String(s.concessionThreshold))) {
     errors.push({
       path: `${prefix}.concessionThreshold`,
-      message: `Stakeholder "${s.name || idx + 1}": umbral de concesión debe estar entre 0 y 1.`,
+      message: `${label}: el umbral de concesión debe ser un número válido.`,
+    });
+  } else if (num(String(s.concessionThreshold)) < 0 || num(String(s.concessionThreshold)) > 1) {
+    errors.push({
+      path: `${prefix}.concessionThreshold`,
+      message: `${label}: el umbral de concesión debe estar entre 0 y 1.`,
     });
   }
-  if (!isValidNum(s.concessionRate) || num(s.concessionRate) < 0 || num(s.concessionRate) > 1) {
+
+  if (!isValidNum(String(s.concessionRate))) {
     errors.push({
       path: `${prefix}.concessionRate`,
-      message: `Stakeholder "${s.name || idx + 1}": tasa de concesión debe estar entre 0 y 1.`,
+      message: `${label}: la tasa de concesión debe ser un número válido.`,
+    });
+  } else if (num(String(s.concessionRate)) < 0 || num(String(s.concessionRate)) > 1) {
+    errors.push({
+      path: `${prefix}.concessionRate`,
+      message: `${label}: la tasa de concesión debe estar entre 0 y 1.`,
     });
   }
-  if (!isValidNum(s.acceptabilityThreshold) || num(s.acceptabilityThreshold) < 0 || num(s.acceptabilityThreshold) > 1) {
+
+  if (!isValidNum(String(s.acceptabilityThreshold))) {
     errors.push({
       path: `${prefix}.acceptabilityThreshold`,
-      message: `Stakeholder "${s.name || idx + 1}": umbral de aceptabilidad debe estar entre 0 y 1.`,
+      message: `${label}: el umbral de aceptabilidad debe ser un número válido.`,
+    });
+  } else if (num(String(s.acceptabilityThreshold)) < 0 || num(String(s.acceptabilityThreshold)) > 1) {
+    errors.push({
+      path: `${prefix}.acceptabilityThreshold`,
+      message: `${label}: el umbral de aceptabilidad debe estar entre 0 y 1.`,
     });
   }
 
@@ -118,28 +177,40 @@ export function validateStakeholder(s: DraftStakeholder, idx: number): Validatio
 
 export function validateOption(o: DraftOption, idx: number, budget: number): ValidationError[] {
   const prefix = `options[${idx}]`;
+  const label = o.name?.trim() || `Opción ${idx + 1}`;
   const errors: ValidationError[] = [];
 
-  if (!o.name.trim()) {
+  if (!o.name?.trim()) {
     errors.push({ path: `${prefix}.name`, message: `Opción ${idx + 1}: el nombre es obligatorio.` });
   }
-  if (!isValidNum(o.cost) || num(o.cost) <= 0) {
-    errors.push({ path: `${prefix}.cost`, message: `Opción "${o.name || idx + 1}": el coste debe ser un número positivo.` });
-  } else if (num(o.cost) > budget && budget > 0) {
+
+  if (!isValidNum(String(o.cost))) {
+    errors.push({ path: `${prefix}.cost`, message: `${label}: el coste debe ser un número válido.` });
+  } else if (num(String(o.cost)) <= 0) {
+    errors.push({ path: `${prefix}.cost`, message: `${label}: el coste debe ser un número positivo.` });
+  } else if (budget > 0 && num(String(o.cost)) > budget) {
     errors.push({
       path: `${prefix}.cost`,
-      message: `Opción "${o.name || idx + 1}": el coste (${num(o.cost).toLocaleString('es-ES')}€) excede el presupuesto (${budget.toLocaleString('es-ES')}€).`,
+      message: `${label}: el coste (${num(String(o.cost)).toLocaleString('es-ES')}€) excede el presupuesto (${budget.toLocaleString('es-ES')}€).`,
     });
   }
 
   // Impacts between 0 and 1
   for (const v of VARIABLE_IDS) {
-    const val = num(o.impacts[v]);
-    if (!isValidNum(o.impacts[v]) || val < 0 || val > 1) {
+    const raw = o.impacts?.[v];
+    if (raw === undefined || raw === null || !isValidNum(String(raw))) {
       errors.push({
         path: `${prefix}.impacts.${v}`,
-        message: `Opción "${o.name || idx + 1}": impacto ${v} debe estar entre 0 y 1.`,
+        message: `${label}: el impacto de "${variableLabel(v)}" debe ser un número válido.`,
       });
+    } else {
+      const val = num(String(raw));
+      if (val < 0 || val > 1) {
+        errors.push({
+          path: `${prefix}.impacts.${v}`,
+          message: `${label}: el impacto de "${variableLabel(v)}" debe estar entre 0 y 1 (actual: ${val}).`,
+        });
+      }
     }
   }
 
@@ -151,30 +222,97 @@ export function validateOption(o: DraftOption, idx: number, budget: number): Val
 export function validateAll(state: BuilderState): ValidationError[] {
   const errors: ValidationError[] = [];
 
+  if (!state || typeof state !== 'object') {
+    errors.push({ path: 'state', message: 'El estado del builder no es válido.' });
+    return errors;
+  }
+
   // Scenario
-  errors.push(...validateScenario(state.scenario));
-
-  // Min stakeholders
-  if (state.stakeholders.length < 2) {
-    errors.push({
-      path: 'stakeholders',
-      message: 'Se requieren al menos 2 stakeholders para una negociación.',
-    });
-  }
-  for (let i = 0; i < state.stakeholders.length; i++) {
-    errors.push(...validateStakeholder(state.stakeholders[i], i));
+  if (!state.scenario) {
+    errors.push({ path: 'scenario', message: 'Falta la configuración del escenario.' });
+  } else {
+    errors.push(...validateScenario(state.scenario));
   }
 
-  // Min options
-  if (state.options.length < 2) {
-    errors.push({
-      path: 'options',
-      message: 'Se requieren al menos 2 opciones de inversión.',
-    });
+  // Stakeholders array check
+  if (!Array.isArray(state.stakeholders)) {
+    errors.push({ path: 'stakeholders', message: 'La lista de stakeholders no es válida.' });
+  } else {
+    // Min stakeholders
+    if (state.stakeholders.length < 2) {
+      errors.push({
+        path: 'stakeholders',
+        message: 'Se requieren al menos 2 stakeholders para una negociación.',
+      });
+    }
+    if (state.stakeholders.length > MAX_STAKEHOLDERS) {
+      errors.push({
+        path: 'stakeholders',
+        message: `Se permiten un máximo de ${MAX_STAKEHOLDERS} stakeholders.`,
+      });
+    }
+
+    // Duplicate stakeholder names
+    const shNames = state.stakeholders
+      .map((s) => s.name?.trim().toLowerCase())
+      .filter(Boolean);
+    const seen = new Set<string>();
+    const dupes = new Set<string>();
+    for (const name of shNames) {
+      if (seen.has(name)) dupes.add(name);
+      seen.add(name);
+    }
+    if (dupes.size > 0) {
+      errors.push({
+        path: 'stakeholders',
+        message: `Nombres de stakeholders duplicados: ${[...dupes].join(', ')}. Cada stakeholder debe tener un nombre único.`,
+      });
+    }
+
+    for (let i = 0; i < state.stakeholders.length; i++) {
+      errors.push(...validateStakeholder(state.stakeholders[i], i));
+    }
   }
-  const budget = isValidNum(state.scenario.budget) ? num(state.scenario.budget) : 0;
-  for (let i = 0; i < state.options.length; i++) {
-    errors.push(...validateOption(state.options[i], i, budget));
+
+  // Options array check
+  if (!Array.isArray(state.options)) {
+    errors.push({ path: 'options', message: 'La lista de opciones no es válida.' });
+  } else {
+    // Min options
+    if (state.options.length < 2) {
+      errors.push({
+        path: 'options',
+        message: 'Se requieren al menos 2 opciones de inversión.',
+      });
+    }
+    if (state.options.length > MAX_OPTIONS) {
+      errors.push({
+        path: 'options',
+        message: `Se permiten un máximo de ${MAX_OPTIONS} opciones.`,
+      });
+    }
+
+    // Duplicate option names
+    const optNames = state.options
+      .map((o) => o.name?.trim().toLowerCase())
+      .filter(Boolean);
+    const seenOpt = new Set<string>();
+    const dupesOpt = new Set<string>();
+    for (const name of optNames) {
+      if (seenOpt.has(name)) dupesOpt.add(name);
+      seenOpt.add(name);
+    }
+    if (dupesOpt.size > 0) {
+      errors.push({
+        path: 'options',
+        message: `Nombres de opciones duplicados: ${[...dupesOpt].join(', ')}. Cada opción debe tener un nombre único.`,
+      });
+    }
+
+    const budget = state.scenario && isValidNum(state.scenario.budget) ? num(state.scenario.budget) : 0;
+    for (let i = 0; i < state.options.length; i++) {
+      errors.push(...validateOption(state.options[i], i, budget));
+    }
   }
 
   return errors;

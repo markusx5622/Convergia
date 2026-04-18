@@ -37,8 +37,11 @@ export default function StudioPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const state = await importFromJSON(file);
-      store.loadState(state);
+      const result = await importFromJSON(file);
+      store.loadState(result.state);
+      if (result.warnings.length > 0) {
+        alert('Escenario importado con advertencias:\n\n' + result.warnings.join('\n'));
+      }
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Error importando archivo.');
     }
