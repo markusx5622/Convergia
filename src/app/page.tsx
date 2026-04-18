@@ -3,28 +3,28 @@ import { ConvergiaLogo } from '@/components/ConvergiaLogo';
 
 const STEPS = [
   {
-    href: '/scenario',
+    href: '/demo',
     title: 'Escenario',
     description: 'Contexto industrial, presupuesto, KPIs y opciones de inversión',
     step: 1,
-    detail: 'Empresa industrial · 250 empleados · 5 opciones',
+    detail: '3 escenarios curados · distintos sectores',
   },
   {
-    href: '/stakeholders',
+    href: '/demo',
     title: 'Stakeholders',
-    description: '4 decisores clave con prioridades, pesos y líneas rojas',
+    description: 'Decisores clave con prioridades, pesos y líneas rojas',
     step: 2,
-    detail: '4 perfiles · 6 variables · pesos · vetos',
+    detail: 'Perfiles · 6 variables · pesos · vetos',
   },
   {
-    href: '/debate',
+    href: '/demo',
     title: 'Debate',
     description: 'Rondas de negociación con scoring, conflictos y concesiones',
     step: 3,
-    detail: '3 rondas · scoring ponderado · convergencia',
+    detail: 'Rondas · scoring ponderado · convergencia',
   },
   {
-    href: '/result',
+    href: '/demo',
     title: 'Resultado',
     description: 'Decisión consensuada, narrativa explicativa y desglose completo',
     step: 4,
@@ -148,7 +148,7 @@ export default function Home() {
 
             <div className="flex flex-wrap items-center gap-4">
               <Link
-                href="/scenario"
+                href="/demo"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#111827] rounded-xl text-base font-bold hover:bg-white/90 transition-all shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-0.5"
               >
                 Explorar la demo
@@ -297,7 +297,7 @@ export default function Home() {
 
           <div className="text-center">
             <Link
-              href="/scenario"
+              href="/demo"
               className="inline-flex items-center gap-3 px-10 py-4 bg-[#111827] text-white rounded-xl text-lg font-bold hover:bg-[#1f2937] transition-all shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5"
             >
               Comenzar demo

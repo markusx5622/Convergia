@@ -75,7 +75,7 @@ export default function StudioPage() {
               Lab
             </Link>
             <Link
-              href="/scenario"
+              href="/demo"
               className="px-3 py-1.5 rounded-md text-sm font-medium text-[#5b6578] hover:bg-[#f0f1f5] hover:text-[#111827] transition-colors"
             >
               Demo
