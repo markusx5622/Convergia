@@ -20,7 +20,8 @@ export default function ResultPage() {
   return (
     <PageShell
       title="Resultado final"
-      subtitle="Decisión consensuada después de la simulación completa"
+      subtitle="Decisión consensuada tras completar todas las rondas de negociación"
+      currentStep={4}
     >
       <ResultSummary
         simulation={sim}
@@ -31,19 +32,27 @@ export default function ResultPage() {
       />
 
       {/* Navigation */}
-      <div className="flex justify-center gap-4 pt-8">
+      <div className="flex items-center justify-between pt-8 border-t border-slate-200 mt-8">
         <Link
           href="/debate"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-slate-500 hover:text-slate-700 rounded-lg text-sm font-medium transition-colors hover:bg-slate-100"
         >
           ← Volver al debate
         </Link>
-        <Link
-          href="/scenario"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-colors"
-        >
-          Revisar escenario
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/scenario"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-slate-700 rounded-xl font-semibold border border-slate-200 hover:bg-slate-50 transition-colors text-sm"
+          >
+            Revisar escenario
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-semibold hover:bg-slate-800 transition-all shadow-md text-sm"
+          >
+            Volver al inicio
+          </Link>
+        </div>
       </div>
     </PageShell>
   );

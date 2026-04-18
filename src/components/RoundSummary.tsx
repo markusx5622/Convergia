@@ -13,6 +13,18 @@ interface RoundSummaryProps {
   stakeholderNames: Record<string, string>;
 }
 
+function SectionTitle({ icon, title, description }: { icon: string; title: string; description?: string }) {
+  return (
+    <div className="flex items-center gap-2 mb-4">
+      <span className="text-base">{icon}</span>
+      <h3 className="text-base font-bold text-slate-900">{title}</h3>
+      {description && (
+        <span className="text-xs text-slate-400 ml-1">{description}</span>
+      )}
+    </div>
+  );
+}
+
 export function RoundSummary({
   round,
   stakeholders,
@@ -28,31 +40,31 @@ export function RoundSummary({
     <div className="space-y-8">
       {/* Scores */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Puntuaciones</h3>
+        <SectionTitle icon="📊" title="Puntuaciones" description="Score ponderado de cada stakeholder por opción" />
         <ScoreTable round={round} stakeholders={stakeholders} options={options} />
       </section>
 
       {/* Rankings */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Rankings por stakeholder</h3>
+        <SectionTitle icon="🥇" title="Rankings por stakeholder" description="Orden de preferencia individual" />
         <RankingGrid round={round} stakeholders={stakeholders} optionNames={optionNames} />
       </section>
 
       {/* Conflict */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Matriz de conflicto</h3>
+        <SectionTitle icon="⚔️" title="Matriz de conflicto" description="Nivel de desacuerdo entre pares" />
         <ConflictMatrix round={round} stakeholders={stakeholders} />
       </section>
 
       {/* Consensus */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Indicador de consenso</h3>
+        <SectionTitle icon="🎯" title="Indicador de consenso" description="Estado de acuerdo global" />
         <ConsensusIndicator round={round} stakeholders={stakeholders} winnerId={winnerId} />
       </section>
 
       {/* Concessions */}
       <section>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Concesiones</h3>
+        <SectionTitle icon="🤝" title="Concesiones" description="Ajustes realizados en esta ronda" />
         <ConcessionList
           concessions={round.concessions}
           stakeholderNames={stakeholderNames}

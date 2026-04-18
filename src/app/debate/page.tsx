@@ -34,38 +34,57 @@ export default function DebatePage() {
     ([, a], [, b]) => b - a,
   )[0]?.[0] ?? '';
 
+  const totalConcessions = sim.rounds.reduce((acc, r) => acc + r.concessions.length, 0);
+
   return (
     <PageShell
       title="Debate multi-stakeholder"
-      subtitle={`Simulación de ${sim.rounds.length} rondas de negociación determinista`}
+      subtitle={`Simulación determinista de ${sim.rounds.length} rondas de negociación entre los 4 decisores`}
+      currentStep={3}
     >
-      {/* Initial winner summary */}
-      <section className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-        <div className="flex items-center gap-4 flex-wrap">
-          <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Ganador inicial (Ronda 1)</p>
-            <p className="text-xl font-bold text-gray-900">{optionNames[initialWinnerId] ?? initialWinnerId}</p>
+      {/* Summary cards */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Ganador inicial</p>
+          <p className="text-lg font-bold text-slate-900">{optionNames[initialWinnerId] ?? initialWinnerId}</p>
+          <p className="text-xs text-slate-400 mt-1">Ronda 1 — antes de concesiones</p>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Ganador final</p>
+          <p className="text-lg font-bold text-slate-900">{optionNames[finalWinnerId] ?? finalWinnerId}</p>
+          <div className="mt-1">
+            {initialWinnerId === finalWinnerId ? (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-200">
+                ✓ Sin cambio
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold border border-amber-200">
+                ↻ Ganador cambió
+              </span>
+            )}
           </div>
-          <span className="text-gray-300">→</span>
-          <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Ganador final (Ronda {sim.rounds.length})</p>
-            <p className="text-xl font-bold text-gray-900">{optionNames[finalWinnerId] ?? finalWinnerId}</p>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-2">Resumen</p>
+          <div className="flex items-center gap-3">
+            <div>
+              <p className="text-lg font-bold text-slate-900">{sim.rounds.length} rondas</p>
+              <p className="text-xs text-slate-400 mt-1">{totalConcessions} concesiones · {round1.vetoes.length} vetos</p>
+            </div>
           </div>
-          {initialWinnerId === finalWinnerId ? (
-            <span className="ml-auto px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
-              Sin cambio de ganador
-            </span>
-          ) : (
-            <span className="ml-auto px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold">
-              Ganador cambió
-            </span>
-          )}
         </div>
       </section>
 
       {/* Vetos (shown once) */}
       <section className="mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Vetos y líneas rojas</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <h2 className="text-lg font-bold text-slate-900">Vetos y líneas rojas</h2>
+          {round1.vetoes.length > 0 && (
+            <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+              {round1.vetoes.length} activados
+            </span>
+          )}
+        </div>
         <VetoList
           vetoes={round1.vetoes}
           eliminatedIds={round1.eliminatedOptionIds}
@@ -76,26 +95,47 @@ export default function DebatePage() {
 
       {/* Round tabs */}
       <section className="mb-8">
-        <div className="flex items-center gap-2 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mr-4">Rondas</h2>
-          {sim.rounds.map((r, i) => (
-            <button
-              key={r.round}
-              onClick={() => setActiveRound(i)}
-              className={cn(
-                'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
-                activeRound === i
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200',
-              )}
-            >
-              Ronda {r.round}
-            </button>
-          ))}
+        <div className="flex items-center gap-3 mb-5 flex-wrap">
+          <h2 className="text-lg font-bold text-slate-900">Rondas de negociación</h2>
+          <div className="flex items-center gap-1.5 ml-auto">
+            {sim.rounds.map((r, i) => (
+              <button
+                key={r.round}
+                onClick={() => setActiveRound(i)}
+                className={cn(
+                  'px-4 py-2 rounded-lg text-sm font-semibold transition-all',
+                  activeRound === i
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'bg-white text-slate-500 border border-slate-200 hover:border-slate-300 hover:text-slate-700',
+                )}
+              >
+                Ronda {r.round}
+              </button>
+            ))}
+          </div>
         </div>
 
         {currentRound && (
-          <div className="border border-gray-200 rounded-xl p-6 bg-white">
+          <div className="border border-slate-200 rounded-xl p-6 bg-white shadow-sm">
+            <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-100">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-slate-900 text-white text-xs font-bold">
+                {currentRound.round}
+              </span>
+              <h3 className="text-base font-bold text-slate-900">
+                Ronda {currentRound.round}
+              </h3>
+              <span className={cn(
+                'ml-auto px-2.5 py-1 rounded-full text-xs font-semibold',
+                currentRound.consensusStatus === 'full' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                currentRound.consensusStatus === 'partial' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                currentRound.consensusStatus === 'tie' ? 'bg-yellow-50 text-yellow-700 border border-yellow-200' :
+                'bg-red-50 text-red-700 border border-red-200'
+              )}>
+                {currentRound.consensusStatus === 'full' ? 'Consenso total' :
+                 currentRound.consensusStatus === 'partial' ? 'Consenso parcial' :
+                 currentRound.consensusStatus === 'tie' ? 'Empate' : 'Sin consenso'}
+              </span>
+            </div>
             <RoundSummary
               round={currentRound}
               stakeholders={stakeholders}
@@ -110,10 +150,16 @@ export default function DebatePage() {
       </section>
 
       {/* CTA */}
-      <div className="flex justify-center pt-4">
+      <div className="flex items-center justify-between pt-6 border-t border-slate-200">
+        <Link
+          href="/stakeholders"
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-slate-500 hover:text-slate-700 rounded-lg text-sm font-medium transition-colors hover:bg-slate-100"
+        >
+          ← Stakeholders
+        </Link>
         <Link
           href="/result"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl text-lg font-semibold hover:bg-gray-800 transition-colors shadow-lg"
+          className="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl text-base font-bold hover:bg-slate-800 transition-all shadow-md hover:shadow-lg"
         >
           Ver resultado final →
         </Link>

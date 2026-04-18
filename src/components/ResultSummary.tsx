@@ -10,7 +10,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 const STATUS_STYLE: Record<string, string> = {
-  full: 'bg-green-100 text-green-800 border-green-200',
+  full: 'bg-emerald-100 text-emerald-800 border-emerald-200',
   partial: 'bg-blue-100 text-blue-800 border-blue-200',
   tie: 'bg-yellow-100 text-yellow-800 border-yellow-200',
   none: 'bg-red-100 text-red-800 border-red-200',
@@ -46,46 +46,62 @@ export function ResultSummary({
   // Vetoes from round 1
   const vetoes = rounds[0]?.vetoes ?? [];
 
+  // Count acceptances
+  const acceptCount = finalOption
+    ? stakeholders.filter((s) => isAcceptableFor(s, finalScores[s.id] ?? {}, finalOption.id)).length
+    : 0;
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Winner card */}
       {finalOption ? (
-        <div className="rounded-2xl border-2 border-yellow-400 bg-gradient-to-br from-yellow-50 to-amber-50 p-8">
-          <div className="flex items-start gap-4">
-            <span className="text-5xl">🏆</span>
+        <div className="rounded-2xl border-2 border-yellow-400 bg-gradient-to-br from-yellow-50 to-amber-50 p-8 shadow-md">
+          <div className="flex items-start gap-5">
+            <span className="text-5xl flex-shrink-0">🏆</span>
             <div className="flex-1">
-              <p className="text-sm text-yellow-700 font-semibold uppercase tracking-wider mb-1">Opción ganadora</p>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{finalOption.name}</h2>
-              <p className="text-gray-600 mb-4">{finalOption.description}</p>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <span className="px-3 py-1 bg-white rounded-full border border-gray-200">
-                  💰 Coste: <strong>{(finalOption.cost / 1000).toFixed(0)}k€</strong>
+              <p className="text-xs text-yellow-700 font-bold uppercase tracking-widest mb-2">Opción ganadora</p>
+              <h2 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">{finalOption.name}</h2>
+              <p className="text-slate-600 leading-relaxed mb-5">{finalOption.description}</p>
+              <div className="flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white rounded-full border border-slate-200 text-sm font-medium shadow-sm">
+                  💰 <strong>{(finalOption.cost / 1000).toFixed(0)}k€</strong>
                 </span>
-                <span className={cn('px-3 py-1 rounded-full border font-semibold', STATUS_STYLE[consensusStatus])}>
+                <span className={cn('inline-flex items-center px-3.5 py-1.5 rounded-full border text-sm font-bold', STATUS_STYLE[consensusStatus])}>
                   {STATUS_LABEL[consensusStatus]}
                 </span>
-                <span className="px-3 py-1 bg-white rounded-full border border-gray-200">
-                  📊 Score consenso: <strong className="font-mono">{lastRound?.consensusScore.toFixed(3)}</strong>
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white rounded-full border border-slate-200 text-sm font-medium shadow-sm">
+                  📊 <strong className="font-mono tabular-nums">{lastRound?.consensusScore.toFixed(3)}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white rounded-full border border-slate-200 text-sm font-medium shadow-sm">
+                  👥 <strong>{acceptCount}/{stakeholders.length}</strong> aceptan
                 </span>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="rounded-2xl border-2 border-red-300 bg-red-50 p-8 text-center">
-          <p className="text-red-600 font-semibold text-lg">No se pudo determinar una opción ganadora.</p>
+        <div className="rounded-2xl border-2 border-red-300 bg-red-50 p-8 text-center shadow-sm">
+          <span className="text-4xl mb-3 block">⚠️</span>
+          <p className="text-red-600 font-bold text-lg">No se pudo determinar una opción ganadora.</p>
+          <p className="text-red-500 text-sm mt-1">El motor no alcanzó suficiente consenso entre los stakeholders.</p>
         </div>
       )}
 
       {/* Explanation */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-900 mb-2">Explicación</h3>
-        <p className="text-gray-700 leading-relaxed">{simulation.explanation}</p>
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-base">💡</span>
+          <h3 className="font-bold text-slate-900">Explicación del resultado</h3>
+        </div>
+        <p className="text-slate-700 leading-relaxed">{simulation.explanation}</p>
       </div>
 
       {/* Final breakdown per stakeholder */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Desglose final por stakeholder</h3>
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-5">
+          <span className="text-base">👥</span>
+          <h3 className="font-bold text-slate-900">Desglose final por stakeholder</h3>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {stakeholders.map((s) => {
             const scores = finalScores[s.id] ?? {};
@@ -96,27 +112,30 @@ export function ResultSummary({
               : false;
 
             return (
-              <div key={s.id} className="border border-gray-100 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-gray-900">{s.name}</h4>
+              <div key={s.id} className={cn(
+                'rounded-xl border-2 p-5 transition-shadow',
+                acceptable ? 'border-emerald-200 bg-emerald-50/30' : 'border-red-200 bg-red-50/30',
+              )}>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-bold text-slate-900">{s.name}</h4>
                   <span className={cn(
-                    'px-2 py-0.5 rounded-full text-xs font-semibold',
-                    acceptable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700',
+                    'px-2.5 py-1 rounded-full text-xs font-bold border',
+                    acceptable ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-red-100 text-red-700 border-red-200',
                   )}>
                     {acceptable ? '✓ Acepta' : '✗ No acepta'}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 mb-2">
-                  Preferencia final: <strong className="text-gray-700">{optionNames[topOption] ?? topOption}</strong>
+                <p className="text-xs text-slate-500 mb-1">
+                  Preferencia final: <strong className="text-slate-700">{optionNames[topOption] ?? topOption}</strong>
                   {finalOption && topOption !== finalOption.id && (
-                    <span className="text-amber-600 ml-1">(diferente al ganador)</span>
+                    <span className="text-amber-600 ml-1 font-medium">(≠ ganador)</span>
                   )}
                 </p>
                 {finalOption && (
-                  <p className="text-xs text-gray-500">
-                    Score para ganadora: <strong className="font-mono">{(scores[finalOption.id] ?? 0).toFixed(3)}</strong>
+                  <p className="text-xs text-slate-500">
+                    Score para ganadora: <strong className="font-mono tabular-nums">{(scores[finalOption.id] ?? 0).toFixed(3)}</strong>
                     {' · '}
-                    Umbral: <span className="font-mono">{s.acceptabilityThreshold.toFixed(2)}</span>
+                    Umbral: <span className="font-mono tabular-nums">{s.acceptabilityThreshold.toFixed(2)}</span>
                   </p>
                 )}
               </div>
@@ -126,48 +145,67 @@ export function ResultSummary({
       </div>
 
       {/* Concessions timeline */}
-      {allConcessions.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Concesiones realizadas</h3>
+      {allConcessions.length > 0 ? (
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="text-base">🤝</span>
+            <h3 className="font-bold text-slate-900">Concesiones realizadas</h3>
+            <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+              {allConcessions.length} total
+            </span>
+          </div>
           <div className="space-y-3">
             {allConcessions.map((c, i) => (
-              <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-amber-50 border border-amber-200">
+              <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
                 <span className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-xs font-bold">
                   R{c.round}
                 </span>
                 <div className="text-sm">
                   <strong className="text-amber-700">{stakeholderNames[c.stakeholderId]}</strong>
                   {' cedió de '}
-                  <span className="text-gray-700">{optionNames[c.fromOptionId] ?? c.fromOptionId}</span>
+                  <span className="text-slate-700">{optionNames[c.fromOptionId] ?? c.fromOptionId}</span>
                   {' hacia '}
-                  <span className="font-semibold text-gray-900">{optionNames[c.toOptionId] ?? c.toOptionId}</span>
-                  <p className="text-xs text-gray-500 mt-0.5">{c.reason}</p>
+                  <span className="font-bold text-slate-900">{optionNames[c.toOptionId] ?? c.toOptionId}</span>
+                  <p className="text-xs text-slate-500 mt-1">{c.reason}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
+      ) : (
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm text-center">
+          <p className="text-sm text-slate-400">
+            No hubo concesiones durante la negociación — los stakeholders mantuvieron sus posiciones.
+          </p>
+        </div>
       )}
 
       {/* Vetoed options */}
       {vetoes.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Vetos aplicados</h3>
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="text-base">🚫</span>
+            <h3 className="font-bold text-slate-900">Vetos aplicados</h3>
+            <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+              {vetoes.length}
+            </span>
+          </div>
           <ul className="space-y-2">
             {vetoes.map((v, i) => (
-              <li key={i} className="flex items-start gap-3 p-3 rounded-lg bg-red-50 border border-red-200 text-sm">
-                <span className="text-red-500">🚫</span>
+              <li key={i} className="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-sm">
+                <span className="text-red-500 flex-shrink-0">🚫</span>
                 <div>
                   <strong className="text-red-700">{stakeholderNames[v.stakeholderId]}</strong>
                   {' vetó '}
-                  <strong className="text-gray-900">{optionNames[v.optionId] ?? v.optionId}</strong>
-                  <p className="text-xs text-red-600 mt-0.5">{v.redLineDescription}</p>
+                  <strong className="text-slate-900">{optionNames[v.optionId] ?? v.optionId}</strong>
+                  <p className="text-xs text-red-600/80 mt-1">{v.redLineDescription}</p>
                 </div>
               </li>
             ))}
           </ul>
           {eliminatedOptions.length > 0 && (
-            <div className="mt-3 p-3 rounded-lg bg-red-100 text-red-800 text-sm font-semibold">
+            <div className="mt-3 p-4 rounded-xl bg-red-100 text-red-800 text-sm font-bold flex items-center gap-2">
+              <span>❌</span>
               Opciones eliminadas: {eliminatedOptions.map((o) => o.name).join(', ')}
             </div>
           )}
