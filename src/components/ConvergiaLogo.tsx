@@ -31,7 +31,7 @@ const COLORS = {
 function ConvergiaSymbol({ size, className }: { size: number; className?: string }) {
   return (
     <img
-      src="/LogoConvergianf.png"
+      src="/LogoConvergiasf.png"
       alt="Convergia Logo"
       width={size}
       height={size}
