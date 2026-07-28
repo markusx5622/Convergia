@@ -20,7 +20,7 @@
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0_Strict-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript Strict" /></a>
   <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-v4.0-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" /></a>
   <a href="https://vitest.dev/"><img src="https://img.shields.io/badge/Vitest-4.1.4-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest" /></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License MIT" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-Propietaria-red.svg?style=for-the-badge" alt="Licencia Propietaria" /></a>
 </p>
 
 ---
@@ -365,7 +365,11 @@ Convergia/
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia **MIT**. Puedes consultar el archivo `LICENSE` para más detalles.
+**Copyright © 2026 Marc Cubero Cantavella — Todos los derechos reservados.**
+
+Este proyecto, incluyendo su código fuente, diseño, algoritmos y documentación, es propiedad intelectual exclusiva de su autor. No se concede ningún derecho de uso, copia, modificación, distribución o explotación sin autorización previa y por escrito. La presencia de este código en un repositorio público cumple una función estrictamente demostrativa y de portafolio profesional.
+
+Consulta el archivo [`LICENSE`](./LICENSE) para más detalles.
 
 ---
 
