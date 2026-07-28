@@ -28,51 +28,16 @@ const COLORS = {
   brand: { fill: '#0d6e6e', text: 'text-[#0d6e6e]' },
 } as const;
 
-function ConvergiaSymbol({ size, fill }: { size: number; fill: string }) {
+function ConvergiaSymbol({ size, className }: { size: number; className?: string }) {
   return (
-    <svg
+    <img
+      src="/LogoConvergianf.png"
+      alt="Convergia Logo"
       width={size}
       height={size}
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* Outer converging arcs forming an abstract "C" */}
-      <path
-        d="M34 8C28.5 4.5 21 4 15 7C9 10 5 16.5 5 24C5 31.5 9 38 15 41C21 44 28.5 43.5 34 40"
-        stroke={fill}
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      {/* Inner convergence lines meeting at focal point */}
-      <path
-        d="M30 14L22 24L30 34"
-        stroke={fill}
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      {/* Focal point — the convergence node */}
-      <circle cx="22" cy="24" r="2.5" fill={fill} />
-      {/* Converging rays from outside */}
-      <path
-        d="M38 16L30 22"
-        stroke={fill}
-        strokeWidth="2"
-        strokeLinecap="round"
-        opacity="0.5"
-      />
-      <path
-        d="M38 32L30 26"
-        stroke={fill}
-        strokeWidth="2"
-        strokeLinecap="round"
-        opacity="0.5"
-      />
-    </svg>
+      className={cn("object-contain inline-block shrink-0 select-none", className)}
+      style={{ width: `${size}px`, height: `${size}px` }}
+    />
   );
 }
 
@@ -88,7 +53,7 @@ export function ConvergiaLogo({
   if (variant === 'symbol') {
     return (
       <span className={cn('inline-flex items-center', className)}>
-        <ConvergiaSymbol size={s.symbol} fill={c.fill} />
+        <ConvergiaSymbol size={s.symbol} />
       </span>
     );
   }
@@ -110,7 +75,7 @@ export function ConvergiaLogo({
 
   return (
     <span className={cn('inline-flex items-center', s.gap, className)}>
-      <ConvergiaSymbol size={s.symbol} fill={c.fill} />
+      <ConvergiaSymbol size={s.symbol} />
       <span
         className={cn(
           'font-extrabold tracking-tight',

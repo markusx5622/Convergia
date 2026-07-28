@@ -1,7 +1,7 @@
 # Convergia
 
 <p align="center">
-  <img src="public/favicon.ico" alt="Convergia Logo" width="80" height="80" />
+  <img src="public/LogoConvergianf.png" alt="Convergia Logo" width="100" />
 </p>
 
 <h3 align="center">Convergia</h3>

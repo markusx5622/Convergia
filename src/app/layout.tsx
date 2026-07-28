@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   description: "Simulador determinista de negociación para decisiones industriales con múltiples stakeholders. Scoring ponderado, vetos, conflictos, concesiones y narrativa explicativa — sin IA, sin azar, solo lógica verificable.",
   keywords: ["simulador", "decisiones", "multi-stakeholder", "determinista", "negociación", "ingeniería industrial"],
   authors: [{ name: "Convergia" }],
+  icons: {
+    icon: [
+      { url: "/LogoConvergianf.png" },
+      { url: "/LogoConvergianf.png", type: "image/png" }
+    ],
+    shortcut: "/LogoConvergianf.png",
+    apple: "/LogoConvergianf.png",
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +24,8 @@ export default function RootLayout({
   return (
     <html lang="es" className="h-full antialiased">
       <head>
+        <link rel="icon" href="/LogoConvergianf.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/LogoConvergianf.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
