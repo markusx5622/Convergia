@@ -11,15 +11,26 @@
  * - Each enrichment type is independent — partial failures are tolerated
  */
 
-import type { LLMConfig, LLMEnrichment, EnrichmentInput, EnrichedArgument, EnrichedRoundNarrative } from './types';
-import { emptyEnrichment } from './types';
-import { chatCompletion } from './client';
+import type {
+  LLMConfig,
+  LLMEnrichment,
+  EnrichmentInput,
+  EnrichedArgument,
+  EnrichedRoundNarrative,
+} from "./types";
+import { emptyEnrichment } from "./types";
+import { chatCompletion } from "./client";
 import {
   buildStakeholderArgumentsPrompt,
   buildRoundObjectionsPrompt,
   buildConcessionTextsPrompt,
   buildExecutiveSummaryPrompt,
-} from './prompts';
+} from "./prompts";
+import {
+  StakeholderArgumentArraySchema,
+  RoundObjectionArraySchema,
+  ConcessionTextArraySchema,
+} from "./schemas";
 
 // ---------------------------------------------------------------------------
 // JSON parsing helper
@@ -42,8 +53,12 @@ function tryParseJsonArray<T>(raw: string): T[] {
 // Build enrichment input from simulation data
 // ---------------------------------------------------------------------------
 
-import type { SimulationResult, Stakeholder, InvestmentOption } from '@/engine/types';
-import { buildRoundNarrative } from '@/engine/narrative';
+import type {
+  SimulationResult,
+  Stakeholder,
+  InvestmentOption,
+} from "@/engine/types";
+import { buildRoundNarrative } from "@/engine/narrative";
 
 export function buildEnrichmentInput(
   simulation: SimulationResult,
@@ -101,8 +116,8 @@ export function buildEnrichmentInput(
       name: o.name,
       description: o.description,
     })),
-    winnerName: simulation.finalOption?.name ?? 'Sin ganador',
-    winnerId: simulation.finalOption?.id ?? '',
+    winnerName: simulation.finalOption?.name ?? "Sin ganador",
+    winnerId: simulation.finalOption?.id ?? "",
     consensusStatus: simulation.consensusStatus,
     concessions: allConcessions,
     vetoes,
@@ -130,7 +145,7 @@ export async function generateEnrichment(
   signal?: AbortSignal,
 ): Promise<LLMEnrichment> {
   if (!config.apiKey) {
-    return { ...emptyEnrichment(), error: 'No API key configured.' };
+    return { ...emptyEnrichment(), error: "No API key configured." };
   }
 
   const errors: string[] = [];
@@ -151,15 +166,18 @@ export async function generateEnrichment(
   let stakeholderArguments: EnrichedArgument[] = [];
   if (argsResult.ok) {
     anySuccess = true;
-    const parsed = tryParseJsonArray<{ stakeholderId: string; text: string }>(
-      argsResult.content,
-    );
-    stakeholderArguments = parsed.map((p) => ({
-      stakeholderId: p.stakeholderId,
-      optionId: input.winnerId,
-      type: 'support' as const,
-      text: p.text,
-    }));
+    const parsed = tryParseJsonArray<unknown>(argsResult.content);
+    const zres = StakeholderArgumentArraySchema.safeParse(parsed);
+    if (zres.success) {
+      stakeholderArguments = zres.data.map((p) => ({
+        stakeholderId: p.stakeholderId,
+        optionId: input.winnerId,
+        type: "support" as const,
+        text: p.text,
+      }));
+    } else {
+      errors.push(`Argumentos: respuesta LLM no válida`);
+    }
   } else {
     errors.push(`Argumentos: ${argsResult.error}`);
   }
@@ -168,17 +186,18 @@ export async function generateEnrichment(
   let roundObjections: EnrichedArgument[] = [];
   if (objectionsResult.ok) {
     anySuccess = true;
-    const parsed = tryParseJsonArray<{
-      stakeholderId: string;
-      round: number;
-      text: string;
-    }>(objectionsResult.content);
-    roundObjections = parsed.map((p) => ({
-      stakeholderId: p.stakeholderId,
-      optionId: input.winnerId,
-      type: 'objection' as const,
-      text: p.text,
-    }));
+    const parsed = tryParseJsonArray<unknown>(objectionsResult.content);
+    const zres = RoundObjectionArraySchema.safeParse(parsed);
+    if (zres.success) {
+      roundObjections = zres.data.map((p) => ({
+        stakeholderId: p.stakeholderId,
+        optionId: input.winnerId,
+        type: "objection" as const,
+        text: p.text,
+      }));
+    } else {
+      errors.push(`Objeciones: respuesta LLM no válida`);
+    }
   } else {
     errors.push(`Objeciones: ${objectionsResult.error}`);
   }
@@ -188,24 +207,25 @@ export async function generateEnrichment(
   if (concessionsResult !== null) {
     if (concessionsResult.ok) {
       anySuccess = true;
-      const parsed = tryParseJsonArray<{
-        stakeholderId: string;
-        round: number;
-        text: string;
-      }>(concessionsResult.content);
-      concessionTexts = parsed.map((p) => ({
-        stakeholderId: p.stakeholderId,
-        optionId: input.winnerId,
-        type: 'concession' as const,
-        text: p.text,
-      }));
+      const parsed = tryParseJsonArray<unknown>(concessionsResult.content);
+      const zres = ConcessionTextArraySchema.safeParse(parsed);
+      if (zres.success) {
+        concessionTexts = zres.data.map((p) => ({
+          stakeholderId: p.stakeholderId,
+          optionId: input.winnerId,
+          type: "concession" as const,
+          text: p.text,
+        }));
+      } else {
+        errors.push(`Concesiones: respuesta LLM no válida`);
+      }
     } else {
       errors.push(`Concesiones: ${concessionsResult.error}`);
     }
   }
 
   // Parse executive summary
-  let executiveSummary = '';
+  let executiveSummary = "";
   if (summaryResult.ok) {
     anySuccess = true;
     executiveSummary = summaryResult.content;
@@ -222,7 +242,7 @@ export async function generateEnrichment(
     concessionTexts,
     executiveSummary,
     roundNarratives,
-    source: anySuccess ? 'ai' : 'fallback',
-    error: errors.length > 0 ? errors.join(' | ') : undefined,
+    source: anySuccess ? "ai" : "fallback",
+    error: errors.length > 0 ? errors.join(" | ") : undefined,
   };
 }
