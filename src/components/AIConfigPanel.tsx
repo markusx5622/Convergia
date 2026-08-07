@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { cn } from '@/lib/utils';
-import type { LLMConfig } from '@/services/llm/types';
-import { DEFAULT_LLM_CONFIG } from '@/services/llm/types';
+import { useState, useCallback } from "react";
+import { cn } from "@/lib/utils";
+import type { LLMConfig } from "@/services/llm/types";
+import { DEFAULT_LLM_CONFIG } from "@/services/llm/types";
 
 interface AIConfigPanelProps {
   config: LLMConfig | null;
@@ -21,7 +21,7 @@ export function AIConfigPanel({
   className,
 }: AIConfigPanelProps) {
   const [expanded, setExpanded] = useState(false);
-  const [apiKey, setApiKey] = useState(config?.apiKey ?? '');
+  const [apiKey, setApiKey] = useState(config?.apiKey ?? "");
   const [model, setModel] = useState(config?.model ?? DEFAULT_LLM_CONFIG.model);
 
   const handleSave = useCallback(() => {
@@ -37,16 +37,20 @@ export function AIConfigPanel({
   }, [apiKey, model, onConfigChange]);
 
   const handleClear = useCallback(() => {
-    setApiKey('');
+    setApiKey("");
     onConfigChange(null);
   }, [onConfigChange]);
 
   return (
-    <div className={cn('rounded-xl border border-slate-200 bg-white', className)}>
+    <div
+      className={cn("rounded-xl border border-slate-200 bg-white", className)}
+    >
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-4 py-3 text-left"
+        aria-expanded={expanded}
+        aria-controls="ai-config-content"
+        className="w-full flex items-center justify-between px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded-xl"
       >
         <div className="flex items-center gap-2">
           <span className="text-sm">⚙️</span>
@@ -59,14 +63,18 @@ export function AIConfigPanel({
             </span>
           )}
         </div>
-        <span className="text-slate-400 text-xs">{expanded ? '▲' : '▼'}</span>
+        <span className="text-slate-400 text-xs">{expanded ? "▲" : "▼"}</span>
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 space-y-3 border-t border-slate-100 pt-3">
+        <div
+          id="ai-config-content"
+          className="px-4 pb-4 space-y-3 border-t border-slate-100 pt-3"
+        >
           <p className="text-xs text-slate-500 leading-relaxed">
-            Introduce tu API key de OpenAI para activar la narrativa IA.
-            La clave se almacena solo en memoria del navegador y nunca se envía a nuestros servidores.
+            Introduce tu API key de OpenAI para activar la narrativa IA. La
+            clave se almacena solo en memoria del navegador y nunca se envía a
+            nuestros servidores.
           </p>
 
           <div>
@@ -111,11 +119,12 @@ export function AIConfigPanel({
               type="button"
               onClick={handleSave}
               disabled={!apiKey.trim()}
+              aria-label="Guardar clave de API de OpenAI"
               className={cn(
-                'px-4 py-2 rounded-lg text-sm font-semibold transition-colors',
+                "px-4 py-2 rounded-lg text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2",
                 apiKey.trim()
-                  ? 'bg-violet-600 text-white hover:bg-violet-700'
-                  : 'bg-slate-100 text-slate-400 cursor-not-allowed',
+                  ? "bg-violet-600 text-white hover:bg-violet-700"
+                  : "bg-slate-100 text-slate-400 cursor-not-allowed",
               )}
             >
               Guardar
@@ -124,7 +133,8 @@ export function AIConfigPanel({
               <button
                 type="button"
                 onClick={handleClear}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-red-600 bg-red-50 border border-red-200 hover:bg-red-100 transition-colors"
+                aria-label="Borrar clave de API de OpenAI"
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-red-600 bg-red-50 border border-red-200 hover:bg-red-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
               >
                 Borrar clave
               </button>
@@ -132,7 +142,8 @@ export function AIConfigPanel({
           </div>
 
           <p className="text-[10px] text-slate-400">
-            🔒 La API key solo existe en la memoria de esta pestaña. Al cerrarla o recargar, se pierde.
+            🔒 La API key solo existe en la memoria de esta pestaña. Al cerrarla
+            o recargar, se pierde.
           </p>
         </div>
       )}

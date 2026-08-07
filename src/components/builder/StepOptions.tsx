@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { DraftOption } from '@/lib/builder-types';
-import type { VariableId } from '@/engine/types';
-import { VARIABLE_IDS, VARIABLE_LABELS } from '@/engine/types';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import type { DraftOption } from "@/lib/builder-types";
+import type { VariableId } from "@/engine/types";
+import { VARIABLE_IDS, VARIABLE_LABELS } from "@/engine/types";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface Props {
   options: DraftOption[];
@@ -33,11 +33,17 @@ export function StepOptions({
         <div className="flex items-start gap-3">
           <span className="text-xl">💡</span>
           <div>
-            <p className="text-sm font-bold text-[#111827] mb-1">Define las opciones de inversión</p>
+            <p className="text-sm font-bold text-[#111827] mb-1">
+              Define las opciones de inversión
+            </p>
             <p className="text-xs text-[#5b6578] leading-relaxed">
-              Cada opción tiene un coste, descripción, riesgos e impactos normalizados (0–1) sobre
-              las 6 variables del motor. Mínimo 2 opciones. El coste no debe superar el presupuesto
-              ({budgetNum > 0 ? `${budgetNum.toLocaleString('es-ES')}€` : 'no definido'}).
+              Cada opción tiene un coste, descripción, riesgos e impactos
+              normalizados (0–1) sobre las 6 variables del motor. Mínimo 2
+              opciones. El coste no debe superar el presupuesto (
+              {budgetNum > 0
+                ? `${budgetNum.toLocaleString("es-ES")}€`
+                : "no definido"}
+              ).
             </p>
           </div>
         </div>
@@ -58,7 +64,9 @@ export function StepOptions({
               {/* Header */}
               <button
                 onClick={() => setExpandedIdx(isExpanded ? null : i)}
-                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-all duration-200 text-left"
+                aria-expanded={isExpanded}
+                aria-controls={`opt-content-${i}`}
+                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-all duration-200 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] focus-visible:ring-offset-2"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-7 h-7 rounded-full bg-[#0d6e6e]/10 text-[#0d6e6e] flex items-center justify-center text-xs font-bold">
@@ -69,7 +77,9 @@ export function StepOptions({
                       {opt.name || `Opción ${String.fromCharCode(65 + i)}`}
                     </p>
                     <p className="text-xs text-slate-500">
-                      {costNum > 0 ? `${costNum.toLocaleString('es-ES')}€` : 'Sin coste definido'}
+                      {costNum > 0
+                        ? `${costNum.toLocaleString("es-ES")}€`
+                        : "Sin coste definido"}
                     </p>
                   </div>
                 </div>
@@ -79,20 +89,29 @@ export function StepOptions({
                       ⚠ Excede presupuesto
                     </span>
                   )}
-                  <span className="text-slate-400 text-xs">{isExpanded ? '▲' : '▼'}</span>
+                  <span className="text-slate-400 text-xs">
+                    {isExpanded ? "▲" : "▼"}
+                  </span>
                 </div>
               </button>
 
               {/* Expanded */}
               {isExpanded && (
-                <div className="border-t border-slate-100 px-5 py-5 space-y-5 animate-fade-in">
+                <div
+                  id={`opt-content-${i}`}
+                  className="border-t border-slate-100 px-5 py-5 space-y-5 animate-fade-in"
+                >
                   {/* Name + Cost */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label
+                        htmlFor={`opt-name-${i}`}
+                        className="block text-xs font-semibold text-slate-700 mb-1.5"
+                      >
                         Nombre
                       </label>
                       <input
+                        id={`opt-name-${i}`}
                         value={opt.name}
                         onChange={(e) => onUpdate(i, { name: e.target.value })}
                         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
@@ -100,16 +119,22 @@ export function StepOptions({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label
+                        htmlFor={`opt-cost-${i}`}
+                        className="block text-xs font-semibold text-slate-700 mb-1.5"
+                      >
                         Coste (€)
                       </label>
                       <input
+                        id={`opt-cost-${i}`}
                         type="number"
                         value={opt.cost}
                         onChange={(e) => onUpdate(i, { cost: e.target.value })}
                         className={cn(
-                          'w-full rounded-lg border px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none transition-all',
-                          overBudget ? 'border-red-300 bg-red-50/50' : 'border-slate-300',
+                          "w-full rounded-lg border px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none transition-all",
+                          overBudget
+                            ? "border-red-300 bg-red-50/50"
+                            : "border-slate-300",
                         )}
                         placeholder="95000"
                       />
@@ -118,12 +143,18 @@ export function StepOptions({
 
                   {/* Description */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    <label
+                      htmlFor={`opt-desc-${i}`}
+                      className="block text-xs font-semibold text-slate-700 mb-1.5"
+                    >
                       Descripción
                     </label>
                     <textarea
+                      id={`opt-desc-${i}`}
                       value={opt.description}
-                      onChange={(e) => onUpdate(i, { description: e.target.value })}
+                      onChange={(e) =>
+                        onUpdate(i, { description: e.target.value })
+                      }
                       rows={2}
                       className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all resize-y"
                       placeholder="Descripción breve de la opción de inversión..."
@@ -132,10 +163,14 @@ export function StepOptions({
 
                   {/* Risks */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    <label
+                      htmlFor={`opt-risks-${i}`}
+                      className="block text-xs font-semibold text-slate-700 mb-1.5"
+                    >
                       Riesgos (separados por coma)
                     </label>
                     <input
+                      id={`opt-risks-${i}`}
                       value={opt.risks}
                       onChange={(e) => onUpdate(i, { risks: e.target.value })}
                       className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
@@ -155,6 +190,7 @@ export function StepOptions({
                           <div key={v}>
                             <div className="flex items-center justify-between mb-1">
                               <label
+                                htmlFor={`opt-${i}-impact-${v}`}
                                 className="text-xs text-slate-600 truncate"
                                 title={VARIABLE_LABELS[v]}
                               >
@@ -165,13 +201,17 @@ export function StepOptions({
                               </span>
                             </div>
                             <input
+                              id={`opt-${i}-impact-${v}`}
                               type="range"
                               min="0"
                               max="1"
                               step="0.01"
                               value={opt.impacts[v]}
-                              onChange={(e) => onUpdateImpact(i, v, e.target.value)}
+                              onChange={(e) =>
+                                onUpdateImpact(i, v, e.target.value)
+                              }
                               className="w-full accent-[#0d6e6e] h-2"
+                              aria-label={`Impacto en ${VARIABLE_LABELS[v]}`}
                             />
                           </div>
                         );
@@ -184,7 +224,8 @@ export function StepOptions({
                     <div className="pt-2 border-t border-slate-100">
                       <button
                         onClick={() => onRemove(i)}
-                        className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors"
+                        aria-label={`Eliminar opción ${opt.name || String.fromCharCode(65 + i)}`}
+                        className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-sm px-1"
                       >
                         Eliminar opción
                       </button>
@@ -200,7 +241,8 @@ export function StepOptions({
       {/* Add button */}
       <button
         onClick={onAdd}
-        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all duration-200"
+        aria-label="Añadir nueva opción de inversión"
+        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] focus-visible:ring-offset-2"
       >
         + Añadir opción de inversión
       </button>

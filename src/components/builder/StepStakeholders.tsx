@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { DraftStakeholder, DraftRedLine } from '@/lib/builder-types';
-import type { VariableId } from '@/engine/types';
-import { VARIABLE_IDS, VARIABLE_LABELS } from '@/engine/types';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import type { DraftStakeholder, DraftRedLine } from "@/lib/builder-types";
+import type { VariableId } from "@/engine/types";
+import { VARIABLE_IDS, VARIABLE_LABELS } from "@/engine/types";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface Props {
   stakeholders: DraftStakeholder[];
@@ -14,7 +14,11 @@ interface Props {
   onUpdateWeight: (sIdx: number, variable: VariableId, value: string) => void;
   onAddRedLine: (sIdx: number) => void;
   onRemoveRedLine: (sIdx: number, rlIdx: number) => void;
-  onUpdateRedLine: (sIdx: number, rlIdx: number, partial: Partial<DraftRedLine>) => void;
+  onUpdateRedLine: (
+    sIdx: number,
+    rlIdx: number,
+    partial: Partial<DraftRedLine>,
+  ) => void;
 }
 
 export function StepStakeholders({
@@ -36,10 +40,13 @@ export function StepStakeholders({
         <div className="flex items-start gap-3">
           <span className="text-xl">👥</span>
           <div>
-            <p className="text-sm font-bold text-[#111827] mb-1">Define los stakeholders</p>
+            <p className="text-sm font-bold text-[#111827] mb-1">
+              Define los stakeholders
+            </p>
             <p className="text-xs text-[#5b6578] leading-relaxed">
-              Cada stakeholder tiene pesos por variable (deben sumar 1.0), líneas rojas, y
-              parámetros de concesión. Mínimo 2 stakeholders para la negociación.
+              Cada stakeholder tiene pesos por variable (deben sumar 1.0),
+              líneas rojas, y parámetros de concesión. Mínimo 2 stakeholders
+              para la negociación.
             </p>
           </div>
         </div>
@@ -63,7 +70,9 @@ export function StepStakeholders({
               {/* Header */}
               <button
                 onClick={() => setExpandedIdx(isExpanded ? null : i)}
-                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-all duration-200 text-left"
+                aria-expanded={isExpanded}
+                aria-controls={`sh-content-${i}`}
+                className="w-full flex items-center justify-between px-5 py-4 hover:bg-slate-50 transition-all duration-200 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] focus-visible:ring-offset-2"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">
@@ -73,34 +82,45 @@ export function StepStakeholders({
                     <p className="text-sm font-bold text-slate-900">
                       {sh.name || `Stakeholder ${i + 1}`}
                     </p>
-                    <p className="text-xs text-slate-500">{sh.role || 'Sin rol definido'}</p>
+                    <p className="text-xs text-slate-500">
+                      {sh.role || "Sin rol definido"}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <span
                     className={cn(
-                      'text-xs font-mono px-2 py-0.5 rounded-md',
+                      "text-xs font-mono px-2 py-0.5 rounded-md",
                       weightOk
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : 'bg-red-50 text-red-600 border border-red-200',
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : "bg-red-50 text-red-600 border border-red-200",
                     )}
                   >
                     Σ {weightSum.toFixed(3)}
                   </span>
-                  <span className="text-slate-400 text-xs">{isExpanded ? '▲' : '▼'}</span>
+                  <span className="text-slate-400 text-xs">
+                    {isExpanded ? "▲" : "▼"}
+                  </span>
                 </div>
               </button>
 
               {/* Expanded content */}
               {isExpanded && (
-                <div className="border-t border-slate-100 px-5 py-5 space-y-5 animate-fade-in">
+                <div
+                  id={`sh-content-${i}`}
+                  className="border-t border-slate-100 px-5 py-5 space-y-5 animate-fade-in"
+                >
                   {/* Name + Role */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label
+                        htmlFor={`sh-name-${i}`}
+                        className="block text-xs font-semibold text-slate-700 mb-1.5"
+                      >
                         Nombre
                       </label>
                       <input
+                        id={`sh-name-${i}`}
                         value={sh.name}
                         onChange={(e) => onUpdate(i, { name: e.target.value })}
                         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
@@ -108,10 +128,14 @@ export function StepStakeholders({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label
+                        htmlFor={`sh-role-${i}`}
+                        className="block text-xs font-semibold text-slate-700 mb-1.5"
+                      >
                         Rol
                       </label>
                       <input
+                        id={`sh-role-${i}`}
                         value={sh.role}
                         onChange={(e) => onUpdate(i, { role: e.target.value })}
                         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
@@ -128,31 +152,36 @@ export function StepStakeholders({
                       </label>
                       <span
                         className={cn(
-                          'text-xs font-mono px-2 py-0.5 rounded-md',
+                          "text-xs font-mono px-2 py-0.5 rounded-md",
                           weightOk
-                            ? 'bg-emerald-50 text-emerald-700'
-                            : 'bg-red-50 text-red-600',
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-red-50 text-red-600",
                         )}
                       >
-                        Total: {weightSum.toFixed(3)} {weightOk ? '✓' : '(debe ser 1.000)'}
+                        Total: {weightSum.toFixed(3)}{" "}
+                        {weightOk ? "✓" : "(debe ser 1.000)"}
                       </span>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {VARIABLE_IDS.map((v) => (
                         <div key={v} className="flex items-center gap-2">
                           <label
+                            htmlFor={`sh-${i}-weight-${v}`}
                             className="text-xs text-slate-600 flex-1 truncate"
                             title={VARIABLE_LABELS[v]}
                           >
                             {VARIABLE_LABELS[v]}
                           </label>
                           <input
+                            id={`sh-${i}-weight-${v}`}
                             type="number"
                             step="0.01"
                             min="0"
                             max="1"
                             value={sh.weights[v]}
-                            onChange={(e) => onUpdateWeight(i, v, e.target.value)}
+                            onChange={(e) =>
+                              onUpdateWeight(i, v, e.target.value)
+                            }
                             className="w-20 rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-right text-slate-900 font-mono focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
                           />
                         </div>
@@ -169,7 +198,9 @@ export function StepStakeholders({
                       <NumericField
                         label="Umbral de concesión"
                         value={sh.concessionThreshold}
-                        onChange={(v) => onUpdate(i, { concessionThreshold: v })}
+                        onChange={(v) =>
+                          onUpdate(i, { concessionThreshold: v })
+                        }
                         hint="Gap mínimo para ceder"
                       />
                       <NumericField
@@ -181,7 +212,9 @@ export function StepStakeholders({
                       <NumericField
                         label="Umbral de aceptabilidad"
                         value={sh.acceptabilityThreshold}
-                        onChange={(v) => onUpdate(i, { acceptabilityThreshold: v })}
+                        onChange={(v) =>
+                          onUpdate(i, { acceptabilityThreshold: v })
+                        }
                         hint="Score mínimo aceptable"
                       />
                     </div>
@@ -195,14 +228,15 @@ export function StepStakeholders({
                       </label>
                       <button
                         onClick={() => onAddRedLine(i)}
-                        className="text-xs font-semibold text-[#0d6e6e] hover:text-[#0f8585] transition-colors"
+                        className="text-xs font-semibold text-[#0d6e6e] hover:text-[#0f8585] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] rounded-sm px-1"
                       >
                         + Añadir línea roja
                       </button>
                     </div>
                     {sh.redLines.length === 0 ? (
                       <p className="text-xs text-slate-400 italic">
-                        Sin líneas rojas. Este stakeholder aceptará cualquier resultado.
+                        Sin líneas rojas. Este stakeholder aceptará cualquier
+                        resultado.
                       </p>
                     ) : (
                       <div className="space-y-2">
@@ -212,8 +246,14 @@ export function StepStakeholders({
                             className="flex items-end gap-2 bg-red-50/50 rounded-lg p-3 border border-red-100 group"
                           >
                             <div className="w-44">
-                              <label className="block text-xs text-slate-500 mb-1">Variable</label>
+                              <label
+                                htmlFor={`sh-${i}-rl-${ri}-var`}
+                                className="block text-xs text-slate-500 mb-1"
+                              >
+                                Variable
+                              </label>
                               <select
+                                id={`sh-${i}-rl-${ri}-var`}
                                 value={rl.variable}
                                 onChange={(e) =>
                                   onUpdateRedLine(i, ri, {
@@ -230,12 +270,18 @@ export function StepStakeholders({
                               </select>
                             </div>
                             <div className="w-20">
-                              <label className="block text-xs text-slate-500 mb-1">Op</label>
+                              <label
+                                htmlFor={`sh-${i}-rl-${ri}-op`}
+                                className="block text-xs text-slate-500 mb-1"
+                              >
+                                Op
+                              </label>
                               <select
+                                id={`sh-${i}-rl-${ri}-op`}
                                 value={rl.operator}
                                 onChange={(e) =>
                                   onUpdateRedLine(i, ri, {
-                                    operator: e.target.value as 'lt' | 'gt',
+                                    operator: e.target.value as "lt" | "gt",
                                   })
                                 }
                                 className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-slate-900 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none"
@@ -245,27 +291,41 @@ export function StepStakeholders({
                               </select>
                             </div>
                             <div className="w-20">
-                              <label className="block text-xs text-slate-500 mb-1">Umbral</label>
+                              <label
+                                htmlFor={`sh-${i}-rl-${ri}-th`}
+                                className="block text-xs text-slate-500 mb-1"
+                              >
+                                Umbral
+                              </label>
                               <input
+                                id={`sh-${i}-rl-${ri}-th`}
                                 type="number"
                                 step="0.01"
                                 min="0"
                                 max="1"
                                 value={rl.threshold}
                                 onChange={(e) =>
-                                  onUpdateRedLine(i, ri, { threshold: e.target.value })
+                                  onUpdateRedLine(i, ri, {
+                                    threshold: e.target.value,
+                                  })
                                 }
                                 className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-right font-mono text-slate-900 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none"
                               />
                             </div>
                             <div className="flex-1">
-                              <label className="block text-xs text-slate-500 mb-1">
+                              <label
+                                htmlFor={`sh-${i}-rl-${ri}-desc`}
+                                className="block text-xs text-slate-500 mb-1"
+                              >
                                 Descripción
                               </label>
                               <input
+                                id={`sh-${i}-rl-${ri}-desc`}
                                 value={rl.description}
                                 onChange={(e) =>
-                                  onUpdateRedLine(i, ri, { description: e.target.value })
+                                  onUpdateRedLine(i, ri, {
+                                    description: e.target.value,
+                                  })
                                 }
                                 className="w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none"
                                 placeholder="Razón del veto"
@@ -273,8 +333,9 @@ export function StepStakeholders({
                             </div>
                             <button
                               onClick={() => onRemoveRedLine(i, ri)}
-                              className="pb-1.5 text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                              className="pb-1.5 text-slate-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-sm px-1"
                               title="Eliminar línea roja"
+                              aria-label={`Eliminar línea roja de la variable ${VARIABLE_LABELS[rl.variable]}`}
                             >
                               ✕
                             </button>
@@ -289,7 +350,8 @@ export function StepStakeholders({
                     <div className="pt-2 border-t border-slate-100">
                       <button
                         onClick={() => onRemove(i)}
-                        className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors"
+                        aria-label={`Eliminar stakeholder ${sh.name || i + 1}`}
+                        className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-sm px-1"
                       >
                         Eliminar stakeholder
                       </button>
@@ -305,7 +367,8 @@ export function StepStakeholders({
       {/* Add button */}
       <button
         onClick={onAdd}
-        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all duration-200"
+        aria-label="Añadir stakeholder"
+        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] focus-visible:ring-offset-2"
       >
         + Añadir stakeholder
       </button>
@@ -326,10 +389,17 @@ function NumericField({
   onChange: (v: string) => void;
   hint?: string;
 }) {
+  const id = `nf-${label.replace(/\s+/g, "-").toLowerCase()}-${Math.random().toString(36).slice(2, 6)}`;
   return (
     <div>
-      <label className="block text-xs font-semibold text-slate-700 mb-1">{label}</label>
+      <label
+        htmlFor={id}
+        className="block text-xs font-semibold text-slate-700 mb-1"
+      >
+        {label}
+      </label>
       <input
+        id={id}
         type="number"
         step="0.01"
         min="0"
@@ -337,8 +407,13 @@ function NumericField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-right font-mono text-slate-900 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
+        aria-describedby={hint ? `${id}-hint` : undefined}
       />
-      {hint && <p className="text-[10px] text-slate-400 mt-1">{hint}</p>}
+      {hint && (
+        <p id={`${id}-hint`} className="text-[10px] text-slate-400 mt-1">
+          {hint}
+        </p>
+      )}
     </div>
   );
 }

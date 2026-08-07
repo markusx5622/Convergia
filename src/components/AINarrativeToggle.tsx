@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface AINarrativeToggleProps {
   enabled: boolean;
@@ -22,10 +22,10 @@ export function AINarrativeToggle({
   return (
     <div
       className={cn(
-        'rounded-xl border p-4 transition-all',
+        "rounded-xl border p-4 transition-all",
         enabled
-          ? 'bg-violet-50 border-violet-200'
-          : 'bg-slate-50 border-slate-200',
+          ? "bg-violet-50 border-violet-200"
+          : "bg-slate-50 border-slate-200",
       )}
     >
       <div className="flex items-center gap-3">
@@ -34,18 +34,19 @@ export function AINarrativeToggle({
           type="button"
           role="switch"
           aria-checked={enabled}
+          aria-label="Activar o desactivar Narrativa IA"
           onClick={() => onToggle(!enabled)}
           disabled={loading}
           className={cn(
-            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2',
-            enabled ? 'bg-violet-600' : 'bg-slate-300',
-            loading && 'opacity-50 cursor-wait',
+            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2",
+            enabled ? "bg-violet-600" : "bg-slate-300",
+            loading && "opacity-50 cursor-wait",
           )}
         >
           <span
             className={cn(
-              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-              enabled ? 'translate-x-5' : 'translate-x-0',
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+              enabled ? "translate-x-5" : "translate-x-0",
             )}
           />
         </button>
@@ -67,8 +68,8 @@ export function AINarrativeToggle({
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
             {enabled
-              ? 'IA enriquece la redacción. Los resultados siguen siendo deterministas.'
-              : 'Activar para enriquecer la narrativa con IA. No afecta los resultados.'}
+              ? "IA enriquece la redacción. Los resultados siguen siendo deterministas."
+              : "Activar para enriquecer la narrativa con IA. No afecta los resultados."}
           </p>
         </div>
       </div>
