@@ -1,19 +1,26 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import type { BuilderState, ValidationError } from '@/lib/builder-types';
-import { buildScenario, buildStakeholders, buildOptions } from '@/lib/builder-convert';
-import { validateAll } from '@/lib/builder-validation';
-import { runSimulation } from '@/engine/simulation';
-import { VARIABLE_LABELS } from '@/engine/types';
-import type { SimulationResult } from '@/engine/types';
-import { cn } from '@/lib/utils';
+import { useMemo } from "react";
+import type { BuilderState, ValidationError } from "@/lib/builder-types";
+import {
+  buildScenario,
+  buildStakeholders,
+  buildOptions,
+} from "@/lib/builder-convert";
+import { validateAll } from "@/lib/builder-validation";
+import { runSimulation } from "@/engine/simulation";
+import { VARIABLE_LABELS } from "@/engine/types";
+import type { SimulationResult } from "@/engine/types";
+import { cn } from "@/lib/utils";
+import { saveSession } from "@/lib/storage-manager";
+import { useRouter } from "next/navigation";
 
 interface Props {
   state: BuilderState;
 }
 
 export function StepPreview({ state }: Props) {
+  const router = useRouter();
   const errors: ValidationError[] = useMemo(() => validateAll(state), [state]);
   const isValid = errors.length === 0;
 
@@ -35,7 +42,8 @@ export function StepPreview({ state }: Props) {
         <div className="bg-amber-50 rounded-xl border border-amber-200 p-6 text-center">
           <p className="text-2xl mb-2">⚠️</p>
           <p className="text-sm font-bold text-amber-800">
-            El escenario tiene {errors.length} error{errors.length !== 1 ? 'es' : ''}
+            El escenario tiene {errors.length} error
+            {errors.length !== 1 ? "es" : ""}
           </p>
           <p className="text-xs text-amber-600 mt-1">
             Vuelve al paso de validación para corregirlos antes de simular.
@@ -49,9 +57,12 @@ export function StepPreview({ state }: Props) {
     return (
       <div className="bg-red-50 rounded-xl border border-red-200 p-6 text-center">
         <p className="text-2xl mb-2">❌</p>
-        <p className="text-sm font-bold text-red-800">Error ejecutando la simulación</p>
+        <p className="text-sm font-bold text-red-800">
+          Error ejecutando la simulación
+        </p>
         <p className="text-xs text-red-600 mt-1">
-          Revisa los datos del escenario. Es posible que algún valor sea inconsistente.
+          Revisa los datos del escenario. Es posible que algún valor sea
+          inconsistente.
         </p>
       </div>
     );
@@ -65,39 +76,59 @@ export function StepPreview({ state }: Props) {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Info banner */}
-      <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
-        <div className="flex items-start gap-3">
+      <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5 flex flex-col md:flex-row gap-4 md:items-center">
+        <div className="flex items-start gap-3 flex-1">
           <span className="text-xl">🚀</span>
           <div>
-            <p className="text-sm font-bold text-[#111827] mb-1">Resultado de la simulación</p>
+            <p className="text-sm font-bold text-[#111827] mb-1">
+              Resultado de la simulación
+            </p>
             <p className="text-xs text-[#5b6578] leading-relaxed">
-              El motor determinista ha ejecutado {result.rounds.length} rondas de negociación con
-              tus datos personalizados. Los resultados son reproducibles e idénticos cada vez que se
-              ejecutan con los mismos inputs.
+              El motor determinista ha ejecutado {result.rounds.length} rondas
+              de negociación con tus datos personalizados. Los resultados son
+              reproducibles e idénticos cada vez que se ejecutan con los mismos
+              inputs.
             </p>
           </div>
         </div>
+        <button
+          onClick={() => {
+            const id = saveSession(state, true);
+            router.push(`/report?origin=studio&historyId=${id}`);
+          }}
+          className="px-4 py-2 bg-[#111827] text-white rounded-lg text-sm font-bold hover:bg-[#1f2937] transition-colors whitespace-nowrap shadow-sm ml-auto flex items-center gap-2"
+        >
+          <span>Generar PDF</span>
+          <span className="text-lg leading-none">📄</span>
+        </button>
       </div>
 
       {/* Scenario summary */}
       <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm card-interactive">
-        <h2 className="text-lg font-bold text-[#111827] mb-1">{state.scenario.name}</h2>
+        <h2 className="text-lg font-bold text-[#111827] mb-1">
+          {state.scenario.name}
+        </h2>
         <p className="text-sm text-slate-500 mb-3">{state.scenario.company}</p>
         <div className="flex items-center gap-4 text-xs text-slate-500">
           <span>
-            Presupuesto:{' '}
+            Presupuesto:{" "}
             <strong className="text-slate-900">
-              {parseFloat(state.scenario.budget).toLocaleString('es-ES')}€
+              {parseFloat(state.scenario.budget).toLocaleString("es-ES")}€
             </strong>
           </span>
           <span>
-            Stakeholders: <strong className="text-slate-900">{state.stakeholders.length}</strong>
+            Stakeholders:{" "}
+            <strong className="text-slate-900">
+              {state.stakeholders.length}
+            </strong>
           </span>
           <span>
-            Opciones: <strong className="text-slate-900">{state.options.length}</strong>
+            Opciones:{" "}
+            <strong className="text-slate-900">{state.options.length}</strong>
           </span>
           <span>
-            Rondas: <strong className="text-slate-900">{result.rounds.length}</strong>
+            Rondas:{" "}
+            <strong className="text-slate-900">{result.rounds.length}</strong>
           </span>
         </div>
       </div>
@@ -111,19 +142,22 @@ export function StepPreview({ state }: Props) {
               <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
                 Opción ganadora
               </p>
-              <p className="text-xl font-extrabold text-emerald-900">{winner.name}</p>
+              <p className="text-xl font-extrabold text-emerald-900">
+                {winner.name}
+              </p>
             </div>
           </div>
           <p className="text-sm text-emerald-800 mb-2">{winner.description}</p>
           <div className="flex items-center gap-4 text-xs">
             <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold">
-              Coste: {winner.cost.toLocaleString('es-ES')}€
+              Coste: {winner.cost.toLocaleString("es-ES")}€
             </span>
             <span className="text-emerald-700">
               Consenso: <strong>{result.consensusStatus}</strong>
             </span>
             <span className="text-emerald-700">
-              Conflicto total: <strong>{lastRound.totalConflict.toFixed(3)}</strong>
+              Conflicto total:{" "}
+              <strong>{lastRound.totalConflict.toFixed(3)}</strong>
             </span>
           </div>
         </div>
@@ -157,18 +191,18 @@ export function StepPreview({ state }: Props) {
                 <div
                   key={option.id}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-4 py-3 border',
+                    "flex items-center gap-3 rounded-lg px-4 py-3 border",
                     isWinner
-                      ? 'bg-emerald-50/50 border-emerald-200'
-                      : 'bg-slate-50 border-slate-100',
+                      ? "bg-emerald-50/50 border-emerald-200"
+                      : "bg-slate-50 border-slate-100",
                   )}
                 >
                   <span
                     className={cn(
-                      'w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold',
+                      "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold",
                       isWinner
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-slate-200 text-slate-600',
+                        ? "bg-emerald-600 text-white"
+                        : "bg-slate-200 text-slate-600",
                     )}
                   >
                     {rank + 1}
@@ -179,8 +213,8 @@ export function StepPreview({ state }: Props) {
                   <div className="w-40 bg-slate-200 rounded-full h-2 overflow-hidden">
                     <div
                       className={cn(
-                        'h-full rounded-full animate-progress',
-                        isWinner ? 'bg-emerald-500' : 'bg-slate-400',
+                        "h-full rounded-full animate-progress",
+                        isWinner ? "bg-emerald-500" : "bg-slate-400",
                       )}
                       style={{ width: `${(score / maxScore) * 100}%` }}
                     />
@@ -203,21 +237,36 @@ export function StepPreview({ state }: Props) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200">
-                <th className="text-left py-2 px-2 text-xs font-bold text-slate-500">Opción</th>
+                <th className="text-left py-2 px-2 text-xs font-bold text-slate-500">
+                  Opción
+                </th>
                 {engineStakeholders.map((s) => (
-                  <th key={s.id} className="text-right py-2 px-2 text-xs font-bold text-slate-500">
+                  <th
+                    key={s.id}
+                    className="text-right py-2 px-2 text-xs font-bold text-slate-500"
+                  >
                     {s.name}
                   </th>
                 ))}
-                <th className="text-right py-2 px-2 text-xs font-bold text-slate-700">Global</th>
+                <th className="text-right py-2 px-2 text-xs font-bold text-slate-700">
+                  Global
+                </th>
               </tr>
             </thead>
             <tbody>
               {engineOptions.map((o) => (
-                <tr key={o.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors duration-150">
-                  <td className="py-2 px-2 font-medium text-slate-900">{o.name}</td>
+                <tr
+                  key={o.id}
+                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors duration-150"
+                >
+                  <td className="py-2 px-2 font-medium text-slate-900">
+                    {o.name}
+                  </td>
                   {engineStakeholders.map((s) => (
-                    <td key={s.id} className="py-2 px-2 text-right font-mono text-slate-600">
+                    <td
+                      key={s.id}
+                      className="py-2 px-2 text-right font-mono text-slate-600"
+                    >
                       {(lastRound.scores[s.id]?.[o.id] ?? 0).toFixed(3)}
                     </td>
                   ))}
@@ -234,10 +283,14 @@ export function StepPreview({ state }: Props) {
       {/* Vetoes */}
       {result.rounds[0].vetoes.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-          <h3 className="text-sm font-bold text-slate-900 mb-3">Vetos detectados</h3>
+          <h3 className="text-sm font-bold text-slate-900 mb-3">
+            Vetos detectados
+          </h3>
           <div className="space-y-2">
             {result.rounds[0].vetoes.map((v, i) => {
-              const sh = engineStakeholders.find((s) => s.id === v.stakeholderId);
+              const sh = engineStakeholders.find(
+                (s) => s.id === v.stakeholderId,
+              );
               const opt = engineOptions.find((o) => o.id === v.optionId);
               return (
                 <div
@@ -246,10 +299,12 @@ export function StepPreview({ state }: Props) {
                 >
                   <span className="text-red-500 font-bold">🚫</span>
                   <span className="text-red-800">
-                    <strong>{sh?.name ?? v.stakeholderId}</strong> veta{' '}
+                    <strong>{sh?.name ?? v.stakeholderId}</strong> veta{" "}
                     <strong>{opt?.name ?? v.optionId}</strong>
                   </span>
-                  <span className="text-xs text-red-600 ml-auto">{v.redLineDescription}</span>
+                  <span className="text-xs text-red-600 ml-auto">
+                    {v.redLineDescription}
+                  </span>
                 </div>
               );
             })}
@@ -260,7 +315,9 @@ export function StepPreview({ state }: Props) {
       {/* Eliminated options */}
       {lastRound.eliminatedOptionIds.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-          <h3 className="text-sm font-bold text-slate-900 mb-3">Opciones eliminadas</h3>
+          <h3 className="text-sm font-bold text-slate-900 mb-3">
+            Opciones eliminadas
+          </h3>
           <div className="flex flex-wrap gap-2">
             {lastRound.eliminatedOptionIds.map((eid) => {
               const opt = engineOptions.find((o) => o.id === eid);
@@ -279,13 +336,17 @@ export function StepPreview({ state }: Props) {
 
       {/* Rounds detail */}
       <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <h3 className="text-sm font-bold text-slate-900 mb-4">Evolución por rondas</h3>
+        <h3 className="text-sm font-bold text-slate-900 mb-4">
+          Evolución por rondas
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 stagger-children">
           {result.rounds.map((round) => {
             const roundWinnerId = Object.entries(round.globalScores).sort(
               ([, a], [, b]) => b - a,
             )[0]?.[0];
-            const roundWinner = engineOptions.find((o) => o.id === roundWinnerId);
+            const roundWinner = engineOptions.find(
+              (o) => o.id === roundWinnerId,
+            );
             return (
               <div
                 key={round.round}
@@ -295,12 +356,19 @@ export function StepPreview({ state }: Props) {
                   Ronda {round.round}
                 </p>
                 <p className="text-sm font-bold text-slate-900 mb-1">
-                  {roundWinner?.name ?? '—'}
+                  {roundWinner?.name ?? "—"}
                 </p>
                 <div className="space-y-1 text-xs text-slate-600">
-                  <p>Consenso: <strong>{round.consensusStatus}</strong> ({round.consensusScore.toFixed(3)})</p>
-                  <p>Conflicto: <strong>{round.totalConflict.toFixed(3)}</strong></p>
-                  <p>Concesiones: <strong>{round.concessions.length}</strong></p>
+                  <p>
+                    Consenso: <strong>{round.consensusStatus}</strong> (
+                    {round.consensusScore.toFixed(3)})
+                  </p>
+                  <p>
+                    Conflicto: <strong>{round.totalConflict.toFixed(3)}</strong>
+                  </p>
+                  <p>
+                    Concesiones: <strong>{round.concessions.length}</strong>
+                  </p>
                 </div>
               </div>
             );
@@ -313,7 +381,9 @@ export function StepPreview({ state }: Props) {
         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
           Explicación final
         </p>
-        <p className="text-sm text-slate-200 leading-relaxed">{result.explanation}</p>
+        <p className="text-sm text-slate-200 leading-relaxed">
+          {result.explanation}
+        </p>
       </div>
     </div>
   );

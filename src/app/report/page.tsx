@@ -1,22 +1,34 @@
-'use client';
+"use client";
 
-import { Suspense, useMemo, useCallback, useState } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { SCENARIO_BUNDLES, DEFAULT_BUNDLE, getBundle } from '@/data/scenarios';
-import type { ScenarioBundle } from '@/data/scenarios';
-import { runSimulation } from '@/engine/simulation';
-import { buildReportData } from '@/engine/report';
-import { ReportView } from '@/components/ReportView';
-import type { ReportOrigin, ReportStateType } from '@/components/ReportView';
-import { AINarrativeToggle } from '@/components/AINarrativeToggle';
-import { AIConfigPanel } from '@/components/AIConfigPanel';
-import { useAINarrative } from '@/lib/useAINarrative';
+import { Suspense, useMemo, useCallback, useState } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { SCENARIO_BUNDLES, DEFAULT_BUNDLE, getBundle } from "@/data/scenarios";
+import type { ScenarioBundle } from "@/data/scenarios";
+import { runSimulation } from "@/engine/simulation";
+import { buildReportData } from "@/engine/report";
+import {
+  buildScenario,
+  buildStakeholders,
+  buildOptions,
+} from "@/lib/builder-convert";
+import { getSessionById } from "@/lib/storage-manager";
+import { ReportView } from "@/components/ReportView";
+import type { ReportOrigin, ReportStateType } from "@/components/ReportView";
+import { AINarrativeToggle } from "@/components/AINarrativeToggle";
+import { AIConfigPanel } from "@/components/AIConfigPanel";
+import { useAINarrative } from "@/lib/useAINarrative";
 
 export default function ReportPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center"><p className="text-slate-500">Cargando informe…</p></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center">
+          <p className="text-slate-500">Cargando informe…</p>
+        </div>
+      }
+    >
       <ReportPageContent />
     </Suspense>
   );
@@ -26,17 +38,43 @@ function ReportPageContent() {
   const searchParams = useSearchParams();
 
   // Parse origin & state from URL params (set by Lab CTAs)
-  const originParam = searchParams.get('origin') as ReportOrigin | null;
-  const stateParam = searchParams.get('state') as ReportStateType | null;
-  const scenarioParam = searchParams.get('scenario');
+  const originParam = searchParams.get("origin") as ReportOrigin | null;
+  const stateParam = searchParams.get("state") as ReportStateType | null;
+  const scenarioParam = searchParams.get("scenario");
+  const historyParam = searchParams.get("historyId");
 
-  const origin: ReportOrigin = originParam && ['demo', 'lab', 'studio'].includes(originParam) ? originParam : 'lab';
-  const stateType: ReportStateType = stateParam && ['base', 'adjusted', 'comparison'].includes(stateParam) ? stateParam : 'base';
+  const origin: ReportOrigin =
+    originParam && ["demo", "lab", "studio"].includes(originParam)
+      ? originParam
+      : "lab";
+  const stateType: ReportStateType =
+    stateParam && ["base", "adjusted", "comparison"].includes(stateParam)
+      ? stateParam
+      : "base";
 
-  const [activeScenarioId, setActiveScenarioId] = useState(scenarioParam ?? DEFAULT_BUNDLE.id);
+  const [activeScenarioId, setActiveScenarioId] = useState(
+    scenarioParam ?? DEFAULT_BUNDLE.id,
+  );
   const ai = useAINarrative();
 
-  const bundle: ScenarioBundle = getBundle(activeScenarioId) ?? DEFAULT_BUNDLE;
+  const historySession = useMemo(() => {
+    return historyParam ? getSessionById(historyParam) : null;
+  }, [historyParam]);
+
+  const bundle: ScenarioBundle = useMemo(() => {
+    if (historySession) {
+      return {
+        id: historySession.id,
+        label: historySession.title,
+        tagline: "Escenario personalizado",
+        icon: "📁",
+        scenario: buildScenario(historySession.state),
+        stakeholders: buildStakeholders(historySession.state),
+        options: buildOptions(historySession.state),
+      };
+    }
+    return getBundle(activeScenarioId) ?? DEFAULT_BUNDLE;
+  }, [historySession, activeScenarioId]);
 
   const simulation = useMemo(
     () => runSimulation(bundle.scenario, bundle.stakeholders, bundle.options),
@@ -64,7 +102,13 @@ function ReportPageContent() {
         optionNames,
         stakeholderNames,
       ),
-    [simulation, bundle.stakeholders, bundle.options, optionNames, stakeholderNames],
+    [
+      simulation,
+      bundle.stakeholders,
+      bundle.options,
+      optionNames,
+      stakeholderNames,
+    ],
   );
 
   const handlePrint = useCallback(() => {
@@ -77,7 +121,10 @@ function ReportPageContent() {
       <nav className="bg-white/95 backdrop-blur-md border-b border-[#e1e4eb] sticky top-0 z-50 shadow-sm print:hidden">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-lg font-extrabold text-[#111827] tracking-tight hover:opacity-80 transition-opacity duration-200">
+            <Link
+              href="/"
+              className="text-lg font-extrabold text-[#111827] tracking-tight hover:opacity-80 transition-opacity duration-200"
+            >
               Convergia
             </Link>
             <span className="text-[10px] font-mono font-bold text-[#c87514] bg-[#fef4e5] px-2 py-0.5 rounded-md border border-[#f5dbb3] uppercase tracking-wider">
@@ -124,20 +171,30 @@ function ReportPageContent() {
         <div className="max-w-[800px] mx-auto px-6 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
-              <label htmlFor="scenario-select" className="text-sm font-semibold text-slate-700">
+              <label
+                htmlFor="scenario-select"
+                className="text-sm font-semibold text-slate-700"
+              >
                 Escenario:
               </label>
               <select
                 id="scenario-select"
-                value={activeScenarioId}
+                value={historySession ? historySession.id : activeScenarioId}
                 onChange={(e) => setActiveScenarioId(e.target.value)}
                 className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0d6e6e] focus:border-transparent transition-all duration-200"
+                disabled={!!historySession}
               >
-                {SCENARIO_BUNDLES.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.icon} {b.label}
+                {historySession ? (
+                  <option value={historySession.id}>
+                    📁 {historySession.title}
                   </option>
-                ))}
+                ) : (
+                  SCENARIO_BUNDLES.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.icon} {b.label}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
             <button
@@ -166,19 +223,25 @@ function ReportPageContent() {
               loading={ai.loading}
               error={ai.error}
             />
-            {ai.aiEnabled && ai.config?.apiKey && !ai.loading && ai.enrichment.source === 'fallback' && (
-              <button
-                type="button"
-                onClick={() => ai.generate(simulation, bundle.stakeholders, bundle.options)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors"
-              >
-                ✨ Generar narrativa IA
-              </button>
-            )}
+            {ai.aiEnabled &&
+              ai.config?.apiKey &&
+              !ai.loading &&
+              ai.enrichment.source === "fallback" && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    ai.generate(simulation, bundle.stakeholders, bundle.options)
+                  }
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-semibold hover:bg-violet-700 transition-colors"
+                >
+                  ✨ Generar narrativa IA
+                </button>
+              )}
             {ai.aiEnabled && !ai.config?.apiKey && !ai.loading && (
               <div className="px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
                 <p className="text-xs text-amber-700">
-                  <strong>Paso previo:</strong> Abre &ldquo;Configuración IA&rdquo; e introduce tu API key de OpenAI.
+                  <strong>Paso previo:</strong> Abre &ldquo;Configuración
+                  IA&rdquo; e introduce tu API key de OpenAI.
                 </p>
                 <p className="text-xs text-amber-600 mt-1">
                   Sin API key, el informe se genera con narrativa determinista.
@@ -190,9 +253,7 @@ function ReportPageContent() {
       </div>
 
       {/* Report content */}
-      <main className={cn(
-        'px-6 py-8 print:px-0 print:py-0',
-      )}>
+      <main className={cn("px-6 py-8 print:px-0 print:py-0")}>
         <ReportView
           data={reportData}
           enrichment={ai.enrichment}
@@ -208,7 +269,10 @@ function ReportPageContent() {
             Convergia · Informe exportable · Motor determinista · 2025
           </p>
           <div className="flex items-center gap-3">
-            <Link href="/debug" className="text-xs text-[#5b6578]/50 hover:text-[#0d6e6e] font-mono transition-colors">
+            <Link
+              href="/debug"
+              className="text-xs text-[#5b6578]/50 hover:text-[#0d6e6e] font-mono transition-colors"
+            >
               /debug
             </Link>
           </div>

@@ -12,6 +12,8 @@ import {
   GitMerge,
   FileText,
   LayoutDashboard,
+  BookOpen,
+  Database,
 } from "lucide-react";
 
 const STEPS = [
