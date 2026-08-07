@@ -5,6 +5,14 @@ import type { VariableId } from "@/engine/types";
 import { VARIABLE_IDS, VARIABLE_LABELS } from "@/engine/types";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Lightbulb,
+  ChevronDown,
+  Trash2,
+  PlusCircle,
+  AlertTriangle,
+} from "lucide-react";
 
 interface Props {
   options: DraftOption[];
@@ -29,9 +37,12 @@ export function StepOptions({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Info banner */}
-      <div className="bg-[#f0fafa] rounded-xl border border-[#d0ecec] p-5">
-        <div className="flex items-start gap-3">
-          <span className="text-xl">💡</span>
+      <div className="bg-white/60 backdrop-blur-md rounded-xl border border-white/40 shadow-sm p-5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0d6e6e]/5 to-transparent pointer-events-none" />
+        <div className="relative flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#0d6e6e]/10 text-[#0d6e6e] flex items-center justify-center shrink-0">
+            <Lightbulb className="w-4 h-4" />
+          </div>
           <div>
             <p className="text-sm font-bold text-[#111827] mb-1">
               Define las opciones de inversión
@@ -59,7 +70,7 @@ export function StepOptions({
           return (
             <div
               key={opt.uid}
-              className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
+              className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
             >
               {/* Header */}
               <button
@@ -85,154 +96,176 @@ export function StepOptions({
                 </div>
                 <div className="flex items-center gap-3">
                   {overBudget && (
-                    <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-200">
-                      ⚠ Excede presupuesto
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-200">
+                      <AlertTriangle className="w-3 h-3" />
+                      Excede presupuesto
                     </span>
                   )}
-                  <span className="text-slate-400 text-xs">
-                    {isExpanded ? "▲" : "▼"}
-                  </span>
+                  <motion.div
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                  </motion.div>
                 </div>
               </button>
 
               {/* Expanded */}
-              {isExpanded && (
-                <div
-                  id={`opt-content-${i}`}
-                  className="border-t border-slate-100 px-5 py-5 space-y-5 animate-fade-in"
-                >
-                  {/* Name + Cost */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor={`opt-name-${i}`}
-                        className="block text-xs font-semibold text-slate-700 mb-1.5"
-                      >
-                        Nombre
-                      </label>
-                      <input
-                        id={`opt-name-${i}`}
-                        value={opt.name}
-                        onChange={(e) => onUpdate(i, { name: e.target.value })}
-                        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
-                        placeholder="Ej: Automatización parcial"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor={`opt-cost-${i}`}
-                        className="block text-xs font-semibold text-slate-700 mb-1.5"
-                      >
-                        Coste (€)
-                      </label>
-                      <input
-                        id={`opt-cost-${i}`}
-                        type="number"
-                        value={opt.cost}
-                        onChange={(e) => onUpdate(i, { cost: e.target.value })}
-                        className={cn(
-                          "w-full rounded-lg border px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none transition-all",
-                          overBudget
-                            ? "border-red-300 bg-red-50/50"
-                            : "border-slate-300",
-                        )}
-                        placeholder="95000"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <div>
-                    <label
-                      htmlFor={`opt-desc-${i}`}
-                      className="block text-xs font-semibold text-slate-700 mb-1.5"
+              <AnimatePresence initial={false}>
+                {isExpanded && (
+                  <motion.div
+                    key="content"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div
+                      id={`opt-content-${i}`}
+                      className="border-t border-slate-100 px-5 py-5 space-y-5"
                     >
-                      Descripción
-                    </label>
-                    <textarea
-                      id={`opt-desc-${i}`}
-                      value={opt.description}
-                      onChange={(e) =>
-                        onUpdate(i, { description: e.target.value })
-                      }
-                      rows={2}
-                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all resize-y"
-                      placeholder="Descripción breve de la opción de inversión..."
-                    />
-                  </div>
+                      {/* Name + Cost */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label
+                            htmlFor={`opt-name-${i}`}
+                            className="block text-xs font-semibold text-slate-700 mb-1.5"
+                          >
+                            Nombre
+                          </label>
+                          <input
+                            id={`opt-name-${i}`}
+                            value={opt.name}
+                            onChange={(e) =>
+                              onUpdate(i, { name: e.target.value })
+                            }
+                            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
+                            placeholder="Ej: Automatización parcial"
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor={`opt-cost-${i}`}
+                            className="block text-xs font-semibold text-slate-700 mb-1.5"
+                          >
+                            Coste (€)
+                          </label>
+                          <input
+                            id={`opt-cost-${i}`}
+                            type="number"
+                            value={opt.cost}
+                            onChange={(e) =>
+                              onUpdate(i, { cost: e.target.value })
+                            }
+                            className={cn(
+                              "w-full rounded-lg border px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 outline-none transition-all",
+                              overBudget
+                                ? "border-red-300 bg-red-50/50"
+                                : "border-slate-300",
+                            )}
+                            placeholder="95000"
+                          />
+                        </div>
+                      </div>
 
-                  {/* Risks */}
-                  <div>
-                    <label
-                      htmlFor={`opt-risks-${i}`}
-                      className="block text-xs font-semibold text-slate-700 mb-1.5"
-                    >
-                      Riesgos (separados por coma)
-                    </label>
-                    <input
-                      id={`opt-risks-${i}`}
-                      value={opt.risks}
-                      onChange={(e) => onUpdate(i, { risks: e.target.value })}
-                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
-                      placeholder="Parada de línea 3 semanas, Curva de aprendizaje"
-                    />
-                  </div>
+                      {/* Description */}
+                      <div>
+                        <label
+                          htmlFor={`opt-desc-${i}`}
+                          className="block text-xs font-semibold text-slate-700 mb-1.5"
+                        >
+                          Descripción
+                        </label>
+                        <textarea
+                          id={`opt-desc-${i}`}
+                          value={opt.description}
+                          onChange={(e) =>
+                            onUpdate(i, { description: e.target.value })
+                          }
+                          rows={2}
+                          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all resize-y"
+                          placeholder="Descripción breve de la opción de inversión..."
+                        />
+                      </div>
 
-                  {/* Impacts */}
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 block">
-                      Impactos normalizados (0 = nulo, 1 = máximo)
-                    </label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {VARIABLE_IDS.map((v) => {
-                        const val = parseFloat(opt.impacts[v]) || 0;
-                        return (
-                          <div key={v}>
-                            <div className="flex items-center justify-between mb-1">
-                              <label
-                                htmlFor={`opt-${i}-impact-${v}`}
-                                className="text-xs text-slate-600 truncate"
-                                title={VARIABLE_LABELS[v]}
-                              >
-                                {VARIABLE_LABELS[v]}
-                              </label>
-                              <span className="text-xs font-mono text-slate-500 ml-1">
-                                {val.toFixed(2)}
-                              </span>
-                            </div>
-                            <input
-                              id={`opt-${i}-impact-${v}`}
-                              type="range"
-                              min="0"
-                              max="1"
-                              step="0.01"
-                              value={opt.impacts[v]}
-                              onChange={(e) =>
-                                onUpdateImpact(i, v, e.target.value)
-                              }
-                              className="w-full accent-[#0d6e6e] h-2"
-                              aria-label={`Impacto en ${VARIABLE_LABELS[v]}`}
-                            />
-                          </div>
-                        );
-                      })}
+                      {/* Risks */}
+                      <div>
+                        <label
+                          htmlFor={`opt-risks-${i}`}
+                          className="block text-xs font-semibold text-slate-700 mb-1.5"
+                        >
+                          Riesgos (separados por coma)
+                        </label>
+                        <input
+                          id={`opt-risks-${i}`}
+                          value={opt.risks}
+                          onChange={(e) =>
+                            onUpdate(i, { risks: e.target.value })
+                          }
+                          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-[#0d6e6e]/30 focus:border-[#0d6e6e] outline-none transition-all"
+                          placeholder="Parada de línea 3 semanas, Curva de aprendizaje"
+                        />
+                      </div>
+
+                      {/* Impacts */}
+                      <div>
+                        <label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 block">
+                          Impactos normalizados (0 = nulo, 1 = máximo)
+                        </label>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          {VARIABLE_IDS.map((v) => {
+                            const val = parseFloat(opt.impacts[v]) || 0;
+                            return (
+                              <div key={v}>
+                                <div className="flex items-center justify-between mb-1">
+                                  <label
+                                    htmlFor={`opt-${i}-impact-${v}`}
+                                    className="text-xs text-slate-600 truncate"
+                                    title={VARIABLE_LABELS[v]}
+                                  >
+                                    {VARIABLE_LABELS[v]}
+                                  </label>
+                                  <span className="text-xs font-mono text-slate-500 ml-1">
+                                    {val.toFixed(2)}
+                                  </span>
+                                </div>
+                                <input
+                                  id={`opt-${i}-impact-${v}`}
+                                  type="range"
+                                  min="0"
+                                  max="1"
+                                  step="0.01"
+                                  value={opt.impacts[v]}
+                                  onChange={(e) =>
+                                    onUpdateImpact(i, v, e.target.value)
+                                  }
+                                  className="w-full accent-[#0d6e6e] h-2"
+                                  aria-label={`Impacto en ${VARIABLE_LABELS[v]}`}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Delete option */}
+                      {options.length > 2 && (
+                        <div className="pt-4 mt-2 border-t border-slate-100 flex justify-end">
+                          <button
+                            onClick={() => onRemove(i)}
+                            aria-label={`Eliminar opción ${opt.name || String.fromCharCode(65 + i)}`}
+                            className="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-700 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-md px-2 py-1.5 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            Eliminar opción
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  </div>
-
-                  {/* Delete option */}
-                  {options.length > 2 && (
-                    <div className="pt-2 border-t border-slate-100">
-                      <button
-                        onClick={() => onRemove(i)}
-                        aria-label={`Eliminar opción ${opt.name || String.fromCharCode(65 + i)}`}
-                        className="text-xs text-red-500 hover:text-red-700 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-sm px-1"
-                      >
-                        Eliminar opción
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           );
         })}
@@ -242,9 +275,10 @@ export function StepOptions({
       <button
         onClick={onAdd}
         aria-label="Añadir nueva opción de inversión"
-        className="w-full py-3 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-[#f0fafa] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] focus-visible:ring-offset-2"
+        className="w-full py-4 flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-[#0d6e6e] hover:text-[#0d6e6e] hover:bg-white/60 hover:backdrop-blur-sm transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0d6e6e] focus-visible:ring-offset-2"
       >
-        + Añadir opción de inversión
+        <PlusCircle className="w-6 h-6 mb-1 opacity-50" />
+        Añadir opción de inversión
       </button>
     </div>
   );

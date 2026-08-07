@@ -1,61 +1,76 @@
-import Link from 'next/link';
-import { ConvergiaLogo } from '@/components/ConvergiaLogo';
+"use client";
+
+import Link from "next/link";
+import { ConvergiaLogo } from "@/components/ConvergiaLogo";
+import { motion } from "framer-motion";
+import {
+  Target,
+  FlaskConical,
+  PenTool,
+  ArrowRight,
+  Activity,
+  GitMerge,
+  FileText,
+  LayoutDashboard,
+} from "lucide-react";
 
 const STEPS = [
   {
-    href: '/demo',
-    title: 'Escenario',
-    description: 'Contexto industrial, presupuesto, KPIs y opciones de inversión',
+    href: "/demo",
+    title: "Escenario",
+    description:
+      "Contexto industrial, presupuesto, KPIs y opciones de inversión",
     step: 1,
-    detail: '3 escenarios curados · distintos sectores',
+    detail: "3 escenarios curados · distintos sectores",
   },
   {
-    href: '/demo',
-    title: 'Stakeholders',
-    description: 'Decisores clave con prioridades, pesos y líneas rojas',
+    href: "/demo",
+    title: "Stakeholders",
+    description: "Decisores clave con prioridades, pesos y líneas rojas",
     step: 2,
-    detail: 'Perfiles · 6 variables · pesos · vetos',
+    detail: "Perfiles · 6 variables · pesos · vetos",
   },
   {
-    href: '/demo',
-    title: 'Debate',
-    description: 'Rondas de negociación con scoring, conflictos y concesiones',
+    href: "/demo",
+    title: "Debate",
+    description: "Rondas de negociación con scoring, conflictos y concesiones",
     step: 3,
-    detail: 'Rondas · scoring ponderado · convergencia',
+    detail: "Rondas · scoring ponderado · convergencia",
   },
   {
-    href: '/demo',
-    title: 'Resultado',
-    description: 'Decisión consensuada, narrativa explicativa y desglose completo',
+    href: "/demo",
+    title: "Resultado",
+    description:
+      "Decisión consensuada, narrativa explicativa y desglose completo",
     step: 4,
-    detail: 'Decisión final · narrativa · desglose por stakeholder',
+    detail: "Decisión final · narrativa · desglose por stakeholder",
   },
 ] as const;
 
 const DIFFERENTIALS = [
   {
-    title: 'Determinista',
-    text: 'Mismo input, mismo output. Sin azar, sin caja negra. Cada decisión tiene una causa rastreable.',
-    accent: 'bg-teal-50 border-teal-200/60 text-teal-900',
-    dot: 'bg-teal-500',
+    title: "Determinista",
+    text: "Mismo input, mismo output. Sin azar, sin caja negra. Cada decisión tiene una causa rastreable.",
+    accent: "bg-teal-50 border-teal-200/60 text-teal-900",
+    dot: "bg-teal-500",
   },
   {
-    title: 'Multi-stakeholder',
-    text: '4 decisores con prioridades opuestas negocian a través de rondas de scoring, conflictos y concesiones.',
-    accent: 'bg-blue-50 border-blue-200/60 text-blue-900',
-    dot: 'bg-blue-500',
+    title: "Multi-stakeholder",
+    text: "4 decisores con prioridades opuestas negocian a través de rondas de scoring, conflictos y concesiones.",
+    accent: "bg-blue-50 border-blue-200/60 text-blue-900",
+    dot: "bg-blue-500",
   },
   {
-    title: 'Explicable',
-    text: 'Narrativas generadas a partir de datos calculados. La capa de presentación no inventa — traduce.',
-    accent: 'bg-amber-50 border-amber-200/60 text-amber-900',
-    dot: 'bg-amber-500',
+    title: "Explicable",
+    text: "Narrativas generadas a partir de datos calculados. La capa de presentación no inventa — traduce.",
+    accent: "bg-amber-50 border-amber-200/60 text-amber-900",
+    dot: "bg-amber-500",
   },
   {
-    title: 'Explorable',
-    text: 'Múltiples escenarios curados, ajuste de pesos y comparación base vs ajustado — sin perder rigor.',
-    accent: 'bg-violet-50 border-violet-200/60 text-violet-900',
-    dot: 'bg-violet-500',
+    title: "Explorable",
+    text: "Múltiples escenarios curados, ajuste de pesos y comparación base vs ajustado — sin perder rigor.",
+    accent: "bg-violet-50 border-violet-200/60 text-violet-900",
+    dot: "bg-violet-500",
   },
 ] as const;
 
@@ -63,13 +78,26 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col bg-[#f7f8fa]">
       {/* ══════════════ HERO ══════════════ */}
-      <section className="relative overflow-hidden" style={{ background: 'var(--gradient-hero)' }}>
+      <section
+        className="relative overflow-hidden"
+        style={{ background: "var(--gradient-hero)" }}
+      >
         {/* Geometric background pattern */}
         <div className="absolute inset-0 opacity-[0.04]" aria-hidden="true">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="0.5"/>
+              <pattern
+                id="grid"
+                width="60"
+                height="60"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 60 0 L 0 0 0 60"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="0.5"
+                />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -79,14 +107,60 @@ export default function Home() {
         {/* Convergence lines decoration */}
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.06]">
-            <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="600" y1="0" x2="200" y2="300" stroke="white" strokeWidth="1"/>
-              <line x1="600" y1="100" x2="200" y2="300" stroke="white" strokeWidth="1"/>
-              <line x1="600" y1="200" x2="200" y2="300" stroke="white" strokeWidth="0.5"/>
-              <line x1="600" y1="400" x2="200" y2="300" stroke="white" strokeWidth="0.5"/>
-              <line x1="600" y1="500" x2="200" y2="300" stroke="white" strokeWidth="1"/>
-              <line x1="600" y1="600" x2="200" y2="300" stroke="white" strokeWidth="1"/>
-              <circle cx="200" cy="300" r="4" fill="white" opacity="0.3"/>
+            <svg
+              viewBox="0 0 600 600"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                x1="600"
+                y1="0"
+                x2="200"
+                y2="300"
+                stroke="white"
+                strokeWidth="1"
+              />
+              <line
+                x1="600"
+                y1="100"
+                x2="200"
+                y2="300"
+                stroke="white"
+                strokeWidth="1"
+              />
+              <line
+                x1="600"
+                y1="200"
+                x2="200"
+                y2="300"
+                stroke="white"
+                strokeWidth="0.5"
+              />
+              <line
+                x1="600"
+                y1="400"
+                x2="200"
+                y2="300"
+                stroke="white"
+                strokeWidth="0.5"
+              />
+              <line
+                x1="600"
+                y1="500"
+                x2="200"
+                y2="300"
+                stroke="white"
+                strokeWidth="1"
+              />
+              <line
+                x1="600"
+                y1="600"
+                x2="200"
+                y2="300"
+                stroke="white"
+                strokeWidth="1"
+              />
+              <circle cx="200" cy="300" r="4" fill="white" opacity="0.3" />
             </svg>
           </div>
         </div>
@@ -124,54 +198,112 @@ export default function Home() {
           </nav>
 
           {/* Hero content */}
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8">
-              <span className="w-2 h-2 rounded-full bg-[#0d6e6e] animate-convergence" aria-hidden="true" />
+          <motion.div
+            className="max-w-3xl"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8"
+            >
+              <span
+                className="w-2 h-2 rounded-full bg-[#0d6e6e] animate-convergence"
+                aria-hidden="true"
+              />
               <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
                 Motor determinista de negociación
               </span>
-            </div>
+            </motion.div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.05]">
-              Decisiones complejas,{' '}
-              <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'var(--gradient-text-accent)' }}>
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.05]"
+            >
+              Decisiones complejas,{" "}
+              <span
+                className="text-transparent bg-clip-text"
+                style={{ backgroundImage: "var(--gradient-text-accent)" }}
+              >
                 lógica transparente
               </span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-lg sm:text-xl text-white/50 leading-relaxed mb-4 max-w-2xl">
-              Convergia simula cómo múltiples stakeholders con intereses contrapuestos alcanzan una decisión consensuada en entornos industriales.
-            </p>
-            <p className="text-base text-white/30 leading-relaxed mb-10 max-w-xl">
-              Sin IA, sin azar. Solo lógica determinista verificable, ronda por ronda.
-            </p>
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="text-lg sm:text-xl text-white/50 leading-relaxed mb-4 max-w-2xl"
+            >
+              Convergia simula cómo múltiples stakeholders con intereses
+              contrapuestos alcanzan una decisión consensuada en entornos
+              industriales.
+            </motion.p>
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="text-base text-white/30 leading-relaxed mb-10 max-w-xl"
+            >
+              Sin IA, sin azar. Solo lógica determinista verificable, ronda por
+              ronda.
+            </motion.p>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="flex flex-wrap items-center gap-4"
+            >
               <Link
                 href="/demo"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#111827] rounded-xl text-base font-bold hover:bg-white/90 transition-all shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2.5 px-8 py-4 bg-white text-[#111827] rounded-xl text-base font-bold hover:bg-white/90 transition-all shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-0.5 group"
               >
-                🎯 Demo guiada
-                <span className="text-lg">→</span>
+                <Target className="w-5 h-5 text-[#111827]/70 group-hover:text-[#111827] transition-colors" />
+                Demo guiada
+                <ArrowRight className="w-5 h-5 ml-1 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </Link>
               <Link
                 href="/lab"
-                className="inline-flex items-center gap-2 px-6 py-4 border border-white/15 text-white/70 rounded-xl text-base font-medium hover:border-white/30 hover:text-white transition-all"
+                className="inline-flex items-center gap-2.5 px-6 py-4 border border-white/15 text-white/70 rounded-xl text-base font-medium hover:border-white/30 hover:text-white hover:bg-white/5 transition-all group"
               >
-                🔬 Lab / Exploración
+                <FlaskConical className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                Lab / Exploración
               </Link>
               <Link
                 href="/studio"
-                className="inline-flex items-center gap-2 px-6 py-4 border border-[#0d6e6e]/40 text-[#0d6e6e] bg-[#0d6e6e]/10 rounded-xl text-base font-medium hover:border-[#0d6e6e]/60 hover:bg-[#0d6e6e]/20 hover:text-white transition-all"
+                className="inline-flex items-center gap-2.5 px-6 py-4 border border-[#0d6e6e]/40 text-[#0d6e6e] bg-[#0d6e6e]/10 rounded-xl text-base font-medium hover:border-[#0d6e6e]/60 hover:bg-[#0d6e6e]/20 hover:text-white transition-all group"
               >
-                🛠 Studio / Crear escenario
+                <PenTool className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" />
+                Studio / Crear
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Metric pills */}
           <div className="flex flex-wrap gap-3 mt-14 sm:mt-16">
-            {['Determinista', 'Multi-stakeholder', 'Explicable', '3 escenarios curados'].map((tag) => (
+            {[
+              "Determinista",
+              "Multi-stakeholder",
+              "Explicable",
+              "3 escenarios curados",
+            ].map((tag) => (
               <span
                 key={tag}
                 className="px-3 py-1.5 rounded-full border border-white/8 bg-white/5 text-xs font-medium text-white/35"
@@ -186,19 +318,26 @@ export default function Home() {
       {/* ══════════════ PROBLEM FRAMING ══════════════ */}
       <section className="py-20 px-6 border-b border-[#e1e4eb]">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-5">El problema</p>
+          <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-5">
+            El problema
+          </p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#111827] tracking-tight mb-6 leading-tight">
             Las decisiones industriales no las toma una sola persona
           </h2>
           <p className="text-lg text-[#5b6578] leading-relaxed max-w-2xl mx-auto">
-            Producción quiere velocidad. Calidad exige cero defectos. Finanzas busca ROI. Sostenibilidad necesita reducir emisiones.
+            Producción quiere velocidad. Calidad exige cero defectos. Finanzas
+            busca ROI. Sostenibilidad necesita reducir emisiones.
           </p>
           <p className="text-lg text-[#111827] font-semibold mt-4 max-w-xl mx-auto">
             ¿Cómo se modela ese proceso de negociación de forma rigurosa?
           </p>
           <div className="mt-8 h-px w-24 mx-auto bg-[#0d6e6e]/20" />
           <p className="mt-6 text-base text-[#5b6578] max-w-lg mx-auto leading-relaxed">
-            Convergia convierte el <strong className="text-[#111827]">conflicto entre departamentos</strong> en el objeto central del análisis.
+            Convergia convierte el{" "}
+            <strong className="text-[#111827]">
+              conflicto entre departamentos
+            </strong>{" "}
+            en el objeto central del análisis.
           </p>
         </div>
       </section>
@@ -207,7 +346,9 @@ export default function Home() {
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-4">Cómo funciona</p>
+            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-4">
+              Cómo funciona
+            </p>
             <h2 className="text-3xl font-extrabold text-[#111827] tracking-tight">
               Un motor transparente y verificable
             </h2>
@@ -232,27 +373,38 @@ export default function Home() {
       {/* ══════════════ WHY SERIOUS ══════════════ */}
       <section className="bg-white border-y border-[#e1e4eb] py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-5">Por qué Convergia</p>
+          <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-5">
+            Por qué Convergia
+          </p>
           <h2 className="text-3xl font-extrabold text-[#111827] tracking-tight mb-8">
             Serio, defendible, reproducible
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
             <div className="p-5 rounded-xl border border-[#e1e4eb]">
-              <p className="text-sm font-bold text-[#111827] mb-2">Sin caja negra</p>
+              <p className="text-sm font-bold text-[#111827] mb-2">
+                Sin caja negra
+              </p>
               <p className="text-sm text-[#5b6578] leading-relaxed">
-                Cada score, cada concesión, cada veto tiene una causa rastreable en los datos.
+                Cada score, cada concesión, cada veto tiene una causa rastreable
+                en los datos.
               </p>
             </div>
             <div className="p-5 rounded-xl border border-[#e1e4eb]">
-              <p className="text-sm font-bold text-[#111827] mb-2">Reproducible</p>
+              <p className="text-sm font-bold text-[#111827] mb-2">
+                Reproducible
+              </p>
               <p className="text-sm text-[#5b6578] leading-relaxed">
-                Mismo input → mismo output. No hay aleatoriedad ni dependencia de servicios externos.
+                Mismo input → mismo output. No hay aleatoriedad ni dependencia
+                de servicios externos.
               </p>
             </div>
             <div className="p-5 rounded-xl border border-[#e1e4eb]">
-              <p className="text-sm font-bold text-[#111827] mb-2">IA opcional</p>
+              <p className="text-sm font-bold text-[#111827] mb-2">
+                IA opcional
+              </p>
               <p className="text-sm text-[#5b6578] leading-relaxed">
-                La capa de IA enriquece la redacción, no los resultados. Los datos son siempre deterministas.
+                La capa de IA enriquece la redacción, no los resultados. Los
+                datos son siempre deterministas.
               </p>
             </div>
           </div>
@@ -286,8 +438,12 @@ export default function Home() {
                 <h2 className="text-lg font-bold text-[#111827] mb-2">
                   {step.title}
                 </h2>
-                <p className="text-sm text-[#5b6578] leading-relaxed mb-3">{step.description}</p>
-                <p className="text-xs text-[#5b6578]/60 font-medium">{step.detail}</p>
+                <p className="text-sm text-[#5b6578] leading-relaxed mb-3">
+                  {step.description}
+                </p>
+                <p className="text-xs text-[#5b6578]/60 font-medium">
+                  {step.detail}
+                </p>
                 <span className="absolute top-6 right-6 text-[#0d6e6e] opacity-0 group-hover:opacity-100 transition-opacity text-lg font-bold">
                   →
                 </span>
@@ -298,10 +454,11 @@ export default function Home() {
           <div className="text-center">
             <Link
               href="/demo"
-              className="inline-flex items-center gap-3 px-10 py-4 bg-[#111827] text-white rounded-xl text-lg font-bold hover:bg-[#1f2937] transition-all shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2.5 px-10 py-4 bg-[#111827] text-white rounded-xl text-lg font-bold hover:bg-[#1f2937] transition-all shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5 group"
             >
+              <Target className="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" />
               Comenzar demo guiada
-              <span className="text-xl">→</span>
+              <ArrowRight className="w-5 h-5 ml-1 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
             </Link>
           </div>
         </div>
@@ -310,13 +467,30 @@ export default function Home() {
       {/* ══════════════ ARCHITECTURE CALLOUT ══════════════ */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl p-8 sm:p-10 text-white shadow-2xl overflow-hidden relative" style={{ background: 'var(--gradient-hero)' }}>
+          <div
+            className="rounded-2xl p-8 sm:p-10 text-white shadow-2xl overflow-hidden relative"
+            style={{ background: "var(--gradient-hero)" }}
+          >
             {/* Subtle pattern */}
             <div className="absolute inset-0 opacity-[0.03]" aria-hidden="true">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                width="100%"
+                height="100%"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <defs>
-                  <pattern id="arch-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/>
+                  <pattern
+                    id="arch-grid"
+                    width="40"
+                    height="40"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 40 0 L 0 0 0 40"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="0.5"
+                    />
                   </pattern>
                 </defs>
                 <rect width="100%" height="100%" fill="url(#arch-grid)" />
@@ -327,19 +501,37 @@ export default function Home() {
               <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-white/40 bg-white/5 border border-white/10 px-3 py-1 rounded-md mb-5">
                 ARQUITECTURA
               </span>
-              <h2 className="text-2xl font-extrabold mb-4 tracking-tight">Dualidad: Motor + Presentación</h2>
+              <h2 className="text-2xl font-extrabold mb-4 tracking-tight">
+                Dualidad: Motor + Presentación
+              </h2>
               <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-xl">
-                El núcleo es un <strong className="text-white">motor determinista puro</strong> en TypeScript — sin dependencias externas, sin estado, sin aleatoriedad. La capa de presentación consume datos ya calculados.
-                <strong className="text-white"> Toda explicación es derivada, no inventada.</strong>
+                El núcleo es un{" "}
+                <strong className="text-white">motor determinista puro</strong>{" "}
+                en TypeScript — sin dependencias externas, sin estado, sin
+                aleatoriedad. La capa de presentación consume datos ya
+                calculados.
+                <strong className="text-white">
+                  {" "}
+                  Toda explicación es derivada, no inventada.
+                </strong>
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                 <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                  <p className="text-xs font-bold text-[#5eead4] uppercase tracking-wider mb-2">Motor</p>
-                  <p className="text-xs text-white/50">scoring · vetos · conflictos · consenso · concesiones · simulación</p>
+                  <p className="text-xs font-bold text-[#5eead4] uppercase tracking-wider mb-2">
+                    Motor
+                  </p>
+                  <p className="text-xs text-white/50">
+                    scoring · vetos · conflictos · consenso · concesiones ·
+                    simulación
+                  </p>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                  <p className="text-xs font-bold text-[#93c5fd] uppercase tracking-wider mb-2">Presentación</p>
-                  <p className="text-xs text-white/50">narrativa · walkthrough · visualizaciones · debug</p>
+                  <p className="text-xs font-bold text-[#93c5fd] uppercase tracking-wider mb-2">
+                    Presentación
+                  </p>
+                  <p className="text-xs text-white/50">
+                    narrativa · walkthrough · visualizaciones · debug
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -360,62 +552,83 @@ export default function Home() {
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-3">Tres modos de uso</p>
+            <p className="text-xs font-bold text-[#0d6e6e] uppercase tracking-[0.2em] mb-3">
+              Tres modos de uso
+            </p>
             <h2 className="text-2xl font-extrabold text-[#111827] tracking-tight">
               Elige cómo quieres interactuar con Convergia
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {/* Demo guiada */}
-          <div className="rounded-2xl p-7 border border-slate-200 bg-slate-50/30 shadow-sm hover:shadow-md transition-shadow">
-            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#111827] bg-slate-100 border border-slate-200 px-3 py-1 rounded-md mb-5">
-              🎯 DEMO GUIADA
-            </span>
-            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Recorrido lineal</h3>
-            <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
-              Sigue el flujo paso a paso: escenario → stakeholders → debate → resultado → informe. Ideal para <strong className="text-[#111827]">entender cómo funciona</strong> Convergia.
-            </p>
-            <Link
-              href="/demo"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-lg text-sm font-bold hover:bg-[#1f2937] transition-colors shadow-sm"
-            >
-              Iniciar demo →
-            </Link>
-          </div>
+            {/* Demo guiada */}
+            <div className="rounded-2xl p-7 border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+              <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#111827] bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-md mb-5">
+                <Target className="w-3.5 h-3.5" /> DEMO GUIADA
+              </span>
+              <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">
+                Recorrido lineal
+              </h3>
+              <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
+                Sigue el flujo paso a paso: escenario → stakeholders → debate →
+                resultado → informe. Ideal para{" "}
+                <strong className="text-[#111827]">
+                  entender cómo funciona
+                </strong>{" "}
+                Convergia.
+              </p>
+              <Link
+                href="/demo"
+                className="inline-flex items-center justify-between w-full px-5 py-3 bg-[#111827] text-white rounded-lg text-sm font-bold hover:bg-[#1f2937] transition-all shadow-sm group"
+              >
+                Iniciar demo
+                <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              </Link>
+            </div>
 
-          {/* Lab */}
-          <div className="rounded-2xl p-7 border border-[#d0ecec] bg-[#f0fafa]/30 shadow-sm hover:shadow-md transition-shadow">
-            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-3 py-1 rounded-md mb-5">
-              🔬 LAB / EXPLORACIÓN
-            </span>
-            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Sandbox analítico</h3>
-            <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
-              Explora libremente: elige escenarios, ajusta pesos, compara resultados. <strong className="text-[#111827]">Sin orden fijo</strong> — experimenta a tu ritmo.
-            </p>
-            <Link
-              href="/lab"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0d6e6e] text-white rounded-lg text-sm font-bold hover:bg-[#0f8585] transition-colors shadow-sm"
-            >
-              Abrir Lab →
-            </Link>
-          </div>
+            {/* Lab */}
+            <div className="rounded-2xl p-7 border border-[#d0ecec] bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+              <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-[#0d6e6e] bg-[#f0fafa] border border-[#d0ecec] px-3 py-1.5 rounded-md mb-5">
+                <FlaskConical className="w-3.5 h-3.5" /> LAB / EXPLORACIÓN
+              </span>
+              <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">
+                Sandbox analítico
+              </h3>
+              <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
+                Explora libremente: elige escenarios, ajusta pesos, compara
+                resultados.{" "}
+                <strong className="text-[#111827]">Sin orden fijo</strong> —
+                experimenta a tu ritmo.
+              </p>
+              <Link
+                href="/lab"
+                className="inline-flex items-center justify-between w-full px-5 py-3 bg-[#0d6e6e] text-white rounded-lg text-sm font-bold hover:bg-[#0f8585] transition-all shadow-sm group"
+              >
+                Abrir Lab
+                <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              </Link>
+            </div>
 
-          {/* Studio */}
-          <div className="rounded-2xl p-7 border border-violet-200 bg-violet-50/30 shadow-sm hover:shadow-md transition-shadow">
-            <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-violet-700 bg-violet-50 border border-violet-200 px-3 py-1 rounded-md mb-5">
-              🛠 STUDIO
-            </span>
-            <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">Escenario personalizado</h3>
-            <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
-              Crea tu propio escenario con empresa, stakeholders y opciones. <strong className="text-[#111827]">Total libertad</strong> de configuración y simulación.
-            </p>
-            <Link
-              href="/studio"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 text-white rounded-lg text-sm font-bold hover:bg-violet-700 transition-colors shadow-sm"
-            >
-              Crear escenario →
-            </Link>
-          </div>
+            {/* Studio */}
+            <div className="rounded-2xl p-7 border border-violet-200 bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+              <span className="inline-flex items-center gap-2 text-xs font-mono font-medium text-violet-700 bg-violet-50 border border-violet-200 px-3 py-1.5 rounded-md mb-5">
+                <PenTool className="w-3.5 h-3.5" /> STUDIO
+              </span>
+              <h3 className="text-xl font-extrabold text-[#111827] mb-3 tracking-tight">
+                Escenario personalizado
+              </h3>
+              <p className="text-sm text-[#5b6578] leading-relaxed mb-5">
+                Crea tu propio escenario con empresa, stakeholders y opciones.{" "}
+                <strong className="text-[#111827]">Total libertad</strong> de
+                configuración y simulación.
+              </p>
+              <Link
+                href="/studio"
+                className="inline-flex items-center justify-between w-full px-5 py-3 bg-violet-600 text-white rounded-lg text-sm font-bold hover:bg-violet-700 transition-all shadow-sm group"
+              >
+                Crear escenario
+                <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -431,11 +644,36 @@ export default function Home() {
               </span>
             </div>
             <div className="flex items-center gap-5">
-              <Link href="/demo" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/demo</Link>
-              <Link href="/lab" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/lab</Link>
-              <Link href="/studio" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/studio</Link>
-              <Link href="/report" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/report</Link>
-              <Link href="/debug" className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors">/debug</Link>
+              <Link
+                href="/demo"
+                className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors"
+              >
+                /demo
+              </Link>
+              <Link
+                href="/lab"
+                className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors"
+              >
+                /lab
+              </Link>
+              <Link
+                href="/studio"
+                className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors"
+              >
+                /studio
+              </Link>
+              <Link
+                href="/report"
+                className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors"
+              >
+                /report
+              </Link>
+              <Link
+                href="/debug"
+                className="text-xs text-[#5b6578] hover:text-[#0d6e6e] font-mono transition-colors"
+              >
+                /debug
+              </Link>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-[#e1e4eb]">
